@@ -1,0 +1,41 @@
+# Build
+bin/
+obj/
+_publish_test/
+
+# Bundled FFmpeg (large binary; install locally or CI)
+ContentAgent.Video/Lib/ffmpeg.exe
+
+# Large media assets (install locally or CI)
+ContentAgent.Video/mp3/
+ContentAgent.Video/mp4/
+
+# Config with secrets (tokens) — paths under ContentAgent.Api
+ContentAgent.Api/agents/**/config.json
+ContentAgent.Api/agents/**/salsabit-*.json
+agent-config.json
+
+# IDE / OS
+.vs/
+.vscode/
+*.user
+.DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# User secrets
+secrets.json
+
+# Google Search Console service account key (alternate naming)
+ContentAgent.Api/agents/**/gsc-service-account.json
+
+# Generated quiz videos (folder kept via ContentAgent.Api/wwwroot/videos/.gitkeep)
+ContentAgent.Api/wwwroot/videos/*
+!ContentAgent.Api/wwwroot/videos/.gitkeep

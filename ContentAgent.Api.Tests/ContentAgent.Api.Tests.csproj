@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ContentAgent.Api\ContentAgent.Api.csproj" />
+    <ProjectReference Include="..\ContentAgent.Video\ContentAgent.Video.csproj" />
+  </ItemGroup>
+
+  <!-- Same FFmpeg + media assets as the web app so VideoService integration tests can run next to testhost. -->
+  <ItemGroup>
+    <Content Include="..\ContentAgent.Video\Lib\ffmpeg.exe" CopyToOutputDirectory="PreserveNewest" TargetPath="Lib\ffmpeg.exe" Condition="Exists('..\ContentAgent.Video\Lib\ffmpeg.exe')" />
+    <Content Include="..\ContentAgent.Video\mp4\salsa-festival.mp4" CopyToOutputDirectory="PreserveNewest" TargetPath="mp4\salsa-festival.mp4" Condition="Exists('..\ContentAgent.Video\mp4\salsa-festival.mp4')" />
+    <Content Include="..\ContentAgent.Video\mp3\LA MAXIMA 79 - CUCHI CUCHI (Official Channel).mp3" CopyToOutputDirectory="PreserveNewest" TargetPath="mp3\LA MAXIMA 79 - CUCHI CUCHI (Official Channel).mp3" Condition="Exists('..\ContentAgent.Video\mp3\LA MAXIMA 79 - CUCHI CUCHI (Official Channel).mp3')" />
+    <None Include="..\ContentAgent.Video\quiz\quiz-slides.json" CopyToOutputDirectory="PreserveNewest">
+      <TargetPath>quiz\quiz-slides.json</TargetPath>
+    </None>
+    <None Include="..\ContentAgent.Video\svg\tiktok-overlay.svg" CopyToOutputDirectory="PreserveNewest">
+      <TargetPath>svg\tiktok-overlay.svg</TargetPath>
+    </None>
+    <None Include="..\ContentAgent.Video\svg\tiktok-overlay-question.svg" CopyToOutputDirectory="PreserveNewest">
+      <TargetPath>svg\tiktok-overlay-question.svg</TargetPath>
+    </None>
+    <None Include="..\ContentAgent.Video\svg\tiktok-overlay-answer.svg" CopyToOutputDirectory="PreserveNewest">
+      <TargetPath>svg\tiktok-overlay-answer.svg</TargetPath>
+    </None>
+    <None Include="..\ContentAgent.Video\fonts\TitanOne-Regular.ttf" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\ContentAgent.Video\fonts\TitanOne-Regular.ttf')">
+      <TargetPath>fonts\TitanOne-Regular.ttf</TargetPath>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,306 @@
+{
+  "questionDurationSeconds": 15,
+  "answerDurationSeconds": 0,
+  "slides": [
+    {
+      "day": 1,
+      "questionLabel": "Question:",
+      "questionLines": ["In salsa dancing, what does", "the term on1 mean?"],
+      "options": [
+        "A. The dancer steps on the first beat of the music",
+        "B. The dancer turns on the first move of the routine",
+        "C. The dancer pauses on beat one",
+        "D. The dancer claps on the first beat"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "day": 3,
+      "questionLabel": "Question:",
+      "questionLines": ["How many beats are in a", "standard salsa phrase?"],
+      "options": ["A. 4", "B. 6", "C. 8", "D. 12"],
+      "correctOptionIndex": 2
+    },
+    {
+      "day": 4,
+      "questionLabel": "Question:",
+      "questionLines": ["Which beat is usually", "a pause or tap in salsa?"],
+      "options": ["A. Beat 1", "B. Beat 3", "C. Beat 4", "D. Beat 6"],
+      "correctOptionIndex": 2
+    },
+    {
+      "day": 5,
+      "questionLabel": "Question:",
+      "questionLines": ["What is a cross-body", "lead in salsa?"],
+      "options": [
+        "A. A spin in place",
+        "B. Switching places with partner",
+        "C. A foot tap move",
+        "D. A solo step"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 6,
+      "questionLabel": "Question:",
+      "questionLines": ["What is the break step", "in salsa?"],
+      "options": [
+        "A. A pause",
+        "B. A jump",
+        "C. A change of direction",
+        "D. A spin"
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "day": 7,
+      "questionLabel": "Question:",
+      "questionLines": ["Which instrument plays", "the clave rhythm?"],
+      "options": ["A. Piano", "B. Claves", "C. Guitar", "D. Trumpet"],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 8,
+      "questionLabel": "Question:",
+      "questionLines": ["What pattern does the", "clave follow?"],
+      "options": ["A. 2-beat", "B. 3-2 or 2-3", "C. 4-4", "D. Random"],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 9,
+      "questionLabel": "Question:",
+      "questionLines": ["A follower's right turn", "is which direction?"],
+      "options": ["A. Left", "B. Clockwise", "C. Counterclockwise", "D. Backward"],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 10,
+      "questionLabel": "Question:",
+      "questionLines": ["A follower's left turn", "is which direction?"],
+      "options": ["A. Clockwise", "B. Counterclockwise", "C. Forward", "D. Sideways"],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 11,
+      "questionLabel": "Question:",
+      "questionLines": ["What is the leader's role", "in salsa dancing?"],
+      "options": [
+        "A. Follow instructions",
+        "B. Guide the movement",
+        "C. Stay still",
+        "D. Only spin"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 12,
+      "questionLabel": "Question:",
+      "questionLines": ["What is the follower's", "main role in salsa?"],
+      "options": [
+        "A. Lead moves",
+        "B. Mirror and respond",
+        "C. Count beats aloud",
+        "D. Stay stationary"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 13,
+      "questionLabel": "Question:",
+      "questionLines": ["Which beat is the main", "break in on1 salsa?"],
+      "options": ["A. 1", "B. 2", "C. 3", "D. 5"],
+      "correctOptionIndex": 0
+    },
+    {
+      "day": 14,
+      "questionLabel": "Question:",
+      "questionLines": ["Which beat is the main", "break in on2 salsa?"],
+      "options": ["A. 1", "B. 2", "C. 4", "D. 6"],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 15,
+      "questionLabel": "Question:",
+      "questionLines": ["What is a basic salsa", "step pattern?"],
+      "options": [
+        "A. Step-step-pause",
+        "B. Jump-step-jump",
+        "C. Slide-slide-tap",
+        "D. Turn-turn-stop"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "day": 16,
+      "questionLabel": "Question:",
+      "questionLines": ["How many steps are taken", "in one salsa basic?"],
+      "options": ["A. 4", "B. 5", "C. 6", "D. 8"],
+      "correctOptionIndex": 2
+    },
+    {
+      "day": 17,
+      "questionLabel": "Question:",
+      "questionLines": ["What happens on counts", "4 and 8 in salsa?"],
+      "options": [
+        "A. Spins",
+        "B. Pauses or taps",
+        "C. Jumps",
+        "D. Claps"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 18,
+      "questionLabel": "Question:",
+      "questionLines": ["What is a shine in", "salsa dancing?"],
+      "options": [
+        "A. Partner lift",
+        "B. Solo footwork",
+        "C. Spin combo",
+        "D. Music break"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 19,
+      "questionLabel": "Question:",
+      "questionLines": ["What is frame in", "partner dancing?"],
+      "options": [
+        "A. Body posture and connection",
+        "B. Dance floor size",
+        "C. Music tempo",
+        "D. Shoe type"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "day": 20,
+      "questionLabel": "Question:",
+      "questionLines": ["What does leading mainly", "use in salsa?"],
+      "options": [
+        "A. Voice",
+        "B. Arm tension and body",
+        "C. Foot stomping",
+        "D. Eye contact only"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 21,
+      "questionLabel": "Question:",
+      "questionLines": ["What is a turn pattern", "in salsa?"],
+      "options": [
+        "A. Repeated spins",
+        "B. A sequence of moves",
+        "C. A pause",
+        "D. A jump"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 22,
+      "questionLabel": "Question:",
+      "questionLines": ["Which style is danced", "in a slot?"],
+      "options": ["A. Cuban", "B. LA style", "C. Colombian", "D. Rueda"],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 23,
+      "questionLabel": "Question:",
+      "questionLines": ["Which salsa style is", "more circular?"],
+      "options": ["A. LA", "B. NY", "C. Cuban", "D. Linear"],
+      "correctOptionIndex": 2
+    },
+    {
+      "day": 24,
+      "questionLabel": "Question:",
+      "questionLines": ["What is rueda de casino?"],
+      "options": [
+        "A. Solo dancing",
+        "B. Circle group dancing",
+        "C. Slow salsa",
+        "D. Competition style"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 25,
+      "questionLabel": "Question:",
+      "questionLines": ["Who calls moves in rueda?"],
+      "options": ["A. Leader", "B. Caller", "C. DJ", "D. Follower"],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 26,
+      "questionLabel": "Question:",
+      "questionLines": ["What is timing in salsa?"],
+      "options": [
+        "A. Speed of spins",
+        "B. Matching steps to music beats",
+        "C. Dance duration",
+        "D. Song length"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 27,
+      "questionLabel": "Question:",
+      "questionLines": ["What is musicality in", "salsa dancing?"],
+      "options": [
+        "A. Knowing songs",
+        "B. Expressing music through movement",
+        "C. Counting loudly",
+        "D. Playing instruments"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 28,
+      "questionLabel": "Question:",
+      "questionLines": ["What is a basic right", "turn usually led with?"],
+      "options": [
+        "A. Push down",
+        "B. Raise left hand",
+        "C. Step back",
+        "D. Clap"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 29,
+      "questionLabel": "Question:",
+      "questionLines": ["What helps maintain", "good balance in turns?"],
+      "options": [
+        "A. Looking down",
+        "B. Spotting",
+        "C. Closing eyes",
+        "D. Holding breath"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 30,
+      "questionLabel": "Question:",
+      "questionLines": ["What is spotting in", "dance turns?"],
+      "options": [
+        "A. Fast spinning",
+        "B. Fixing gaze on a point",
+        "C. Jumping",
+        "D. Pausing"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "day": 31,
+      "questionLabel": "Question:",
+      "questionLines": ["What is connection in", "partner dancing?"],
+      "options": [
+        "A. Talking",
+        "B. Physical communication",
+        "C. Eye contact only",
+        "D. Music speed"
+      ],
+      "correctOptionIndex": 1
+    }
+  ]
+}

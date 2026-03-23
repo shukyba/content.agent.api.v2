@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ContentAgent.Video\ContentAgent.Video.csproj" />
+  </ItemGroup>
+
+  <!-- FFmpeg + assets under ContentAgent.Video. Copied next to ContentAgent.Api.dll when present. -->
+  <ItemGroup>
+    <Content Include="..\ContentAgent.Video\Lib\ffmpeg.exe" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="Lib\ffmpeg.exe" Condition="Exists('..\ContentAgent.Video\Lib\ffmpeg.exe')" />
+    <Content Include="..\ContentAgent.Video\mp4\salsa-festival.mp4" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="mp4\salsa-festival.mp4" Condition="Exists('..\ContentAgent.Video\mp4\salsa-festival.mp4')" />
+    <Content Include="..\ContentAgent.Video\mp3\LA MAXIMA 79 - CUCHI CUCHI (Official Channel).mp3" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="mp3\LA MAXIMA 79 - CUCHI CUCHI (Official Channel).mp3" Condition="Exists('..\ContentAgent.Video\mp3\LA MAXIMA 79 - CUCHI CUCHI (Official Channel).mp3')" />
+    <None Include="..\ContentAgent.Video\quiz\quiz-slides.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest">
+      <TargetPath>quiz\quiz-slides.json</TargetPath>
+    </None>
+    <None Include="..\ContentAgent.Video\svg\tiktok-overlay.svg" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest">
+      <TargetPath>svg\tiktok-overlay.svg</TargetPath>
+    </None>
+    <None Include="..\ContentAgent.Video\svg\tiktok-overlay-question.svg" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest">
+      <TargetPath>svg\tiktok-overlay-question.svg</TargetPath>
+    </None>
+    <None Include="..\ContentAgent.Video\svg\tiktok-overlay-answer.svg" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest">
+      <TargetPath>svg\tiktok-overlay-answer.svg</TargetPath>
+    </None>
+    <None Include="..\ContentAgent.Video\fonts\TitanOne-Regular.ttf" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" Condition="Exists('..\ContentAgent.Video\fonts\TitanOne-Regular.ttf')">
+      <TargetPath>fonts\TitanOne-Regular.ttf</TargetPath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.73.0" />
+    <PackageReference Include="Google.GenAI" Version="1.5.0" />
+    <PackageReference Include="LibGit2Sharp" Version="0.31.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+    <PackageReference Include="log4net" Version="3.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.5" />
+  </ItemGroup>
+
+  <!--
+    Under agents/: *.json are Content; *.md etc. are None. Default CopyToPublishDirectory is Never, so Azure wwwroot had no agents/.
+    Update both so publish + GitHub Actions deploy include tracked files (todo.md, log.md). config.json is gitignored — add on server or CI secret.
+  -->
+  <ItemGroup>
+    <None Update="agents\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Update="agents\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

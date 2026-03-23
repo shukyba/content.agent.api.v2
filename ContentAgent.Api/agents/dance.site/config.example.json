@@ -1,0 +1,19 @@
+{
+  "url": "https://github.com/your-org/your-repo",
+  "githubToken": "",
+  "schema": [],
+  "data": [],
+  "structuredAppendKeyPaths": [],
+  "sitemap": {
+    "google": {
+      "enabled": false,
+      "siteUrl": "sc-domain:example.com",
+      "sitemapUrl": "https://www.example.com/sitemap.xml",
+      "serviceAccountKeyPath": "your-gsc-service-account.json"
+    },
+    "bing": {
+      "enabled": false,
+      "sitemapUrl": "https://www.example.com/sitemap.xml"
+    }
+  }
+}

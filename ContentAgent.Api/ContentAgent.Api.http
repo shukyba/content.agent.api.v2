@@ -1,0 +1,10 @@
+@ContentAgent.Api_HostAddress = http://localhost:5288
+
+GET {{ContentAgent.Api_HostAddress}}/
+Accept: application/json
+
+###
+
+POST {{ContentAgent.Api_HostAddress}}/api/agent/run
+
+###
