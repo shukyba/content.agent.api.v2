@@ -1,4 +1,3 @@
-using System.Globalization;
 using ContentAgent.Api.Services;
 using ContentAgent.Video;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +27,8 @@ public class VideoController : ControllerBase
 
     /// <summary>
     /// Renders a 1080x1920 (TikTok 9:16) clip from <c>quiz/quiz-slides.json</c>: picks the slide whose <c>day</c> matches today (local server date), blurred <c>salsa-festival.mp4</c>, dim overlay, audio from the bundled MP3. Output: <c>wwwroot/videos/{day}.mp4</c>, served at <c>/videos/{day}.mp4</c>.
-    /// When Buffer is configured, queues a social post for the production video URL at the next 19:00 UTC (configurable).
+    /// If that file already exists, skips FFmpeg and proceeds to Buffer scheduling (caption from quiz JSON).
+    /// When Buffer is configured, queues TikTok/YouTube <c>createPost</c> (GraphQL) using this request&apos;s public video URL at the next UTC slot from <c>Buffer:ScheduleHourUtc</c> (minute defaults to 0 in code).
     /// </summary>
     [HttpPost("")]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
@@ -38,32 +38,47 @@ public class VideoController : ControllerBase
         var webRoot = _environment.WebRootPath ?? Path.Combine(_environment.ContentRootPath, "wwwroot");
         var outputDir = Path.Combine(webRoot, "videos");
         Directory.CreateDirectory(outputDir);
-        _logger.LogInformation("Creating quiz slide video in {Dir}", outputDir);
+        _logger.LogInformation("Quiz slide video output directory {Dir}", outputDir);
 
-        var result = await _slideVideo.CreateHelloWorldSlideAsync(outputDir, cancellationToken);
-        if (!result.Success)
+        var meta = await _slideVideo.GetTodaySlideMetadataAsync(cancellationToken);
+        if (!meta.Success)
         {
-            _logger.LogWarning("Slide video failed: {Message}", result.ErrorMessage);
-            return BadRequest(new { status = "error", message = result.ErrorMessage });
+            _logger.LogWarning("Quiz metadata failed: {Message}", meta.ErrorMessage);
+            return BadRequest(new { status = "error", message = meta.ErrorMessage });
+        }
+
+        var expectedPath = Path.GetFullPath(Path.Combine(outputDir, meta.OutputFileName));
+        SlideVideoResult result;
+        var videoSkipped = false;
+        if (System.IO.File.Exists(expectedPath))
+        {
+            _logger.LogInformation("Quiz video already exists at {Path}; skipping FFmpeg.", expectedPath);
+            result = new SlideVideoResult(true, expectedPath, null, meta.SocialPostCaption);
+            videoSkipped = true;
+        }
+        else
+        {
+            result = await _slideVideo.CreateHelloWorldSlideAsync(outputDir, cancellationToken);
+            if (!result.Success)
+            {
+                _logger.LogWarning("Slide video failed: {Message}", result.ErrorMessage);
+                return BadRequest(new { status = "error", message = result.ErrorMessage });
+            }
         }
 
         var fileName = Path.GetFileName(result.OutputPath!);
         var publicPath = "/videos/" + fileName;
         var publicUrl = $"{Request.Scheme}://{Request.Host.Value}{publicPath}";
 
-        var calendarDay = int.TryParse(Path.GetFileNameWithoutExtension(fileName), NumberStyles.Integer, CultureInfo.InvariantCulture, out var d)
-            ? d
-            : DateTime.Today.Day;
-
         var bufferResult = await _bufferSchedule.ScheduleVideoPostAsync(
-            publicPath,
-            calendarDay,
+            publicUrl,
             result.SocialPostCaption,
             cancellationToken);
 
         return Ok(new
         {
             status = "ok",
+            videoSkipped,
             path = result.OutputPath,
             publicPath,
             publicUrl,

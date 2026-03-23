@@ -1,6 +1,27 @@
 namespace ContentAgent.Api.Services;
 
-/// <summary>Configuration for scheduling posts via the Buffer REST API (<c>POST /1/updates/create.json</c>).</summary>
+/// <summary>TikTok Buffer channel: template file name and GraphQL <c>channelId</c>.</summary>
+public sealed class BufferTikTokOptions
+{
+    /// <summary>Mutation file under <see cref="BufferOptions.TemplatesDirectory"/> (e.g. <c>tiktok.txt</c>).</summary>
+    public string Template { get; set; } = "tiktok.txt";
+
+    /// <summary>Buffer channel id for <c>&lt;&lt;&lt;BUFFER_CHANNEL_ID&gt;&gt;&gt;</c> in the template.</summary>
+    public string? ChannelId { get; set; }
+}
+
+/// <summary>YouTube Buffer channel: template, <c>channelId</c>, and <c>categoryId</c> for metadata.</summary>
+public sealed class BufferYouTubeOptions
+{
+    public string Template { get; set; } = "youtube.txt";
+
+    public string? ChannelId { get; set; }
+
+    /// <summary>Value for <c>&lt;&lt;&lt;BUFFER_YOUTUBE_CATEGORY&gt;&gt;&gt;</c> in <c>youtube.txt</c>.</summary>
+    public string CategoryId { get; set; } = "22";
+}
+
+/// <summary>Configuration for scheduling posts via the <see href="https://developers.buffer.com/">Buffer GraphQL API</see> (<c>createPost</c>).</summary>
 public sealed class BufferOptions
 {
     public const string SectionName = "Buffer";
@@ -8,20 +29,22 @@ public sealed class BufferOptions
     /// <summary>When false, video generation skips Buffer entirely.</summary>
     public bool Enabled { get; set; } = true;
 
-    /// <summary>OAuth access token. Set via environment / Key Vault / user secrets — never commit real values.</summary>
+    /// <summary>API token from Buffer Publish → Settings → API. Use Bearer auth — never commit real values.</summary>
     public string? AccessToken { get; set; }
 
-    /// <summary>Public origin for quiz MP4s (HTTPS, no trailing slash). Used for Buffer <c>media[link]</c>, not the request host.</summary>
-    public string PublicVideoBaseUrl { get; set; } =
-        "https://content-agent-api-cag4htcafud5hpak.westeurope-01.azurewebsites.net";
+    /// <summary>GraphQL HTTP endpoint (POST JSON <c>{ "query": "&lt;mutation&gt;" }</c>).</summary>
+    public string GraphqlEndpoint { get; set; } = "https://api.buffer.com";
 
-    /// <summary>Buffer profile ids from <c>GET /1/profiles.json</c> (one post is created per id).</summary>
-    public List<string> ProfileIds { get; set; } = new();
+    /// <summary>Subfolder under content root / app base that holds template files.</summary>
+    public string TemplatesDirectory { get; set; } = "buffer";
 
-    /// <summary>Optional fallback when no quiz question caption is supplied. Placeholders: <c>{url}</c>, <c>{day}</c>.</summary>
-    public string PostTextTemplate { get; set; } = "";
+    public BufferTikTokOptions TikTok { get; set; } = new();
 
-    public int ScheduleHourUtc { get; set; } = 19;
+    public BufferYouTubeOptions YouTube { get; set; } = new();
 
+    /// <summary>UTC hour (0–23) for <c>dueAt</c>: next occurrence today or tomorrow via <see cref="BufferScheduling.NextUtcWallTime"/>.</summary>
+    public int ScheduleHourUtc { get; set; } = 21;
+
+    /// <summary>UTC minute (0–59) paired with <see cref="ScheduleHourUtc"/>; default <c>0</c> (omit from appsettings unless non-zero).</summary>
     public int ScheduleMinuteUtc { get; set; } = 0;
 }

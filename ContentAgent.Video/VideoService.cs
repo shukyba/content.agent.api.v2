@@ -39,6 +39,56 @@ public sealed class VideoService : ISlideHelloWorldVideoService
         _logger = logger;
     }
 
+    /// <inheritdoc />
+    public async Task<TodaySlideMetadata> GetTodaySlideMetadataAsync(
+        CancellationToken cancellationToken = default,
+        VideoRenderOptions? options = null)
+    {
+        var quizPath = Path.GetFullPath(
+            string.IsNullOrWhiteSpace(options?.QuizJsonPath)
+                ? Path.Combine(_applicationBasePath, DefaultQuizJsonRelativePath)
+                : options!.QuizJsonPath!);
+
+        if (!File.Exists(quizPath))
+            return new TodaySlideMetadata(false, 0, string.Empty, null, $"Quiz JSON not found at {quizPath}. Add {DefaultQuizJsonRelativePath}.");
+
+        QuizSlidesDocument doc;
+        try
+        {
+            await using var stream = File.OpenRead(quizPath);
+            doc = await JsonSerializer.DeserializeAsync<QuizSlidesDocument>(stream, QuizJsonOptions, cancellationToken)
+                  ?? new QuizSlidesDocument();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to parse quiz JSON");
+            return new TodaySlideMetadata(false, 0, string.Empty, null, $"Invalid quiz JSON: {ex.Message}");
+        }
+
+        var validation = ValidateQuizDocument(doc);
+        if (validation != null)
+            return new TodaySlideMetadata(false, 0, string.Empty, null, validation);
+
+        var calendarDay = options?.CalendarDay ?? DateTime.Today.Day;
+        if (calendarDay is < 1 or > 31)
+            return new TodaySlideMetadata(false, 0, string.Empty, null, "Calendar day override must be between 1 and 31.");
+
+        var slidesForToday = doc.Slides.Where(s => s.Day == calendarDay).ToList();
+        if (slidesForToday.Count == 0)
+            return new TodaySlideMetadata(false, 0, string.Empty, null, $"No slide with \"day\": {calendarDay} in the quiz JSON.");
+
+        var docForCaption = new QuizSlidesDocument
+        {
+            QuestionDurationSeconds = doc.QuestionDurationSeconds,
+            AnswerDurationSeconds = doc.AnswerDurationSeconds,
+            Slides = slidesForToday
+        };
+
+        var fileName = $"{calendarDay.ToString(CultureInfo.InvariantCulture)}.mp4";
+        var caption = QuizSocialCaptionFormatter.FormatSlides(docForCaption.Slides);
+        return new TodaySlideMetadata(true, calendarDay, fileName, caption, null);
+    }
+
     public async Task<SlideVideoResult> CreateHelloWorldSlideAsync(
         string outputDirectory,
         CancellationToken cancellationToken = default,

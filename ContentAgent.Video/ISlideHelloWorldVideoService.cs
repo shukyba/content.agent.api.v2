@@ -13,7 +13,23 @@ public interface ISlideHelloWorldVideoService
         string outputDirectory,
         CancellationToken cancellationToken = default,
         VideoRenderOptions? options = null);
+
+    /// <summary>
+    /// Loads quiz JSON for today’s slide (or <see cref="VideoRenderOptions.CalendarDay"/>): output filename <c>{day}.mp4</c> and social caption.
+    /// Does not run FFmpeg. Use before generation to skip work when the file already exists.
+    /// </summary>
+    Task<TodaySlideMetadata> GetTodaySlideMetadataAsync(
+        CancellationToken cancellationToken = default,
+        VideoRenderOptions? options = null);
 }
 
 /// <summary>Video generation outcome. <see cref="SocialPostCaption"/> is question text for Buffer/social (from quiz JSON).</summary>
 public sealed record SlideVideoResult(bool Success, string? OutputPath, string? ErrorMessage, string? SocialPostCaption = null);
+
+/// <summary>Today’s slide from quiz JSON only (no rendering).</summary>
+public sealed record TodaySlideMetadata(
+    bool Success,
+    int CalendarDay,
+    string OutputFileName,
+    string? SocialPostCaption,
+    string? ErrorMessage);

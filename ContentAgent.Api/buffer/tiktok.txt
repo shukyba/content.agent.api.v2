@@ -1,0 +1,28 @@
+mutation CreatePost {
+  createPost(input: { 		
+    text: <<<BUFFER_TEXT>>>,
+    channelId: <<<BUFFER_CHANNEL_ID>>>,
+    schedulingType: automatic,
+    mode: <<<BUFFER_MODE>>>,
+    dueAt: <<<BUFFER_DUE_AT>>>,
+    metadata: {
+     
+    }    
+    assets: {
+      videos:[
+        {
+          url:<<<BUFFER_VIDEO_URL>>>
+        }
+      ]
+    }
+  }) {
+    ... on PostActionSuccess {
+      post {
+        id
+      }
+    }
+    ... on MutationError {
+      message
+    }
+  }
+}
