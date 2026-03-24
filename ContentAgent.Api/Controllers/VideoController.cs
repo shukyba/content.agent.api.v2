@@ -26,7 +26,7 @@ public class VideoController : ControllerBase
     }
 
     /// <summary>
-    /// Renders a 1080x1920 (TikTok 9:16) clip from <c>quiz/quiz-slides.json</c>: picks the slide whose <c>day</c> matches today (local server date), blurred <c>salsa-festival.mp4</c>, dim overlay, audio from the bundled MP3. Output: <c>wwwroot/videos/{day}.mp4</c>, served at <c>/videos/{day}.mp4</c>.
+    /// Renders a 1080x1920 (TikTok 9:16) clip from <c>quiz/quiz-slides.json</c>: picks the slide whose <c>day</c> matches today (local server date), blurred <c>background-video.mp4</c>, dim overlay, audio from <c>soundtrack.mp3</c>. Output: <c>wwwroot/videos/{day}.mp4</c>, served at <c>/videos/{day}.mp4</c>.
     /// If that file already exists, skips FFmpeg and proceeds to Buffer scheduling (caption from quiz JSON).
     /// When Buffer is configured, queues TikTok/YouTube <c>createPost</c> (GraphQL) using this request&apos;s public video URL at the next UTC slot from <c>Buffer:ScheduleHourUtc</c> (minute defaults to 0 in code).
     /// </summary>

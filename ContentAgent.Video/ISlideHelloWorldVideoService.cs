@@ -6,7 +6,7 @@ namespace ContentAgent.Video;
 public interface ISlideHelloWorldVideoService
 {
     /// <summary>
-    /// Creates a 1080x1920 (TikTok-style 9:16) video from <c>quiz/quiz-slides.json</c>: uses the slide whose <c>day</c> matches today’s calendar day (local time), blurred <c>mp4/salsa-festival.mp4</c>, dim overlay, timed question/answer, bold-style captions, bundled MP3. Writes <c>{day}.mp4</c> under <paramref name="outputDirectory"/> (e.g. <c>wwwroot/videos</c> for public URLs via static files).
+    /// Creates a 1080x1920 (TikTok-style 9:16) video from <c>quiz/quiz-slides.json</c>: uses the slide whose <c>day</c> matches today’s calendar day (local time), blurred <c>mp4/background-video.mp4</c>, dim overlay, timed question/answer, bold-style captions, <c>mp3/soundtrack.mp3</c>. Writes <c>{day}.mp4</c> under <paramref name="outputDirectory"/> (e.g. <c>wwwroot/videos</c> for public URLs via static files).
     /// </summary>
     /// <returns>Output file path on success, or error message.</returns>
     Task<SlideVideoResult> CreateHelloWorldSlideAsync(

@@ -3,6 +3,7 @@ using ContentAgent.Api.HostedServices;
 using ContentAgent.Api.Services;
 using ContentAgent.Video;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +21,14 @@ builder.Services.AddHttpClient<IGitHubMergeService, GitHubMergeService>(client =
     client.BaseAddress = new Uri("https://api.github.com/");
 });
 builder.Services.Configure<BufferOptions>(builder.Configuration.GetSection(BufferOptions.SectionName));
+builder.Services.Configure<VideoAssetPathOptions>(builder.Configuration.GetSection(VideoAssetPathOptions.SectionName));
 builder.Services.AddHttpClient<IBufferScheduleService, BufferScheduleService>();
 builder.Services.AddScoped<IStagingPromotionService, StagingPromotionService>();
 builder.Services.AddSingleton<ISlideHelloWorldVideoService>(sp =>
-    new VideoService(AppContext.BaseDirectory, sp.GetRequiredService<ILogger<VideoService>>()));
+    new VideoService(
+        AppContext.BaseDirectory,
+        sp.GetRequiredService<ILogger<VideoService>>(),
+        sp.GetRequiredService<IOptions<VideoAssetPathOptions>>().Value));
 builder.Services.AddHostedService<AgentBackgroundService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

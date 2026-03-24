@@ -27,8 +27,8 @@
   <!-- Same FFmpeg + media assets as the web app so VideoService integration tests can run next to testhost. -->
   <ItemGroup>
     <Content Include="..\ContentAgent.Video\Lib\ffmpeg.exe" CopyToOutputDirectory="PreserveNewest" TargetPath="Lib\ffmpeg.exe" Condition="Exists('..\ContentAgent.Video\Lib\ffmpeg.exe')" />
-    <Content Include="..\ContentAgent.Video\mp4\salsa-festival.mp4" CopyToOutputDirectory="PreserveNewest" TargetPath="mp4\salsa-festival.mp4" Condition="Exists('..\ContentAgent.Video\mp4\salsa-festival.mp4')" />
-    <Content Include="..\ContentAgent.Video\mp3\LA MAXIMA 79 - CUCHI CUCHI (Official Channel).mp3" CopyToOutputDirectory="PreserveNewest" TargetPath="mp3\LA MAXIMA 79 - CUCHI CUCHI (Official Channel).mp3" Condition="Exists('..\ContentAgent.Video\mp3\LA MAXIMA 79 - CUCHI CUCHI (Official Channel).mp3')" />
+    <Content Include="..\ContentAgent.Video\mp4\background-video.mp4" CopyToOutputDirectory="PreserveNewest" TargetPath="mp4\background-video.mp4" Condition="Exists('..\ContentAgent.Video\mp4\background-video.mp4')" />
+    <Content Include="..\ContentAgent.Video\mp3\soundtrack.mp3" CopyToOutputDirectory="PreserveNewest" TargetPath="mp3\soundtrack.mp3" Condition="Exists('..\ContentAgent.Video\mp3\soundtrack.mp3')" />
     <None Include="..\ContentAgent.Video\quiz\quiz-slides.json" CopyToOutputDirectory="PreserveNewest">
       <TargetPath>quiz\quiz-slides.json</TargetPath>
     </None>

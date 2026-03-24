@@ -6,9 +6,8 @@ using Microsoft.Extensions.Logging;
 namespace ContentAgent.Video;
 
 /// <summary>
-/// Expects <c>Lib/ffmpeg.exe</c>, <c>mp4/salsa-festival.mp4</c>, <c>mp3/</c> default track, <c>quiz/quiz-slides.json</c>,
-/// <c>svg/tiktok-overlay-question.svg</c>, <c>svg/tiktok-overlay-answer.svg</c>, and optionally <c>fonts/TitanOne-Regular.ttf</c>
-/// next to the host application base directory.
+/// Expects <c>Lib/ffmpeg.exe</c>, <c>mp4/background-video.mp4</c>, <c>mp3/soundtrack.mp3</c> under the app base directory,
+/// unless overridden via <see cref="VideoAssetPathOptions"/>. Also: <c>quiz/quiz-slides.json</c>, SVG overlays, optional font.
 /// </summary>
 public sealed class VideoService : ISlideHelloWorldVideoService
 {
@@ -17,9 +16,9 @@ public sealed class VideoService : ISlideHelloWorldVideoService
 
     public const int TikTokHeight = 1920;
 
-    public const string DefaultBackgroundMp4FileName = "salsa-festival.mp4";
+    public const string DefaultBackgroundMp4FileName = "background-video.mp4";
 
-    public const string DefaultMp3FileName = "LA MAXIMA 79 - CUCHI CUCHI (Official Channel).mp3";
+    public const string DefaultMp3FileName = "soundtrack.mp3";
 
     public const string DefaultQuizJsonRelativePath = "quiz/quiz-slides.json";
 
@@ -31,11 +30,13 @@ public sealed class VideoService : ISlideHelloWorldVideoService
     };
 
     private readonly string _applicationBasePath;
+    private readonly VideoAssetPathOptions _assetPaths;
     private readonly ILogger<VideoService> _logger;
 
-    public VideoService(string applicationBasePath, ILogger<VideoService> logger)
+    public VideoService(string applicationBasePath, ILogger<VideoService> logger, VideoAssetPathOptions? assetPaths = null)
     {
         _applicationBasePath = applicationBasePath ?? throw new ArgumentNullException(nameof(applicationBasePath));
+        _assetPaths = assetPaths ?? new VideoAssetPathOptions();
         _logger = logger;
     }
 
@@ -94,9 +95,13 @@ public sealed class VideoService : ISlideHelloWorldVideoService
         CancellationToken cancellationToken = default,
         VideoRenderOptions? options = null)
     {
-        var ffmpeg = Path.GetFullPath(Path.Combine(_applicationBasePath, "Lib", "ffmpeg.exe"));
-        var backgroundMp4 = Path.GetFullPath(Path.Combine(_applicationBasePath, "mp4", DefaultBackgroundMp4FileName));
-        var mp3 = Path.GetFullPath(Path.Combine(_applicationBasePath, "mp3", DefaultMp3FileName));
+        var ffmpeg = ResolveOptionalPath(_assetPaths.FfmpegPath, Path.Combine(_applicationBasePath, "Lib", "ffmpeg.exe"));
+        var backgroundMp4 = ResolveOptionalPath(
+            _assetPaths.BackgroundMp4Path,
+            Path.Combine(_applicationBasePath, "mp4", DefaultBackgroundMp4FileName));
+        var mp3 = ResolveOptionalPath(
+            _assetPaths.Mp3Path,
+            Path.Combine(_applicationBasePath, "mp3", DefaultMp3FileName));
         var quizPath = Path.GetFullPath(
             string.IsNullOrWhiteSpace(options?.QuizJsonPath)
                 ? Path.Combine(_applicationBasePath, DefaultQuizJsonRelativePath)
@@ -331,5 +336,13 @@ public sealed class VideoService : ISlideHelloWorldVideoService
         }
 
         return null;
+    }
+
+    /// <summary>Uses <paramref name="configuredAbsolute"/> when non-empty; otherwise <paramref name="relativeToAppBase"/> (combined and normalized).</summary>
+    private static string ResolveOptionalPath(string? configuredAbsolute, string relativeToAppBase)
+    {
+        if (!string.IsNullOrWhiteSpace(configuredAbsolute))
+            return Path.GetFullPath(configuredAbsolute.Trim());
+        return Path.GetFullPath(relativeToAppBase);
     }
 }
