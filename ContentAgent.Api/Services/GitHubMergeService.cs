@@ -218,6 +218,8 @@ public static class AgentGitHubConfigHelper
             return false;
         }
 
+        ApplyAgentGitHubTokenFromConfiguration(configuration, agentId, spec);
+
         if (string.IsNullOrWhiteSpace(spec.Url))
         {
             error = "config url is missing.";
@@ -226,7 +228,7 @@ public static class AgentGitHubConfigHelper
 
         if (string.IsNullOrWhiteSpace(spec.GithubToken))
         {
-            error = "config githubToken is missing.";
+            error = "GitHub token is missing (set AgentGitHubTokens in secrets.json for this agent, or githubToken in config.json).";
             return false;
         }
 
@@ -252,5 +254,16 @@ public static class AgentGitHubConfigHelper
         if (repo.EndsWith(".git", StringComparison.OrdinalIgnoreCase))
             repo = repo[..^4];
         return true;
+    }
+
+    /// <summary>
+    /// Sets <see cref="AgentRepoSpec.GithubToken"/> from <c>AgentGitHubTokens:{agentId}</c> in configuration when present;
+    /// otherwise leaves the value from <c>config.json</c> (legacy).
+    /// </summary>
+    public static void ApplyAgentGitHubTokenFromConfiguration(IConfiguration configuration, string agentId, AgentRepoSpec spec)
+    {
+        var token = configuration.GetSection("AgentGitHubTokens")[agentId];
+        if (!string.IsNullOrWhiteSpace(token))
+            spec.GithubToken = token.Trim();
     }
 }

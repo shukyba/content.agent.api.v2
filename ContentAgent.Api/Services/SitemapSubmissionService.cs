@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
+using ContentAgent.Api.Configuration;
 using ContentAgent.Api.Models;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.Extensions.Configuration;
@@ -184,9 +185,14 @@ public sealed class SitemapSubmissionService : ISitemapSubmissionService
             return ("skipped", "Google: serviceAccountKeyPath is missing");
         }
 
-        var keyPath = Path.IsPathRooted(options.ServiceAccountKeyPath)
-            ? options.ServiceAccountKeyPath
-            : Path.GetFullPath(Path.Combine(agentFolder, options.ServiceAccountKeyPath));
+        var keyPath = ResolveGoogleServiceAccountKeyPath(agentFolder, options.ServiceAccountKeyPath);
+        if (keyPath is null)
+        {
+            _logger.LogWarning(
+                "Sitemap Google FAILED | agent={AgentId} | reason=invalid service account key path (outside configured root)",
+                agentId);
+            return ("error", "Google: invalid service account key path.");
+        }
 
         if (!File.Exists(keyPath))
         {
@@ -262,6 +268,33 @@ public sealed class SitemapSubmissionService : ISitemapSubmissionService
                 options.SitemapUrl);
             return ("error", $"Google: {ex.Message}");
         }
+    }
+
+    /// <summary>
+    /// Absolute paths are used as-is. Relative paths use <c>Sitemap:GoogleServiceAccountKeyRoot</c> or <c>RootDirectory</c>
+    /// when configured; otherwise the agent folder next to <c>config.json</c>.
+    /// </summary>
+    private string? ResolveGoogleServiceAccountKeyPath(string agentFolder, string relativeOrAbsolute)
+    {
+        var value = relativeOrAbsolute.Trim();
+        if (Path.IsPathRooted(value))
+            return Path.GetFullPath(value);
+
+        var configuredRoot = AppDataPathConfiguration.ResolveGoogleServiceAccountKeyRoot(_configuration);
+        if (!string.IsNullOrEmpty(configuredRoot))
+        {
+            var fullRoot = Path.GetFullPath(configuredRoot);
+            var combined = Path.GetFullPath(Path.Combine(fullRoot, value));
+            var rootPrefix = fullRoot.EndsWith(Path.DirectorySeparatorChar) || fullRoot.EndsWith(Path.AltDirectorySeparatorChar)
+                ? fullRoot
+                : fullRoot + Path.DirectorySeparatorChar;
+            if (!combined.StartsWith(rootPrefix, StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(combined, fullRoot, StringComparison.OrdinalIgnoreCase))
+                return null;
+            return combined;
+        }
+
+        return Path.GetFullPath(Path.Combine(agentFolder, value));
     }
 
     private async Task<(string Status, string? Error)> SubmitBingAsync(

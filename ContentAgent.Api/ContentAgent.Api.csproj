@@ -10,11 +10,11 @@
     <ProjectReference Include="..\ContentAgent.Video\ContentAgent.Video.csproj" />
   </ItemGroup>
 
-  <!-- FFmpeg + assets under ContentAgent.Video. Copied next to ContentAgent.Api.dll when present. -->
+  <!-- FFmpeg + media: repo-root data/ (mirror of production D:/home/data). Copied next to ContentAgent.Api.dll when present. -->
   <ItemGroup>
-    <Content Include="..\ContentAgent.Video\Lib\ffmpeg.exe" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="Lib\ffmpeg.exe" Condition="Exists('..\ContentAgent.Video\Lib\ffmpeg.exe')" />
-    <Content Include="..\ContentAgent.Video\mp4\background-video.mp4" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="mp4\background-video.mp4" Condition="Exists('..\ContentAgent.Video\mp4\background-video.mp4')" />
-    <Content Include="..\ContentAgent.Video\mp3\soundtrack.mp3" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="mp3\soundtrack.mp3" Condition="Exists('..\ContentAgent.Video\mp3\soundtrack.mp3')" />
+    <Content Include="..\data\Lib\ffmpeg.exe" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="Lib\ffmpeg.exe" Condition="Exists('..\data\Lib\ffmpeg.exe')" />
+    <Content Include="..\data\mp4\background-video.mp4" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="mp4\background-video.mp4" Condition="Exists('..\data\mp4\background-video.mp4')" />
+    <Content Include="..\data\mp3\soundtrack.mp3" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="mp3\soundtrack.mp3" Condition="Exists('..\data\mp3\soundtrack.mp3')" />
     <None Include="..\ContentAgent.Video\quiz\quiz-slides.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest">
       <TargetPath>quiz\quiz-slides.json</TargetPath>
     </None>

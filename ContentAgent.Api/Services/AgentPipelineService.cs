@@ -46,7 +46,7 @@ public class AgentPipelineService : IAgentPipelineService
         var geminiApiKey = _configuration["GeminiApiKey"];
         if (string.IsNullOrEmpty(geminiApiKey))
         {
-            _logger.LogWarning("GeminiApiKey is missing (appsettings, env, or user secrets)");
+            _logger.LogWarning("GeminiApiKey is missing (configure secrets.json, appsettings, environment variables, or user secrets)");
             return;
         }
 
@@ -137,6 +137,8 @@ public class AgentPipelineService : IAgentPipelineService
             var structuredFromJson = ConfigJsonHelpers.TryGetStringList(json, "structuredAppendKeyPaths");
             if (structuredFromJson is { Count: > 0 })
                 spec.StructuredAppendKeyPaths = structuredFromJson;
+
+            AgentGitHubConfigHelper.ApplyAgentGitHubTokenFromConfiguration(_configuration, agentId, spec);
         }
         catch (Exception ex)
         {

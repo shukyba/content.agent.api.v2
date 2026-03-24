@@ -1,4 +1,5 @@
 using System.Threading.Channels;  /////
+using ContentAgent.Api.Configuration;
 using ContentAgent.Api.HostedServices;
 using ContentAgent.Api.Services;
 using ContentAgent.Video;
@@ -6,6 +7,19 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Optional JSON secrets (not in Git). Default: {RootDirectory}/secrets/secrets.json (see appsettings). Override with CONTENT_AGENT_SECRETS_PATH. Legacy fallback: ContentRoot/secrets.json if RootDirectory is unset.
+var secretsPath = Environment.GetEnvironmentVariable("CONTENT_AGENT_SECRETS_PATH")?.Trim().Trim('"');
+if (string.IsNullOrEmpty(secretsPath))
+{
+    var rootDir = builder.Configuration[AppDataPathConfiguration.RootDirectoryKey]?.Trim();
+    if (!string.IsNullOrEmpty(rootDir))
+        secretsPath = Path.GetFullPath(Path.Combine(rootDir, "secrets", "secrets.json"));
+    else
+        secretsPath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
+}
+
+builder.Configuration.AddJsonFile(secretsPath, optional: true, reloadOnChange: true);
 
 // log4net: same Azure file path as dance.api (D:\home\site\log\); see log4net.config. Unrelated to agents/**/log.md.
 builder.Logging.ClearProviders();
@@ -22,6 +36,14 @@ builder.Services.AddHttpClient<IGitHubMergeService, GitHubMergeService>(client =
 });
 builder.Services.Configure<BufferOptions>(builder.Configuration.GetSection(BufferOptions.SectionName));
 builder.Services.Configure<VideoAssetPathOptions>(builder.Configuration.GetSection(VideoAssetPathOptions.SectionName));
+builder.Services.PostConfigure<VideoAssetPathOptions>(opts =>
+{
+    if (builder.Configuration[$"{VideoAssetPathOptions.SectionName}:AssetRoot"] is not null)
+        return;
+    var rd = builder.Configuration[AppDataPathConfiguration.RootDirectoryKey]?.Trim();
+    if (!string.IsNullOrEmpty(rd))
+        opts.AssetRoot = rd;
+});
 builder.Services.AddHttpClient<IBufferScheduleService, BufferScheduleService>();
 builder.Services.AddScoped<IStagingPromotionService, StagingPromotionService>();
 builder.Services.AddSingleton<ISlideHelloWorldVideoService>(sp =>

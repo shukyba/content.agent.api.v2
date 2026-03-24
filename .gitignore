@@ -1,23 +1,24 @@
+# Local mirror of production D:/home/data (same layout; not committed)
+data/Lib/ffmpeg.exe
+data/mp3/
+data/mp4/
+
+# Config with secrets (tokens) — paths under ContentAgent.Api
+ContentAgent.Api/agents/**/salsabit-*.json
+
+# Optional JSON secrets + keys (see Program.cs: {RootDirectory}/secrets/ or CONTENT_AGENT_SECRETS_PATH)
+data/secrets/
+
+# Generated quiz videos (folder kept via ContentAgent.Api/wwwroot/videos/.gitkeep)
+ContentAgent.Api/wwwroot/videos/*
+!ContentAgent.Api/wwwroot/videos/.gitkeep
+
+
+
 # Build
 bin/
 obj/
 _publish_test/
-
-# Bundled FFmpeg (large binary; install locally or CI)
-ContentAgent.Video/Lib/ffmpeg.exe
-
-# Large media assets (install locally or CI)
-ContentAgent.Video/mp3/
-ContentAgent.Video/mp4/
-
-# Config with secrets (tokens) — paths under ContentAgent.Api
-ContentAgent.Api/agents/**/config.json
-ContentAgent.Api/agents/**/salsabit-*.json
-agent-config.json
-
-# Local ASP.NET Core configuration (secrets / environment-specific)
-ContentAgent.Api/appsettings.json
-ContentAgent.Api/appsettings.Development.json
 
 # IDE / OS
 .vs/
@@ -34,12 +35,3 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
-# User secrets
-secrets.json
-
-# Google Search Console service account key (alternate naming)
-ContentAgent.Api/agents/**/gsc-service-account.json
-
-# Generated quiz videos (folder kept via ContentAgent.Api/wwwroot/videos/.gitkeep)
-ContentAgent.Api/wwwroot/videos/*
-!ContentAgent.Api/wwwroot/videos/.gitkeep

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace ContentAgent.Api.Models;
 
-/// <summary>Per-agent folder: config.json (url + token + optional schema/data file lists).</summary>
+/// <summary>Per-agent folder: config.json (url + optional githubToken and/or <c>AgentGitHubTokens</c> in secrets + optional schema/data file lists).</summary>
 public class AgentRepoSpec
 {
     [JsonPropertyName("url")]

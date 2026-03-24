@@ -95,13 +95,13 @@ public sealed class VideoService : ISlideHelloWorldVideoService
         CancellationToken cancellationToken = default,
         VideoRenderOptions? options = null)
     {
-        var ffmpeg = ResolveOptionalPath(_assetPaths.FfmpegPath, Path.Combine(_applicationBasePath, "Lib", "ffmpeg.exe"));
-        var backgroundMp4 = ResolveOptionalPath(
+        var ffmpeg = ResolveAssetPath(_assetPaths.FfmpegPath, Path.Combine("Lib", "ffmpeg.exe"));
+        var backgroundMp4 = ResolveAssetPath(
             _assetPaths.BackgroundMp4Path,
-            Path.Combine(_applicationBasePath, "mp4", DefaultBackgroundMp4FileName));
-        var mp3 = ResolveOptionalPath(
+            Path.Combine("mp4", DefaultBackgroundMp4FileName));
+        var mp3 = ResolveAssetPath(
             _assetPaths.Mp3Path,
-            Path.Combine(_applicationBasePath, "mp3", DefaultMp3FileName));
+            Path.Combine("mp3", DefaultMp3FileName));
         var quizPath = Path.GetFullPath(
             string.IsNullOrWhiteSpace(options?.QuizJsonPath)
                 ? Path.Combine(_applicationBasePath, DefaultQuizJsonRelativePath)
@@ -338,11 +338,17 @@ public sealed class VideoService : ISlideHelloWorldVideoService
         return null;
     }
 
-    /// <summary>Uses <paramref name="configuredAbsolute"/> when non-empty; otherwise <paramref name="relativeToAppBase"/> (combined and normalized).</summary>
-    private static string ResolveOptionalPath(string? configuredAbsolute, string relativeToAppBase)
+    /// <summary>
+    /// Uses <paramref name="explicitFullPath"/> when non-empty; otherwise combines <paramref name="relativeUnderRoot"/>
+    /// with <see cref="VideoAssetPathOptions.AssetRoot"/> or the application base path.
+    /// </summary>
+    private string ResolveAssetPath(string? explicitFullPath, string relativeUnderRoot)
     {
-        if (!string.IsNullOrWhiteSpace(configuredAbsolute))
-            return Path.GetFullPath(configuredAbsolute.Trim());
-        return Path.GetFullPath(relativeToAppBase);
+        if (!string.IsNullOrWhiteSpace(explicitFullPath))
+            return Path.GetFullPath(explicitFullPath.Trim());
+        var root = _assetPaths.AssetRoot?.Trim();
+        if (!string.IsNullOrEmpty(root))
+            return Path.GetFullPath(Path.Combine(root, relativeUnderRoot));
+        return Path.GetFullPath(Path.Combine(_applicationBasePath, relativeUnderRoot));
     }
 }

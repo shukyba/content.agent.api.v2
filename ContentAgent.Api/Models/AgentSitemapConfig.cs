@@ -27,8 +27,8 @@ public class GoogleSitemapSubmitOptions
     public string SitemapUrl { get; set; } = string.Empty;
 
     /// <summary>
-    /// Path to the Google Cloud service account JSON key. Relative paths are resolved under the agent folder
-    /// (e.g. <c>gsc-service-account.json</c> next to <c>config.json</c>).
+    /// Path to the Google Cloud service account JSON key. Relative paths resolve under <c>Sitemap:GoogleServiceAccountKeyRoot</c>
+    /// or <c>RootDirectory</c> when set; an explicit empty <c>GoogleServiceAccountKeyRoot</c> (e.g. Development) uses the agent folder next to <c>config.json</c>.
     /// </summary>
     [JsonPropertyName("serviceAccountKeyPath")]
     public string? ServiceAccountKeyPath { get; set; }

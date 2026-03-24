@@ -1,0 +1,25 @@
+{
+  "url": "https://github.com/shukyba/dance.site",
+  "schema": [
+    "src/data/festivals2026.schema",
+    "src/data/festivalFAQs.schema"
+  ],
+  "data": [
+    "src/data/festivals2026.csv"
+  ],
+  "structuredAppendKeyPaths": [
+    "src/data/festivalFAQs.ts"
+  ],
+  "sitemap": {
+    "google": {
+      "enabled": true,
+      "siteUrl": "sc-domain:salsa-bit.com",
+      "sitemapUrl": "https://www.salsa-bit.com/sitemap.xml",
+      "serviceAccountKeyPath": "secrets/salsabit-3b49332abb05.json"
+    },
+    "bing": {
+      "enabled": false,
+      "sitemapUrl": "https://www.salsa-bit.com/sitemap.xml"
+    }
+  }
+}
