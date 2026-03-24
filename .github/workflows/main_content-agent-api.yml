@@ -62,4 +62,10 @@ jobs:
           app-name: 'content-agent-api'
           slot-name: 'Production'
           package: .
-          
+
+      # Recycle the worker so new wwwroot/static files (e.g. videos) are served; same effect as touching web.config.
+      - name: Restart Azure Web App
+        run: |
+          $rg = az webapp list --query "[?name=='content-agent-api'] | [0].resourceGroup" -o tsv
+          if ([string]::IsNullOrWhiteSpace($rg)) { throw "Could not resolve resource group for web app content-agent-api" }
+          az webapp restart --name content-agent-api --resource-group $rg
