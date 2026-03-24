@@ -17,3 +17,15 @@
      - Each **answer** should be **2–5 sentences** when the source supports it—concrete names, numbers, and links where you have them. No vague filler (“check the website” alone); prefer “On [site] they list …” with specifics.
      - Questions should sound like what a **first-time visitor** would Google, not marketing slogans.
 - Preserve all existing content; only add the new festival and its FAQs.
+
+When creating the pageTitle, you MUST follow this exact format:
+[Festival Name] [City] [Year] – Dates, Tickets & Guide
+
+Rules:
+-Include the city name unless it is already clearly part of the festival name (e.g. “Berlin Salsa Congress”).
+-Use EN DASH (–) before “Dates, Tickets & Guide” (not hyphen -).
+-Remove unnecessary noise such as:
+-edition numbers (e.g. “10th edition”, “21st edition”)
+-exact day listings (e.g. “3-4-5-6 July”)
+-marketing phrases (e.g. “Official”, “The Best”, “International Cuban Dance Festival in…”)
+-Keep the title clean, scannable, and consistent.
