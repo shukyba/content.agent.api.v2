@@ -80,30 +80,36 @@ public sealed class BufferScheduleService : IBufferScheduleService
             : _options.YouTube.CategoryId.Trim();
 
         var tikTokPath = ResolveTemplatePath(_options.TikTok.Template);
+        var facebookPath = ResolveTemplatePath(_options.Facebook.Template);
         var youTubePath = ResolveTemplatePath(_options.YouTube.Template);
         var tikTokChannel = _options.TikTok.ChannelId?.Trim();
+        var facebookChannel = _options.Facebook.ChannelId?.Trim();
         var youTubeChannel = _options.YouTube.ChannelId?.Trim();
 
         var tikTokReady = tikTokPath is not null && !string.IsNullOrEmpty(tikTokChannel);
+        var facebookReady = facebookPath is not null && !string.IsNullOrEmpty(facebookChannel);
         var youTubeReady = youTubePath is not null && !string.IsNullOrEmpty(youTubeChannel);
 
         if (tikTokPath is not null && string.IsNullOrEmpty(tikTokChannel))
             _logger.LogInformation("Buffer TikTok template found but ChannelId is empty; skipping TikTok post.");
+        if (facebookPath is not null && string.IsNullOrEmpty(facebookChannel))
+            _logger.LogInformation("Buffer Facebook template found but ChannelId is empty; skipping Facebook post.");
         if (youTubePath is not null && string.IsNullOrEmpty(youTubeChannel))
             _logger.LogInformation("Buffer YouTube template found but ChannelId is empty; skipping YouTube post.");
 
-        if (!tikTokReady && !youTubeReady)
+        if (!tikTokReady && !facebookReady && !youTubeReady)
         {
             _logger.LogInformation(
-                "Buffer scheduling skipped: need template file + ChannelId per platform under {Dir} (TikTok: {TikTokFile}, YouTube: {YouTubeFile}).",
+                "Buffer scheduling skipped: need template file + ChannelId per platform under {Dir} (TikTok: {TikTokFile}, Facebook: {FacebookFile}, YouTube: {YouTubeFile}).",
                 _options.TemplatesDirectory,
                 _options.TikTok.Template,
+                _options.Facebook.Template,
                 _options.YouTube.Template);
             return new BufferScheduleResult(
                 false,
                 false,
                 null,
-                "Buffer: no TikTok/YouTube post ready (missing template file and/or ChannelId).",
+                "Buffer: no TikTok/Facebook/YouTube post ready (missing template file and/or ChannelId).",
                 null,
                 null);
         }
@@ -130,6 +136,25 @@ public sealed class BufferScheduleService : IBufferScheduleService
                 errors.Add($"TikTok: invalid or unreadable template {tikTokPath}");
             else
                 tasks.Add(SendGraphqlAsync(endpoint, token, query, "TikTok", videoUrl, cancellationToken));
+        }
+
+        if (facebookReady)
+        {
+            var query = await BuildMutationFromTemplateAsync(
+                facebookPath!,
+                text,
+                title: text,
+                dueAtIso,
+                videoUrl,
+                DefaultBufferScheduleMode,
+                channelId: facebookChannel!,
+                includeYouTubePlaceholders: false,
+                categoryId,
+                cancellationToken).ConfigureAwait(false);
+            if (query is null)
+                errors.Add($"Facebook: invalid or unreadable template {facebookPath}");
+            else
+                tasks.Add(SendGraphqlAsync(endpoint, token, query, "Facebook", videoUrl, cancellationToken));
         }
 
         if (youTubeReady)
@@ -171,7 +196,7 @@ public sealed class BufferScheduleService : IBufferScheduleService
             _logger.LogWarning("Buffer createPost failed: {Errors}", errMsg);
 
         return new BufferScheduleResult(
-            Attempted: tikTokReady || youTubeReady,
+            Attempted: tikTokReady || facebookReady || youTubeReady,
             Success: success,
             ScheduledAtIso: dueAtIso,
             ErrorMessage: errMsg,

@@ -47,6 +47,32 @@ public sealed class BufferTemplateMergeTests
     }
 
     [Fact]
+    public void ApplyBufferPlaceholders_facebook_tokens_like_tiktok()
+    {
+        const string tpl = """
+            metadata: { facebook: { type: reel } }
+            text: <<<BUFFER_TEXT>>>,
+            ch: <<<BUFFER_CHANNEL_ID>>>,
+            url:<<<BUFFER_VIDEO_URL>>>
+            """;
+
+        var q = BufferScheduleService.ApplyBufferPlaceholders(
+            tpl,
+            text: "Hello FB",
+            title: "ignored",
+            dueAtIso: "2026-03-27T10:28:47.545Z",
+            videoUrl: "https://host/v.mp4",
+            modeToken: "customScheduled",
+            channelId: "fb-channel-1",
+            includeYouTubePlaceholders: false,
+            categoryId: "22");
+
+        Assert.Contains("text: \"Hello FB\"", q, StringComparison.Ordinal);
+        Assert.Contains("ch: \"fb-channel-1\"", q, StringComparison.Ordinal);
+        Assert.Contains("url:\"https://host/v.mp4\"", q, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void ApplyBufferPlaceholders_youtube_includes_title_and_category()
     {
         const string tpl = """

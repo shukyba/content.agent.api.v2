@@ -10,6 +10,16 @@ public sealed class BufferTikTokOptions
     public string? ChannelId { get; set; }
 }
 
+/// <summary>Facebook Buffer channel: template file and GraphQL <c>channelId</c> (Reels via <c>metadata.facebook.type</c> in the template).</summary>
+public sealed class BufferFacebookOptions
+{
+    /// <summary>Mutation file under <see cref="BufferOptions.TemplatesDirectory"/> (e.g. <c>facebook.txt</c>).</summary>
+    public string Template { get; set; } = "facebook.txt";
+
+    /// <summary>Buffer channel id for <c>&lt;&lt;&lt;BUFFER_CHANNEL_ID&gt;&gt;&gt;</c> in the template.</summary>
+    public string? ChannelId { get; set; }
+}
+
 /// <summary>YouTube Buffer channel: template, <c>channelId</c>, and <c>categoryId</c> for metadata.</summary>
 public sealed class BufferYouTubeOptions
 {
@@ -39,6 +49,8 @@ public sealed class BufferOptions
     public string TemplatesDirectory { get; set; } = "buffer";
 
     public BufferTikTokOptions TikTok { get; set; } = new();
+
+    public BufferFacebookOptions Facebook { get; set; } = new();
 
     public BufferYouTubeOptions YouTube { get; set; } = new();
 
