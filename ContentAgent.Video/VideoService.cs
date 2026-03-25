@@ -106,7 +106,7 @@ public sealed class VideoService : ISlideHelloWorldVideoService
             string.IsNullOrWhiteSpace(options?.QuizJsonPath)
                 ? Path.Combine(_applicationBasePath, DefaultQuizJsonRelativePath)
                 : options!.QuizJsonPath!);
-        var fontPath = Path.GetFullPath(Path.Combine(_applicationBasePath, QuizSlideSvgRenderer.TitanOneFontRelativePath));
+        var fontPath = Path.GetFullPath(Path.Combine(_applicationBasePath, QuizSlideSvgRenderer.RighteousFontRelativePath));
 
         if (!File.Exists(ffmpeg))
             return new SlideVideoResult(false, null, $"FFmpeg not found at {ffmpeg}. Add Lib/ffmpeg.exe under ContentAgent.Video.");
@@ -121,7 +121,7 @@ public sealed class VideoService : ISlideHelloWorldVideoService
             return new SlideVideoResult(false, null, $"Quiz JSON not found at {quizPath}. Add {DefaultQuizJsonRelativePath}.");
 
         if (!File.Exists(fontPath))
-            _logger.LogWarning("Titan One font not found at {Font}; SVG text may fall back to a system sans-serif.", fontPath);
+            _logger.LogWarning("Righteous font not found at {Font}; SVG text may fall back to a system sans-serif.", fontPath);
 
         QuizSlidesDocument doc;
         try

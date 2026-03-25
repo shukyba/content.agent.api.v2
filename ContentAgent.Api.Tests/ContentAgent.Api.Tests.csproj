@@ -32,17 +32,14 @@
     <None Include="..\ContentAgent.Video\quiz\quiz-slides.json" CopyToOutputDirectory="PreserveNewest">
       <TargetPath>quiz\quiz-slides.json</TargetPath>
     </None>
-    <None Include="..\ContentAgent.Video\svg\tiktok-overlay.svg" CopyToOutputDirectory="PreserveNewest">
-      <TargetPath>svg\tiktok-overlay.svg</TargetPath>
-    </None>
     <None Include="..\ContentAgent.Video\svg\tiktok-overlay-question.svg" CopyToOutputDirectory="PreserveNewest">
       <TargetPath>svg\tiktok-overlay-question.svg</TargetPath>
     </None>
     <None Include="..\ContentAgent.Video\svg\tiktok-overlay-answer.svg" CopyToOutputDirectory="PreserveNewest">
       <TargetPath>svg\tiktok-overlay-answer.svg</TargetPath>
     </None>
-    <None Include="..\ContentAgent.Video\fonts\TitanOne-Regular.ttf" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\ContentAgent.Video\fonts\TitanOne-Regular.ttf')">
-      <TargetPath>fonts\TitanOne-Regular.ttf</TargetPath>
+    <None Include="..\ContentAgent.Video\fonts\Righteous-Regular.ttf" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\ContentAgent.Video\fonts\Righteous-Regular.ttf')">
+      <TargetPath>fonts\Righteous-Regular.ttf</TargetPath>
     </None>
   </ItemGroup>
 
