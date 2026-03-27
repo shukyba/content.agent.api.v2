@@ -7,10 +7,10 @@
       "questionLabel": "Question:",
       "questionLines": ["In salsa dancing, what does", "the term on1 mean?"],
       "options": [
-        "A. The dancer steps on the first beat of the music",
-        "B. The dancer turns on the first move of the routine",
-        "C. The dancer pauses on beat one",
-        "D. The dancer claps on the first beat"
+        "A. Steps on beat one",
+        "B. Turns on the first move",
+        "C. Pauses on beat one",
+        "D. Claps on beat one"
       ],
       "correctOptionIndex": 0
     },
@@ -34,7 +34,7 @@
       "questionLines": ["What is a cross-body", "lead in salsa?"],
       "options": [
         "A. A spin in place",
-        "B. Switching places with partner",
+        "B. Swap places with partner",
         "C. A foot tap move",
         "D. A solo step"
       ],
@@ -70,14 +70,14 @@
       "day": 9,
       "questionLabel": "Question:",
       "questionLines": ["A follower's right turn", "is which direction?"],
-      "options": ["A. Left", "B. Clockwise", "C. Counterclockwise", "D. Backward"],
+      "options": ["A. Left", "B. Clockwise", "C. Anticlockwise", "D. Backward"],
       "correctOptionIndex": 1
     },
     {
       "day": 10,
       "questionLabel": "Question:",
       "questionLines": ["A follower's left turn", "is which direction?"],
-      "options": ["A. Clockwise", "B. Counterclockwise", "C. Forward", "D. Sideways"],
+      "options": ["A. Clockwise", "B. Anticlockwise", "C. Forward", "D. Sideways"],
       "correctOptionIndex": 1
     },
     {
@@ -166,7 +166,7 @@
       "questionLabel": "Question:",
       "questionLines": ["What is frame in", "partner dancing?"],
       "options": [
-        "A. Body posture and connection",
+        "A. Posture and connection",
         "B. Dance floor size",
         "C. Music tempo",
         "D. Shoe type"
@@ -179,7 +179,7 @@
       "questionLines": ["What does leading mainly", "use in salsa?"],
       "options": [
         "A. Voice",
-        "B. Arm tension and body",
+        "B. Arms and body tension",
         "C. Foot stomping",
         "D. Eye contact only"
       ],
@@ -248,7 +248,7 @@
       "questionLines": ["What is musicality in", "salsa dancing?"],
       "options": [
         "A. Knowing songs",
-        "B. Expressing music through movement",
+        "B. Moving with the music",
         "C. Counting loudly",
         "D. Playing instruments"
       ],
@@ -284,7 +284,7 @@
       "questionLines": ["What is spotting in", "dance turns?"],
       "options": [
         "A. Fast spinning",
-        "B. Fixing gaze on a point",
+        "B. Focus on one spot",
         "C. Jumping",
         "D. Pausing"
       ],
@@ -296,7 +296,7 @@
       "questionLines": ["What is connection in", "partner dancing?"],
       "options": [
         "A. Talking",
-        "B. Physical communication",
+        "B. Body communication",
         "C. Eye contact only",
         "D. Music speed"
       ],
