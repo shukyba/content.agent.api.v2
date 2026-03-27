@@ -5,7 +5,7 @@
     {
       "day": 1,
       "questionLabel": "Question:",
-      "questionLines": ["In salsa dancing, what does", "the term on1 mean?"],
+      "questionLines": ["What does on1 mean", "in salsa?"],
       "options": [
         "A. Steps on beat one",
         "B. Turns on the first move",
@@ -17,14 +17,14 @@
     {
       "day": 3,
       "questionLabel": "Question:",
-      "questionLines": ["How many beats are in a", "standard salsa phrase?"],
+      "questionLines": ["How many beats in one", "salsa phrase?"],
       "options": ["A. 4", "B. 6", "C. 8", "D. 12"],
       "correctOptionIndex": 2
     },
     {
       "day": 4,
       "questionLabel": "Question:",
-      "questionLines": ["Which beat is usually", "a pause or tap in salsa?"],
+      "questionLines": ["Which beat is usually", "a pause or tap?"],
       "options": ["A. Beat 1", "B. Beat 3", "C. Beat 4", "D. Beat 6"],
       "correctOptionIndex": 2
     },
@@ -69,7 +69,7 @@
     {
       "day": 9,
       "questionLabel": "Question:",
-      "questionLines": ["A follower's right turn", "is which direction?"],
+      "questionLines": ["Follower's right turn:", "which direction?"],
       "options": ["A. Left", "B. Clockwise", "C. Anticlockwise", "D. Backward"],
       "correctOptionIndex": 1
     },
@@ -83,7 +83,7 @@
     {
       "day": 11,
       "questionLabel": "Question:",
-      "questionLines": ["What is the leader's role", "in salsa dancing?"],
+      "questionLines": ["What is the leader's job", "in salsa?"],
       "options": [
         "A. Follow instructions",
         "B. Guide the movement",
@@ -95,7 +95,7 @@
     {
       "day": 12,
       "questionLabel": "Question:",
-      "questionLines": ["What is the follower's", "main role in salsa?"],
+      "questionLines": ["What is the follower's", "main role?"],
       "options": [
         "A. Lead moves",
         "B. Mirror and respond",
@@ -107,14 +107,14 @@
     {
       "day": 13,
       "questionLabel": "Question:",
-      "questionLines": ["Which beat is the main", "break in on1 salsa?"],
+      "questionLines": ["Main break in on1", "salsa is which beat?"],
       "options": ["A. 1", "B. 2", "C. 3", "D. 5"],
       "correctOptionIndex": 0
     },
     {
       "day": 14,
       "questionLabel": "Question:",
-      "questionLines": ["Which beat is the main", "break in on2 salsa?"],
+      "questionLines": ["Main break in on2", "salsa is which beat?"],
       "options": ["A. 1", "B. 2", "C. 4", "D. 6"],
       "correctOptionIndex": 1
     },
@@ -133,14 +133,14 @@
     {
       "day": 16,
       "questionLabel": "Question:",
-      "questionLines": ["How many steps are taken", "in one salsa basic?"],
+      "questionLines": ["How many steps in", "one salsa basic?"],
       "options": ["A. 4", "B. 5", "C. 6", "D. 8"],
       "correctOptionIndex": 2
     },
     {
       "day": 17,
       "questionLabel": "Question:",
-      "questionLines": ["What happens on counts", "4 and 8 in salsa?"],
+      "questionLines": ["On beats 4 and 8,", "what happens?"],
       "options": [
         "A. Spins",
         "B. Pauses or taps",
@@ -152,7 +152,7 @@
     {
       "day": 18,
       "questionLabel": "Question:",
-      "questionLines": ["What is a shine in", "salsa dancing?"],
+      "questionLines": ["What is a shine", "in salsa?"],
       "options": [
         "A. Partner lift",
         "B. Solo footwork",
@@ -176,7 +176,7 @@
     {
       "day": 20,
       "questionLabel": "Question:",
-      "questionLines": ["What does leading mainly", "use in salsa?"],
+      "questionLines": ["What does leading use", "in salsa?"],
       "options": [
         "A. Voice",
         "B. Arms and body tension",
@@ -214,7 +214,7 @@
     {
       "day": 24,
       "questionLabel": "Question:",
-      "questionLines": ["What is rueda de casino?"],
+      "questionLines": ["Rueda de casino:", "what is it?"],
       "options": [
         "A. Solo dancing",
         "B. Circle group dancing",
@@ -226,7 +226,7 @@
     {
       "day": 25,
       "questionLabel": "Question:",
-      "questionLines": ["Who calls moves in rueda?"],
+      "questionLines": ["Who calls rueda moves?"],
       "options": ["A. Leader", "B. Caller", "C. DJ", "D. Follower"],
       "correctOptionIndex": 1
     },
@@ -257,7 +257,7 @@
     {
       "day": 28,
       "questionLabel": "Question:",
-      "questionLines": ["What is a basic right", "turn usually led with?"],
+      "questionLines": ["What leads a basic", "right turn?"],
       "options": [
         "A. Push down",
         "B. Raise left hand",
@@ -269,7 +269,7 @@
     {
       "day": 29,
       "questionLabel": "Question:",
-      "questionLines": ["What helps maintain", "good balance in turns?"],
+      "questionLines": ["What helps balance", "in turns?"],
       "options": [
         "A. Looking down",
         "B. Spotting",
@@ -293,7 +293,7 @@
     {
       "day": 31,
       "questionLabel": "Question:",
-      "questionLines": ["What is connection in", "partner dancing?"],
+      "questionLines": ["What is connection in", "partner dance?"],
       "options": [
         "A. Talking",
         "B. Body communication",
