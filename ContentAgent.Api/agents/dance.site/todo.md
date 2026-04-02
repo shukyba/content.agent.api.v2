@@ -16,6 +16,7 @@
        - **Practical**: what to bring, dress code, age limits, refund/cancellation policy **only if** the source says so
      - Each **answer** should be **2–5 sentences** when the source supports it—concrete names, numbers, and links where you have them. No vague filler (“check the website” alone); prefer “On [site] they list …” with specifics.
      - Questions should sound like what a **first-time visitor** would Google, not marketing slogans.
+     - **Do not** mention or reference **Go&Dance** (or “Go and Dance”, “Go & Dance”, or similar) anywhere in the FAQ text—write for readers on **this site only**, without naming the platform or aggregator.
 - Preserve all existing content; only add the new festival and its FAQs.
 
 When creating the pageTitle, you MUST follow this exact format:
