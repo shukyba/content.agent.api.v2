@@ -16,6 +16,12 @@ public interface IGeminiService
 
 public class GeminiService : IGeminiService
 {
+    /// <summary>dbo.LOG Message/Exception/Parameters are varchar(4000); keep a margin for template text.</summary>
+    private const int LogFieldMaxChars = 3500;
+
+    /// <summary>Short preview lines so Message + prefix stay under 4000.</summary>
+    private const int LogResponsePreviewChars = 1800;
+
     /// <summary>Model id for v1beta (e.g. .../models/gemini-2.5-flash:generateContent).</summary>
     private const string ModelName = "gemini-2.5-flash";
     private const int MaxQuotaRetries = 2;
@@ -65,7 +71,27 @@ public class GeminiService : IGeminiService
             try
             {
                 var response = await client.Models.GenerateContentAsync(ModelName, prompt, config, cancellationToken);
-                text = ExtractModelText(response, _logger);
+                text = ExtractModelText(response, _logger, out var textSegmentCount);
+                if (!string.IsNullOrEmpty(text))
+                {
+                    var trimmed = text.Trim();
+                    var leadCode = trimmed.Length > 0 ? (int)trimmed[0] : -1;
+                    _logger?.LogInformation(
+                        "Gemini raw response: length={Length}, textSegments={Segments}, leadingCharCode={LeadCode}, hasJsonFence={HasFence}, firstBracketIndex={BracketIdx}",
+                        text.Length,
+                        textSegmentCount,
+                        leadCode,
+                        trimmed.Contains("```", StringComparison.Ordinal),
+                        trimmed.IndexOf('['));
+                    _logger?.LogInformation(
+                        "Gemini raw response preview: {Preview}",
+                        TruncateForLog(trimmed, LogResponsePreviewChars));
+                    if (trimmed.Length > 400)
+                        _logger?.LogDebug(
+                            "Gemini raw response tail: {Tail}",
+                            TruncateForLog(trimmed[^Math.Min(600, trimmed.Length)..], 600));
+                }
+
                 break;
             }
             catch (Exception ex) when (IsQuotaOrRateLimit(ex) && attempt < MaxQuotaRetries)
@@ -75,7 +101,10 @@ public class GeminiService : IGeminiService
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, "Gemini GenerateContent failed");
+                // Avoid oversized Exception column on ADONetAppender (varchar(4000)).
+                _logger?.LogError(
+                    "Gemini GenerateContent failed: {Detail}",
+                    TruncateForLog(ex.ToString(), LogFieldMaxChars));
                 return new List<FileEdit>();
             }
         }
@@ -242,6 +271,15 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
         return text;
     }
 
+    private static string TruncateForLog(string? s, int maxChars)
+    {
+        if (string.IsNullOrEmpty(s) || maxChars <= 0)
+            return "";
+        if (s.Length <= maxChars)
+            return s;
+        return s[..maxChars] + $"…(truncated, totalLen={s.Length})";
+    }
+
     private List<FileEdit> ParseEditsFromJson(string text, ILogger<GeminiService>? logger)
     {
         try
@@ -259,10 +297,18 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
                 var list = JsonSerializer.Deserialize<List<FileEdit>>(cleaned, JsonReadOptions);
                 if (list is { Count: > 0 })
                     return list;
+                if (list is { Count: 0 })
+                    logger?.LogInformation(
+                        "Gemini JSON parse: deserialized empty array (cleanedLength={Len}, preview={Preview})",
+                        cleaned.Length,
+                        TruncateForLog(cleaned, 800));
             }
             catch (Exception ex)
             {
-                logger?.LogDebug(ex, "First JSON parse pass failed; trying array slice");
+                logger?.LogDebug(
+                    "First JSON parse pass failed; trying array slice. Error={Error} cleanedPreview={Preview}",
+                    TruncateForLog(ex.ToString(), 1200),
+                    TruncateForLog(cleaned, 1200));
             }
 
             var sliced = TryIsolateJsonArray(cleaned);
@@ -273,13 +319,23 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
             }
             catch (Exception ex)
             {
-                logger?.LogWarning(ex, "Failed to parse Gemini file-edits JSON after fence strip and array isolation");
+                var sliceLead = sliced.TrimStart();
+                var leadCode = sliceLead.Length > 0 ? (int)sliceLead[0] : -1;
+                logger?.LogWarning(
+                    "Failed to parse Gemini file-edits JSON after fence strip and array isolation. sliceLength={SliceLen} leadCharCode={LeadCode} error={Error} slicePreview={Preview}",
+                    sliced.Length,
+                    leadCode,
+                    TruncateForLog(ex.ToString(), 1500),
+                    TruncateForLog(sliced, 1800));
                 return new List<FileEdit>();
             }
         }
         catch (Exception ex)
         {
-            logger?.LogWarning(ex, "Failed to normalize Gemini response for JSON parsing");
+            logger?.LogWarning(
+                "Failed to normalize Gemini response for JSON parsing. error={Error} inputPreview={Preview}",
+                TruncateForLog(ex.ToString(), 1500),
+                TruncateForLog(text.Trim(), 1800));
             return new List<FileEdit>();
         }
     }
@@ -288,14 +344,19 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
     /// <see cref="GenerateContentResponse.Text"/> only concatenates text parts from the first candidate and returns null
     /// when Google Search / thinking leaves only non-aggregated <see cref="Part.Text"/> on parts.
     /// </summary>
-    private static string? ExtractModelText(GenerateContentResponse? response, ILogger<GeminiService>? logger)
+    private static string? ExtractModelText(GenerateContentResponse? response, ILogger<GeminiService>? logger, out int textSegmentCount)
     {
+        textSegmentCount = 0;
         if (response == null)
             return null;
 
         var shortcut = response.Text?.Trim();
         if (!string.IsNullOrEmpty(shortcut))
+        {
+            textSegmentCount = 1;
+            logger?.LogDebug("Gemini ExtractModelText: used response.Text shortcut (length={Length})", shortcut.Length);
             return shortcut;
+        }
 
         var sb = new StringBuilder();
         if (response.Candidates != null)
@@ -306,9 +367,17 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
                 if (parts == null)
                     continue;
                 foreach (var part in parts)
+                {
+                    if (string.IsNullOrEmpty(part.Text))
+                        continue;
+                    textSegmentCount++;
                     AppendPartText(sb, part);
+                }
             }
         }
+
+        if (sb.Length > 0)
+            logger?.LogDebug("Gemini ExtractModelText: merged {Count} non-empty text part(s)", textSegmentCount);
 
         if (sb.Length == 0)
         {

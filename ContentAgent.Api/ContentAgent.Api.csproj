@@ -10,6 +10,10 @@
     <ProjectReference Include="..\ContentAgent.Video\ContentAgent.Video.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Data\ideaTopics.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
   <!-- FFmpeg + media: repo-root data/ (mirror of production D:/home/data). Copied next to ContentAgent.Api.dll when present. -->
   <ItemGroup>
     <Content Include="..\data\Lib\ffmpeg.exe" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" TargetPath="Lib\ffmpeg.exe" Condition="Exists('..\data\Lib\ffmpeg.exe')" />

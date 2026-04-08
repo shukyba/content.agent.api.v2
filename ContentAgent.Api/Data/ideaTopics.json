@@ -1,0 +1,1994 @@
+{
+  "topics": [
+    {
+      "id": "af525040-4a3c-4e7c-9d11-7691d4bd4fe1",
+      "domainId": "real-estate",
+      "label": "דירה ראשונה"
+    },
+    {
+      "id": "c2b3fbdc-b867-4826-b59c-b66bc54c9e5b",
+      "domainId": "real-estate",
+      "label": "דירה להשקעה"
+    },
+    {
+      "id": "59c64387-bbaf-4125-99b0-07da76835210",
+      "domainId": "real-estate",
+      "label": "נכס מסחרי"
+    },
+    {
+      "id": "0193be8d-e10e-4d54-b048-c54d822097d8",
+      "domainId": "real-estate",
+      "label": "קרקע לבנייה"
+    },
+    {
+      "id": "996a5815-3a2d-41d6-be2c-e267edb4f915",
+      "domainId": "real-estate",
+      "label": "דירה בפריפריה"
+    },
+    {
+      "id": "7db8ba01-935a-4f04-9af9-82bd9e4261ad",
+      "domainId": "real-estate",
+      "label": "דירה במרכז העיר"
+    },
+    {
+      "id": "acbcc771-5977-4373-b811-b19d7fe79fa0",
+      "domainId": "real-estate",
+      "label": "פנטהאוז"
+    },
+    {
+      "id": "a448fae1-7dc4-41c9-ad33-447e1048b30e",
+      "domainId": "real-estate",
+      "label": "דירה בבניין חדש"
+    },
+    {
+      "id": "e3b696d1-990a-463d-9943-1bc4e3760679",
+      "domainId": "real-estate",
+      "label": "דירה בבניין ישן"
+    },
+    {
+      "id": "0cd1e4b8-3719-4a38-9d70-aa1c2eebf58f",
+      "domainId": "real-estate",
+      "label": "דירה לשדרוג"
+    },
+    {
+      "id": "9825bec6-b1f5-4100-9e78-3e2380d4f201",
+      "domainId": "real-estate",
+      "label": "דופלקס"
+    },
+    {
+      "id": "69130142-8e08-4173-9b72-55b9c4032eb7",
+      "domainId": "real-estate",
+      "label": "דירת גן"
+    },
+    {
+      "id": "6b1cc8ca-3768-4f04-9881-44b28c4cdef7",
+      "domainId": "real-estate",
+      "label": "סטודיו להשכרה"
+    },
+    {
+      "id": "5793d9b6-18e1-43f1-81b0-bff629d008a5",
+      "domainId": "real-estate",
+      "label": "דירת נופש"
+    },
+    {
+      "id": "df9ad64b-e0be-41f2-bb8c-6c22eed49940",
+      "domainId": "real-estate",
+      "label": "מגרש בשכונה חדשה"
+    },
+    {
+      "id": "366ceab6-67ad-4af6-9989-c834514d34c4",
+      "domainId": "real-estate",
+      "label": "חנות רחוב"
+    },
+    {
+      "id": "335418d9-a7ad-4792-a8ef-ac1196ef4da6",
+      "domainId": "real-estate",
+      "label": "משרד קטן"
+    },
+    {
+      "id": "88bd4b11-a443-4fac-ab55-fde65b96ecb4",
+      "domainId": "real-estate",
+      "label": "בית פרטי"
+    },
+    {
+      "id": "6f289ff3-e3dd-4168-833c-642716ebeaa7",
+      "domainId": "real-estate",
+      "label": "יחידת דיור מוגנת"
+    },
+    {
+      "id": "1332a457-9326-4aac-bc53-27f91c4d7722",
+      "domainId": "real-estate",
+      "label": "דירה לסטודנטים"
+    },
+    {
+      "id": "7325bdf7-47f6-4ed5-9909-098789a217cb",
+      "domainId": "real-estate",
+      "label": "נכס עם שוכר קיים"
+    },
+    {
+      "id": "83e738a4-1a9f-4451-a91f-8c4ce85303d8",
+      "domainId": "real-estate",
+      "label": "נכס ריק למכירה"
+    },
+    {
+      "id": "4caac48c-889d-471a-bf52-5ab945cd8a52",
+      "domainId": "real-estate",
+      "label": "רכישה מקבלן"
+    },
+    {
+      "id": "d19b9804-b605-4f2b-bdf6-d131954c0346",
+      "domainId": "real-estate",
+      "label": "רכישה יד שנייה"
+    },
+    {
+      "id": "a9b8a301-8512-441e-86f8-563ff1f3452b",
+      "domainId": "real-estate",
+      "label": "משכנתה ריבית משתנה"
+    },
+    {
+      "id": "80a53ce4-9302-4e10-8386-1c4ec52dd506",
+      "domainId": "real-estate",
+      "label": "משכנתה ריבית קבועה"
+    },
+    {
+      "id": "eba145d2-a2c1-4e4f-af94-d0aac7fdcc51",
+      "domainId": "real-estate",
+      "label": "בדיקת הנדסאי לפני קנייה"
+    },
+    {
+      "id": "2b54c39e-4e15-4646-a82b-8bd2bd6d73bd",
+      "domainId": "real-estate",
+      "label": "תמא 38"
+    },
+    {
+      "id": "3aaf239f-b641-44fd-8dfa-6abad7bb4043",
+      "domainId": "real-estate",
+      "label": "פינוי בינוי"
+    },
+    {
+      "id": "b17632d1-c97e-4360-9f98-7b418ed2efff",
+      "domainId": "real-estate",
+      "label": "שכירות ארוכת טווח"
+    },
+    {
+      "id": "7d8e525b-a9d7-4aef-8132-7bef45c1e867",
+      "domainId": "real-estate",
+      "label": "שכירות לטווח קצר"
+    },
+    {
+      "id": "4ef4954e-2a55-47f9-b605-01a84f04e339",
+      "domainId": "real-estate",
+      "label": "הערכת שווי לפני מכירה"
+    },
+    {
+      "id": "360d4b6b-c0ea-40fb-b0a8-f1cc6628a06a",
+      "domainId": "real-estate",
+      "label": "שמאות מקרקעין"
+    },
+    {
+      "id": "f6971dd6-bd43-4380-bc11-6658046bf3a1",
+      "domainId": "real-estate",
+      "label": "מכירה בבית פתוח"
+    },
+    {
+      "id": "8ab04e87-5e16-4856-9351-04869fa18a38",
+      "domainId": "real-estate",
+      "label": "צילום וסטיילינג לנכס"
+    },
+    {
+      "id": "1ddc8001-b4f4-4b6b-984f-1a4148f66a37",
+      "domainId": "real-estate",
+      "label": "אגרות והיטלים"
+    },
+    {
+      "id": "9913b964-4596-4e93-ac5a-b2f7f0bb8648",
+      "domainId": "real-estate",
+      "label": "ביטוח מבנה"
+    },
+    {
+      "id": "8171f9e4-c06b-4249-9fdf-9bd184184df1",
+      "domainId": "real-estate",
+      "label": "מעבר דירה"
+    },
+    {
+      "id": "88c32334-54e8-4521-8ba5-6c4a632f6eda",
+      "domainId": "real-estate",
+      "label": "שיפוץ לפני מכירה"
+    },
+    {
+      "id": "c5453513-bd71-45d6-b285-1a705d49dd34",
+      "domainId": "real-estate",
+      "label": "נכסי יוקרה"
+    },
+    {
+      "id": "bf1564b3-9b87-4bf0-8e30-878cdb4d909a",
+      "domainId": "real-estate",
+      "label": "דיור מוגן וגיל הזהב"
+    },
+    {
+      "id": "d733b252-5f47-42fc-8a26-61f6fc6e7f01",
+      "domainId": "real-estate",
+      "label": "קנייה משותפת עם בן זוג"
+    },
+    {
+      "id": "8931ebce-0ad9-427f-a0ae-e015ef4813dd",
+      "domainId": "real-estate",
+      "label": "נכס בירושה"
+    },
+    {
+      "id": "d49634fa-f35f-4d94-ae96-a31221e00676",
+      "domainId": "real-estate",
+      "label": "נכס בבלעדיות"
+    },
+    {
+      "id": "76e79742-b255-45e9-a709-9ea0d9de0bd1",
+      "domainId": "real-estate",
+      "label": "מגרש חקלאי"
+    },
+    {
+      "id": "0fa89ea2-4172-4b68-8c14-f1fa8f6b8feb",
+      "domainId": "real-estate",
+      "label": "מחסן ולוגיסטיקה"
+    },
+    {
+      "id": "79f2e3ce-4120-4c75-a1c2-a25d8952bdef",
+      "domainId": "real-estate",
+      "label": "בניין מגורים שלם"
+    },
+    {
+      "id": "966c19c1-1033-4e7e-a79e-0a27716859ff",
+      "domainId": "real-estate",
+      "label": "דירה קומת קרקע"
+    },
+    {
+      "id": "02cd0d7d-bc4e-4010-a7e6-e8cf6cfcf391",
+      "domainId": "real-estate",
+      "label": "דירה עם נוף  77פתוח"
+    },
+    {
+      "id": "a1a5a259-45a5-4426-8727-d37e5aecb6dc",
+      "domainId": "real-estate",
+      "label": "ייעוץ משכנתה ראשון"
+    },
+    {
+      "id": "2a588442-0b13-47fa-a4fd-ec712d230af3",
+      "domainId": "beauty",
+      "label": "לאק ג'ל"
+    },
+    {
+      "id": "7853747a-747e-4436-b40b-0adc775bdf05",
+      "domainId": "beauty",
+      "label": "עיצוב גבות"
+    },
+    {
+      "id": "bee184f9-2b84-4e38-aca5-0f9dde8d31a2",
+      "domainId": "beauty",
+      "label": "טיפול קרטין לשיער"
+    },
+    {
+      "id": "35ac39fb-69f7-4a20-9154-2ab597a277a4",
+      "domainId": "beauty",
+      "label": "טיפולי פנים"
+    },
+    {
+      "id": "53a1eb63-574f-4550-8336-f3c6479460b1",
+      "domainId": "beauty",
+      "label": "החלקת שיער"
+    },
+    {
+      "id": "f5a11d7e-f33d-4ad0-a4e6-e1088643ad30",
+      "domainId": "beauty",
+      "label": "מניקור"
+    },
+    {
+      "id": "48f819db-c741-4759-a19d-9335b8aa50ed",
+      "domainId": "beauty",
+      "label": "פדיקור"
+    },
+    {
+      "id": "8254c4b6-cfd1-4391-bb91-5a22c4d09e81",
+      "domainId": "beauty",
+      "label": "איפור קבוע"
+    },
+    {
+      "id": "97646370-81d2-44db-9448-d49dbcfb778d",
+      "domainId": "beauty",
+      "label": "טיפולי לייזר להסרת שיער"
+    },
+    {
+      "id": "93c13bd7-d5dd-48db-92da-4e4d74f923fe",
+      "domainId": "beauty",
+      "label": "מסכות והזנת שיער"
+    },
+    {
+      "id": "556cacfd-2393-42c7-bf65-7e4b4d613963",
+      "domainId": "beauty",
+      "label": "בניית ציפורניים"
+    },
+    {
+      "id": "a204b4fb-b213-4129-a31a-8b06d5f4a7ba",
+      "domainId": "beauty",
+      "label": "ג'ל ואקריל"
+    },
+    {
+      "id": "f881e04d-4353-4fcd-b8cb-1576f7d5075c",
+      "domainId": "beauty",
+      "label": "שעווה והסרת שיער"
+    },
+    {
+      "id": "bc578ae4-f97b-410e-b797-b5a6f2f474ef",
+      "domainId": "beauty",
+      "label": "עיסוי פנים"
+    },
+    {
+      "id": "fb210264-5c04-4317-b8eb-fcfe3993e467",
+      "domainId": "beauty",
+      "label": "פילינג וטיפוח עור"
+    },
+    {
+      "id": "f0da4ac5-08f3-4d10-b803-2d6ebf753f3b",
+      "domainId": "beauty",
+      "label": "מיקרונידלינג"
+    },
+    {
+      "id": "0fbc0c4e-4d36-497e-ae8a-f2c79dc0eddb",
+      "domainId": "beauty",
+      "label": "טיפול אנטי-אייג'ינג"
+    },
+    {
+      "id": "9544cda3-adde-44b3-bf4a-d86f7d06f9f8",
+      "domainId": "beauty",
+      "label": "טיפול באקנה"
+    },
+    {
+      "id": "34cd9d94-96ca-4aaa-b25c-d06635e122d3",
+      "domainId": "beauty",
+      "label": "צבע שיער וגוונים"
+    },
+    {
+      "id": "baa0c238-5aec-4cab-aa64-d663050d491e",
+      "domainId": "beauty",
+      "label": "תספורת נשים"
+    },
+    {
+      "id": "04755f1c-f7fd-4245-b0c3-188ae3ec755e",
+      "domainId": "beauty",
+      "label": "תספורת גברים"
+    },
+    {
+      "id": "5278c2b2-2965-4d59-89a7-d1c3c6cb2dec",
+      "domainId": "beauty",
+      "label": "עיצוב לכלה"
+    },
+    {
+      "id": "4bc7a8be-8bff-4a91-b111-47ab1549e6b4",
+      "domainId": "beauty",
+      "label": "הרמת ריסים"
+    },
+    {
+      "id": "ca7f6091-94d6-47a1-befe-aea7ef4fe3c8",
+      "domainId": "beauty",
+      "label": "הארכת ריסים"
+    },
+    {
+      "id": "ae3608df-39d2-4344-abd7-6ba822a287bd",
+      "domainId": "beauty",
+      "label": "דרמפיגמנטציה"
+    },
+    {
+      "id": "e1dfee63-120d-43be-88e2-0290452ff37b",
+      "domainId": "beauty",
+      "label": "עיצוב שפם וגבות"
+    },
+    {
+      "id": "272f2954-b651-4561-bdcd-328e3c98b90b",
+      "domainId": "beauty",
+      "label": "טיפול קרקפת"
+    },
+    {
+      "id": "767fc23f-d125-4a93-a0fb-ffa5c554eb11",
+      "domainId": "beauty",
+      "label": "שיקום שיער פגום"
+    },
+    {
+      "id": "47a1e351-aecd-4a70-85fe-793ebcf6d16f",
+      "domainId": "beauty",
+      "label": "תסרוקת ערב"
+    },
+    {
+      "id": "66dd2cb2-595f-4fc6-8753-fcdba9349dc3",
+      "domainId": "beauty",
+      "label": "איפור ערב"
+    },
+    {
+      "id": "6328f476-ca51-4e79-bf57-a2763cb2b5a1",
+      "domainId": "beauty",
+      "label": "טיפול ידיים"
+    },
+    {
+      "id": "53617afc-fcf4-4ee1-a970-2f64feb90b34",
+      "domainId": "beauty",
+      "label": "טיפול רגליים רפואי"
+    },
+    {
+      "id": "24ae8f84-5cc5-4f5a-b518-6b49d1e43c3c",
+      "domainId": "beauty",
+      "label": "לק ג'ל צרפתי"
+    },
+    {
+      "id": "b663de4e-676e-4237-9bea-8b01e95fac61",
+      "domainId": "beauty",
+      "label": "ניקוי עמוק לפנים"
+    },
+    {
+      "id": "f4298464-4b96-4c56-bb84-a322aa1a7d91",
+      "domainId": "beauty",
+      "label": "עיסוי גוף בקליניקה"
+    },
+    {
+      "id": "fb0cdf1c-aaa9-474d-bf17-b3665ef3305e",
+      "domainId": "beauty",
+      "label": "שיזוף מאוחר"
+    },
+    {
+      "id": "90f1303b-d20d-4a8f-99c5-d4a33eb6cd48",
+      "domainId": "beauty",
+      "label": "עור רגיש סביב העיניים"
+    },
+    {
+      "id": "52a97d1f-c1df-4a13-97b8-b94063913752",
+      "domainId": "beauty",
+      "label": "הסרת קעקועים בלייזר"
+    },
+    {
+      "id": "97453813-23da-4879-bb0e-ebe6501c9dbd",
+      "domainId": "beauty",
+      "label": "קוסמטיקה רפואית"
+    },
+    {
+      "id": "9de2d799-66ce-4746-88a9-3d21367e7b22",
+      "domainId": "beauty",
+      "label": "טיפוח לגיל השלישי"
+    },
+    {
+      "id": "b00655b5-4396-4a45-97db-da9b9387fe10",
+      "domainId": "beauty",
+      "label": "טיפולי גברים"
+    },
+    {
+      "id": "4ca66044-6c23-4620-958d-bb1234fadd26",
+      "domainId": "beauty",
+      "label": "סדנת איפור אישית"
+    },
+    {
+      "id": "2e5adf04-c5e0-4490-b3c1-0e1b2257bfff",
+      "domainId": "beauty",
+      "label": "ייעוץ צבע לשיער"
+    },
+    {
+      "id": "1d608f20-554f-40d3-91a3-455b06ad8242",
+      "domainId": "beauty",
+      "label": "טיפול שיער לאחר לידה"
+    },
+    {
+      "id": "978a882a-5151-4399-9af1-141a7973ff36",
+      "domainId": "beauty",
+      "label": "טיפולי קיץ לשיער"
+    },
+    {
+      "id": "c7e362d2-d675-49df-bb47-7c98c41bc39a",
+      "domainId": "beauty",
+      "label": "ציפורניים במצב רפואי"
+    },
+    {
+      "id": "0e8fc2e6-7c0a-4d07-93ed-98e740b2466e",
+      "domainId": "beauty",
+      "label": "גלישת שיער"
+    },
+    {
+      "id": "6200c721-952a-44f8-8c9b-ac2db9b0cb45",
+      "domainId": "beauty",
+      "label": "תוספות שיער"
+    },
+    {
+      "id": "710a3501-6d1e-4313-ae36-b95264efbcc9",
+      "domainId": "beauty",
+      "label": "טיפולי שיער ללא כימיקלים קשים"
+    },
+    {
+      "id": "7ef67052-ad95-4ea0-b00d-69237db12ca1",
+      "domainId": "beauty",
+      "label": "טיפוח לפני חג"
+    },
+    {
+      "id": "ac803e66-0793-4737-82eb-443f5712b0c3",
+      "domainId": "finance",
+      "label": "ניהול תזרים"
+    },
+    {
+      "id": "1b0f0924-fc96-458f-96da-e18d3e7da11f",
+      "domainId": "finance",
+      "label": "חיסכון לפנסיה"
+    },
+    {
+      "id": "5e311609-2eeb-4652-95d0-c54246262cbf",
+      "domainId": "finance",
+      "label": "השקעות בסיסיות"
+    },
+    {
+      "id": "ffde988e-2883-46f1-b831-cf4cbdff46ac",
+      "domainId": "finance",
+      "label": "מע\"מ לעצמאי"
+    },
+    {
+      "id": "d361c590-3ae6-4c2b-8112-6e5dd5a2326b",
+      "domainId": "finance",
+      "label": "הפרדה בין אישי לעסקי"
+    },
+    {
+      "id": "dc770f72-0109-4eb2-b810-34f7672e4504",
+      "domainId": "finance",
+      "label": "אשראי לעסק"
+    },
+    {
+      "id": "d2966ce9-77ea-47a7-a405-9e82010ffc85",
+      "domainId": "finance",
+      "label": "תקציב משפחתי"
+    },
+    {
+      "id": "80e66364-ee44-440a-9044-ef6ebb6c197f",
+      "domainId": "finance",
+      "label": "הלוואות וריבית"
+    },
+    {
+      "id": "9bd6a3b5-9897-4153-9ab9-4a33e81a9041",
+      "domainId": "finance",
+      "label": "ביטוחים חיוניים"
+    },
+    {
+      "id": "455e0239-64fa-45c8-ad54-c090b3c4fb16",
+      "domainId": "finance",
+      "label": "דוחות רווח והפסד"
+    },
+    {
+      "id": "e41eb99e-55af-4c8b-aee3-29610683f423",
+      "domainId": "finance",
+      "label": "קופה יומית בעסק"
+    },
+    {
+      "id": "56745c40-a642-4eaa-bde6-2f7cbae770da",
+      "domainId": "finance",
+      "label": "דוח רווח והפסד חודשי"
+    },
+    {
+      "id": "040f2769-bd37-41ab-bb5c-afc56506252f",
+      "domainId": "finance",
+      "label": "הנהלת חשבות לעצמאי"
+    },
+    {
+      "id": "9f71b734-3287-4d70-87a0-079f3537e394",
+      "domainId": "finance",
+      "label": "מיסוי שכירים"
+    },
+    {
+      "id": "6bbfbcaf-a292-4ada-a81d-8adce5146213",
+      "domainId": "finance",
+      "label": "פנסיה לשכירים"
+    },
+    {
+      "id": "de75b51c-3587-4e83-a218-795a6590d118",
+      "domainId": "finance",
+      "label": "קרן השתלמות"
+    },
+    {
+      "id": "28a0e38a-268b-46b8-ac37-2f5423fbf3ca",
+      "domainId": "finance",
+      "label": "קרנות נאמנות"
+    },
+    {
+      "id": "876f6fc7-da84-483d-a3d3-13c30fb48efc",
+      "domainId": "finance",
+      "label": "אג\"ח למתחילים"
+    },
+    {
+      "id": "70cef81b-2b90-4a58-a0a3-17d4912943c5",
+      "domainId": "finance",
+      "label": "מט\"ח וניהול סיכון"
+    },
+    {
+      "id": "2ac4746b-f7b1-4aa4-ab47-599924c83d00",
+      "domainId": "finance",
+      "label": "ביטוח עסק קטן"
+    },
+    {
+      "id": "21b25334-c644-4de4-9de1-478f2c72a325",
+      "domainId": "finance",
+      "label": "גבייה מלקוחות"
+    },
+    {
+      "id": "0970ddfb-d3f3-4947-9869-74539f97c39e",
+      "domainId": "finance",
+      "label": "תשלומים לספקים"
+    },
+    {
+      "id": "d0191c72-866f-4621-9088-1b5756ab26b9",
+      "domainId": "finance",
+      "label": "ריבית בנקאית ועמלות"
+    },
+    {
+      "id": "f8633e03-d1b8-4adc-891f-410cca3b5406",
+      "domainId": "finance",
+      "label": "כרטיס אשראי עסקי"
+    },
+    {
+      "id": "ab3174b8-b83a-4d48-8a20-883b4604a122",
+      "domainId": "finance",
+      "label": "הלוואה בערבות מדינה"
+    },
+    {
+      "id": "e7bb1037-a832-43d3-a044-8c312db090a2",
+      "domainId": "finance",
+      "label": "מימון ציוד"
+    },
+    {
+      "id": "52190b2c-7fd1-4277-b76c-00587fecd40d",
+      "domainId": "finance",
+      "label": "תחזית תזרים שנתית"
+    },
+    {
+      "id": "fade393f-ca3f-4bcf-807f-1b101d40ddcb",
+      "domainId": "finance",
+      "label": "עמלות ועלויות נסתרות"
+    },
+    {
+      "id": "585d19a5-ec54-460e-bff1-5c1f143949a8",
+      "domainId": "finance",
+      "label": "מעקב הוצאות משתנות"
+    },
+    {
+      "id": "5a3ce887-10be-4072-93a4-f67f03e56744",
+      "domainId": "finance",
+      "label": "חיסכון לילדים"
+    },
+    {
+      "id": "b65c83f4-5a68-466e-ae40-b11f3067be27",
+      "domainId": "finance",
+      "label": "קרן חירום משפחתית"
+    },
+    {
+      "id": "1e47c150-4d52-44a5-a4ba-887c72c8b688",
+      "domainId": "finance",
+      "label": "השקעה בנדל\"ן"
+    },
+    {
+      "id": "97c1b2c4-64ac-40a3-aeb0-e451f3ff9c31",
+      "domainId": "finance",
+      "label": "השקעה במניות לטווח ארוך"
+    },
+    {
+      "id": "f6fa2df7-7ca5-4d74-bba3-5b29f7920033",
+      "domainId": "finance",
+      "label": "ביטוח חיים"
+    },
+    {
+      "id": "4a42eeb5-eb04-4c24-bd93-606706f7e84b",
+      "domainId": "finance",
+      "label": "ביטוח בריאות"
+    },
+    {
+      "id": "a7d5350b-d760-4d6c-8f23-358eaf44ae75",
+      "domainId": "finance",
+      "label": "ביטוח דירה"
+    },
+    {
+      "id": "ac7c8ef2-d54a-4089-b44c-9cf2f6e23f26",
+      "domainId": "finance",
+      "label": "ייעוץ פנסיוני"
+    },
+    {
+      "id": "e1324199-203b-4e9d-aa7d-d7fed21b57e6",
+      "domainId": "finance",
+      "label": "פיצויים ושכר"
+    },
+    {
+      "id": "0c5caf9a-3bad-4bc2-821b-8d132fc38964",
+      "domainId": "finance",
+      "label": "מע\"מ דו-חודשי"
+    },
+    {
+      "id": "2e80eec6-ad1d-43ea-8d9e-ff64f0029484",
+      "domainId": "finance",
+      "label": "דוח שנתי לרשויות"
+    },
+    {
+      "id": "65fdc9cb-561f-4a20-b435-cc619b7d6017",
+      "domainId": "finance",
+      "label": "ליווי רואה חשבון"
+    },
+    {
+      "id": "828feb05-b873-4abe-8f88-43a3b52955df",
+      "domainId": "finance",
+      "label": "ביקורת פנימית בעסק"
+    },
+    {
+      "id": "35486a43-c2cc-4f55-8fe1-dcb2acc71fe8",
+      "domainId": "finance",
+      "label": "ניהול חוב ואשראי"
+    },
+    {
+      "id": "610953ec-6ebb-4a43-869d-3a5db5a52c0f",
+      "domainId": "finance",
+      "label": "איחוד הלוואות"
+    },
+    {
+      "id": "6f557bce-fd19-4100-b0e7-2644334c5af0",
+      "domainId": "finance",
+      "label": "יעדים פיננסיים שנתיים"
+    },
+    {
+      "id": "acdc1a61-5f59-414e-b087-a94f87ced65d",
+      "domainId": "finance",
+      "label": "דוח ביצוע מול תקציב"
+    },
+    {
+      "id": "f2a0f9b4-65e7-49bb-b4f7-5f1cb6a73334",
+      "domainId": "finance",
+      "label": "ניהול מזומנים שבועי"
+    },
+    {
+      "id": "926a7259-fe2d-4e87-bcb9-7f5debe415b8",
+      "domainId": "finance",
+      "label": "מניעת הונאות פיננסיות"
+    },
+    {
+      "id": "477a06a9-8816-43b1-95de-8fbccabbf629",
+      "domainId": "finance",
+      "label": "שקיפות מול שותפים בעסק"
+    },
+    {
+      "id": "31079eeb-2aa4-40a7-aa1d-b76aaf0831fc",
+      "domainId": "finance",
+      "label": "תכנון מס שנתי 77"
+    },
+    {
+      "id": "72cf806a-afda-41b9-a388-d61ecc6cb757",
+      "domainId": "wellness",
+      "label": "שינה ואיכות שינה"
+    },
+    {
+      "id": "d6c509bc-e200-4a34-895d-ef6cc9a3a56a",
+      "domainId": "wellness",
+      "label": "סטרס וניהול לחץ יומי"
+    },
+    {
+      "id": "8803e3ea-3752-4dac-85dd-e3ff5ae44a77",
+      "domainId": "wellness",
+      "label": "מיינדפולנס ומדיטציה"
+    },
+    {
+      "id": "e10406a6-f129-4c94-abb7-f297a2fc06f5",
+      "domainId": "wellness",
+      "label": "גבולות דיגיטליים ודיטוקס מסך"
+    },
+    {
+      "id": "e4707319-8c09-4d4a-b1a0-c07db8c5e733",
+      "domainId": "wellness",
+      "label": "תזונה אינטואיטיבית מול דיאטות"
+    },
+    {
+      "id": "9a071f65-c3dc-46f9-894f-a47b66d2649a",
+      "domainId": "wellness",
+      "label": "תנועה יומיומית בלי מנוי חדר כושר"
+    },
+    {
+      "id": "d9063726-39fc-4455-9af1-224846aa6dd8",
+      "domainId": "wellness",
+      "label": "יוגה, גמישות ונשימה"
+    },
+    {
+      "id": "00327811-ef53-4e86-b32f-42edf13392bc",
+      "domainId": "wellness",
+      "label": "הליכה מודעת ובריאות"
+    },
+    {
+      "id": "3a80c0e7-19ec-4840-8586-94700ed4d98d",
+      "domainId": "wellness",
+      "label": "איזון הורמונלי — מבוא נשי"
+    },
+    {
+      "id": "c4a9e5b2-6b39-4b0e-948f-888a7b4adda5",
+      "domainId": "wellness",
+      "label": "בריאות מעי ומיקרוביום"
+    },
+    {
+      "id": "2c0e5530-a68b-4c38-9d64-de2281634ed3",
+      "domainId": "wellness",
+      "label": "צום לסירוגין — יתרונות וסיכונים"
+    },
+    {
+      "id": "9453f4b3-c343-4b2a-90d4-9d089da5fadd",
+      "domainId": "wellness",
+      "label": "שתייה, מים והידרציה"
+    },
+    {
+      "id": "1b8ef901-fb75-4859-8372-c5f1aa63d171",
+      "domainId": "wellness",
+      "label": "בריאות נפשית וצעדים קטנים"
+    },
+    {
+      "id": "625d3b13-a15c-495b-beb1-b03c4d133a6b",
+      "domainId": "wellness",
+      "label": "חרדה קלה ושגרה מעצימה"
+    },
+    {
+      "id": "3df4d09d-bc08-494e-b2e2-1a7551fd9314",
+      "domainId": "wellness",
+      "label": "שחיקה בעבודה ובורנאוט"
+    },
+    {
+      "id": "2ac81f58-8523-4e56-a783-66bdfd140a3a",
+      "domainId": "wellness",
+      "label": "איזון עבודה–חיים אמיתי"
+    },
+    {
+      "id": "8d18d783-ed93-4fee-af34-9f96c5a90441",
+      "domainId": "wellness",
+      "label": "בדידות, קשרים ורשתות חברתיות"
+    },
+    {
+      "id": "e45c8f6f-6dee-4ccf-9bac-3a6ae957acae",
+      "domainId": "wellness",
+      "label": "דימוי גוף וגוף חיובי"
+    },
+    {
+      "id": "4a7e96a8-a9a7-46d4-879e-d22991096ecb",
+      "domainId": "wellness",
+      "label": "הרגלים — איך בונים ומשמרים"
+    },
+    {
+      "id": "f3f27292-c3fa-4d32-827d-d3d7695423af",
+      "domainId": "wellness",
+      "label": "יומן מצב רוח ומעקב עדין"
+    },
+    {
+      "id": "c53b5d2b-2fe4-4e0a-946c-728e45955694",
+      "domainId": "wellness",
+      "label": "כאב כרוני וניהול יומיומי"
+    },
+    {
+      "id": "1fe212f1-d4db-492c-b11c-ef5f36b6fa54",
+      "domainId": "wellness",
+      "label": "שיקום, פיזיותרפיה וגב"
+    },
+    {
+      "id": "027381e9-d56a-4e5d-a4e9-f228b63b564e",
+      "domainId": "wellness",
+      "label": "נשימה בטוחה ורגיעת מערכת העצבים"
+    },
+    {
+      "id": "c87ee1a5-fac7-4052-9e0f-12eb9cc23309",
+      "domainId": "wellness",
+      "label": "שמש, ויטמין D ומצב רוח"
+    },
+    {
+      "id": "b2fcc12a-91a9-44a2-af98-75d4401122fa",
+      "domainId": "wellness",
+      "label": "תוספי תזונה — מה מבוסס ראיות"
+    },
+    {
+      "id": "bbf58954-acd1-493b-8aad-3884df944031",
+      "domainId": "wellness",
+      "label": "צמחי מרפא ושילוב בטוח"
+    },
+    {
+      "id": "36ccda18-9f4f-4d4d-8ee4-e1898a6dcdcc",
+      "domainId": "wellness",
+      "label": "צלילים, מוזיקה וריפוי עדין"
+    },
+    {
+      "id": "8d622347-1614-4965-9b15-ff581fb7e455",
+      "domainId": "wellness",
+      "label": "ארומתרפיה וטבע בבית"
+    },
+    {
+      "id": "174a1dca-da55-4e15-bd27-fe93f260bf4b",
+      "domainId": "wellness",
+      "label": "טבע, שטח ירוק ובריאות"
+    },
+    {
+      "id": "1551004b-92e9-4c35-acb9-1703a641d474",
+      "domainId": "wellness",
+      "label": "קהילה, חברות ותמיכה"
+    },
+    {
+      "id": "f3e59aef-0d08-4ab8-9433-17a8558dcb43",
+      "domainId": "wellness",
+      "label": "קואוצ'ינג בריאות מול טיפול מקצועי"
+    },
+    {
+      "id": "8f3ce153-5840-4a70-bb59-9f583e57b486",
+      "domainId": "wellness",
+      "label": "בדיקות מנע וסקרינג גופני"
+    },
+    {
+      "id": "01ac2595-fc51-47ac-80f6-c6d58662756d",
+      "domainId": "wellness",
+      "label": "בריאות האישה — מחזור וגיל המעבר"
+    },
+    {
+      "id": "5b4f0d62-8faf-4647-91d6-11315efa8b37",
+      "domainId": "wellness",
+      "label": "בריאות הגבר — מבוא בלי סטיגמה"
+    },
+    {
+      "id": "d928bd85-16bd-4406-8020-0fed5a63e777",
+      "domainId": "wellness",
+      "label": "הורות, עייפות ורווחה נפשית"
+    },
+    {
+      "id": "b129d312-e5b2-4629-ae70-2bb055968966",
+      "domainId": "wellness",
+      "label": "גיל השלישי ותנועה בטוחה"
+    },
+    {
+      "id": "22d7fd1f-dfc2-40aa-a942-d607f1c7b2ae",
+      "domainId": "wellness",
+      "label": "נוער, לחץ לימודים ושינה"
+    },
+    {
+      "id": "8ddd7765-f09d-419b-93b7-364b67bd4356",
+      "domainId": "wellness",
+      "label": "אלכוהול מודע וצמצום שתייה"
+    },
+    {
+      "id": "dfb42680-43c4-4f13-ab8e-240be3a508cb",
+      "domainId": "wellness",
+      "label": "קנאביס רפואי — מידע ואחריות אישית"
+    },
+    {
+      "id": "510161a4-f35e-4f2c-9d68-b34066f4fd21",
+      "domainId": "wellness",
+      "label": "מיניות, גבולות ובריאות"
+    },
+    {
+      "id": "f1612a8d-823d-4c38-bee4-aba48b6d294b",
+      "domainId": "wellness",
+      "label": "מנוחה פעילה ושחזור אחרי מאמץ"
+    },
+    {
+      "id": "8848d81e-7f45-47dc-ba42-504dfce6e415",
+      "domainId": "wellness",
+      "label": "מתיחות, מיופשיה ושחרור שרירים"
+    },
+    {
+      "id": "a1e0ef76-3ae5-4724-808d-55e840b4e7a6",
+      "domainId": "wellness",
+      "label": "ריצה קלה ולב–ריאה"
+    },
+    {
+      "id": "570d0c07-514c-4077-af48-6eedc424d88f",
+      "domainId": "wellness",
+      "label": "שחייה לרווחה ולא רק לפרפורמנס"
+    },
+    {
+      "id": "192b04aa-ea26-4233-9109-f9db0f0a3aa9",
+      "domainId": "wellness",
+      "label": "פילאטיס וליבה רכה"
+    },
+    {
+      "id": "e60a7044-32d3-4028-900f-792d04366edc",
+      "domainId": "wellness",
+      "label": "כוח מתון, עצמות ומניעת נפילות"
+    },
+    {
+      "id": "c5e4e4e4-d461-4200-8a76-06ff4198144e",
+      "domainId": "wellness",
+      "label": "אפליקציות בריאות ומעקב — מתי עוצרים"
+    },
+    {
+      "id": "59013f80-786b-455f-9a3e-da8b85d9d23e",
+      "domainId": "wellness",
+      "label": "שבתון דיגיטלי וסופי שבוע מרעננים"
+    },
+    {
+      "id": "9c9dbfe0-392f-4cff-b4ce-6cd9f21c671c",
+      "domainId": "wellness",
+      "label": "שגרת ערב שמכינה לשינה טובה"
+    },
+    {
+      "id": "cf12c320-85fc-4a4d-bea2-042e133fc251",
+      "domainId": "legal",
+      "label": "חוזה שכירות"
+    },
+    {
+      "id": "5373c2df-e061-4894-8026-62f856e68572",
+      "domainId": "legal",
+      "label": "חוזה עבודה"
+    },
+    {
+      "id": "764bcb53-bdfb-425f-a779-b1774471ae5b",
+      "domainId": "legal",
+      "label": "סכסוך בין שכנים"
+    },
+    {
+      "id": "7c40f910-8b84-43ba-a9da-7ddcfa56174f",
+      "domainId": "legal",
+      "label": "תביעה קטנה"
+    },
+    {
+      "id": "8405fa8e-e18a-4558-a5d0-e7b6b0ee2a1a",
+      "domainId": "legal",
+      "label": "פינוי מושכר"
+    },
+    {
+      "id": "b84f42bf-1f75-471b-9a7e-846195dd169f",
+      "domainId": "legal",
+      "label": "זכויות צרכן"
+    },
+    {
+      "id": "3cb938fc-e8ab-4e2c-a139-e6b8bc235172",
+      "domainId": "legal",
+      "label": "דיני משפחה בסיסיים"
+    },
+    {
+      "id": "1463bd67-d270-4d5e-846c-a2dedbca91c1",
+      "domainId": "legal",
+      "label": "ייפוי כוח"
+    },
+    {
+      "id": "610e9fed-ca04-4042-aa80-fb824f4545e2",
+      "domainId": "legal",
+      "label": "הסכמי סודיות"
+    },
+    {
+      "id": "23ad807c-03ad-44d2-bdd2-943b3570555c",
+      "domainId": "legal",
+      "label": "רשלנות רפואית — מבוא"
+    },
+    {
+      "id": "8f32d2e8-41d2-4c68-b359-38c4f221eea8",
+      "domainId": "legal",
+      "label": "נזיקין — תאונות"
+    },
+    {
+      "id": "facded45-afc6-4bf3-a91f-3718c07187e2",
+      "domainId": "legal",
+      "label": "פיטורים וזכויות עובד"
+    },
+    {
+      "id": "9b9602f8-f169-4e2c-b3e7-ea1b723967c7",
+      "domainId": "legal",
+      "label": "פשיטת רגל אישית"
+    },
+    {
+      "id": "52369b54-b9e3-4e65-afd7-e220ba15c87e",
+      "domainId": "legal",
+      "label": "ירושה וצוואה"
+    },
+    {
+      "id": "5984e9c1-79ec-45ef-8f67-74c7852c615f",
+      "domainId": "legal",
+      "label": "גירושין — מבוא"
+    },
+    {
+      "id": "360edc6e-5261-482f-a36c-e5bae5ba88ff",
+      "domainId": "legal",
+      "label": "רישום מקרקעין"
+    },
+    {
+      "id": "9d0b3888-ae93-4b5f-821c-10eb656516ba",
+      "domainId": "legal",
+      "label": "חוזה מכר דירה"
+    },
+    {
+      "id": "a3d8782e-8389-4fc1-b7e8-4ffc5f3c372e",
+      "domainId": "legal",
+      "label": "חוזה קבלנות"
+    },
+    {
+      "id": "92ede487-237b-44ba-a88e-673e354fe075",
+      "domainId": "legal",
+      "label": "זכויות עובד זר"
+    },
+    {
+      "id": "525ed853-cb69-4fea-86de-61c14099ec2e",
+      "domainId": "legal",
+      "label": "תאונות עבודה"
+    },
+    {
+      "id": "4f97d7c4-22b2-46b2-bdb6-e138eb87e69a",
+      "domainId": "legal",
+      "label": "פנסיה ופיצויים"
+    },
+    {
+      "id": "e6e0e522-2d50-4b9b-9872-6bf2eafd129d",
+      "domainId": "legal",
+      "label": "זכויות בהיריון ולידה"
+    },
+    {
+      "id": "087cd24f-38ca-415a-8dd4-2ef8d569b21e",
+      "domainId": "legal",
+      "label": "הטרדה במקום עבודה"
+    },
+    {
+      "id": "c19041cb-8fa8-40c4-8fd8-3084ee3e153d",
+      "domainId": "legal",
+      "label": "לשון הרע ברשת"
+    },
+    {
+      "id": "eb5b738a-5add-4f20-aba2-7cde0b887b7b",
+      "domainId": "legal",
+      "label": "פרטיות ונתונים"
+    },
+    {
+      "id": "a25202a3-8969-4029-8b2b-20302d36065e",
+      "domainId": "legal",
+      "label": "הגנת הצרכן — ביטול עסקה"
+    },
+    {
+      "id": "3152de8a-4a40-418f-bb8d-58a073a0ac22",
+      "domainId": "legal",
+      "label": "ערבות וערב משנה"
+    },
+    {
+      "id": "c4d97e26-10a1-4d65-b85d-f84d2a1e74d3",
+      "domainId": "legal",
+      "label": "שטר חוב ומשכון"
+    },
+    {
+      "id": "d2c815cb-aa56-434e-ad1b-ff12635b6b93",
+      "domainId": "legal",
+      "label": "עיקול וגבייה"
+    },
+    {
+      "id": "9138c046-a2b1-41af-82f4-27964c91c20e",
+      "domainId": "legal",
+      "label": "בוררות וגישור"
+    },
+    {
+      "id": "dea098e2-d7f2-436e-a31a-6a6526030041",
+      "domainId": "legal",
+      "label": "תביעה יצוגית"
+    },
+    {
+      "id": "9601df0b-24d4-4737-bfd7-d60df26055b0",
+      "domainId": "legal",
+      "label": "קטינים ואחריות הורים"
+    },
+    {
+      "id": "10ec236a-e640-4d88-b72e-8b8019f3df9f",
+      "domainId": "legal",
+      "label": "רישוי עסק"
+    },
+    {
+      "id": "80bfaeb9-f803-4c8b-8494-621a5e9cc178",
+      "domainId": "legal",
+      "label": "זכויות נכים"
+    },
+    {
+      "id": "322be050-0447-4d80-a7ed-cbfef9d8531a",
+      "domainId": "legal",
+      "label": "תאונות דרכים וביטוח"
+    },
+    {
+      "id": "9ecb0cda-0b76-4a3c-abda-e30ffac9c38d",
+      "domainId": "legal",
+      "label": "חוזה שכירות משנה"
+    },
+    {
+      "id": "e3b1d8a0-7f4d-4e01-9838-874268abb675",
+      "domainId": "legal",
+      "label": "שוכר מול תת-שוכר"
+    },
+    {
+      "id": "1460f8af-5efc-4463-b02f-6280f76ff7a0",
+      "domainId": "legal",
+      "label": "פינוי בלתי חוקי"
+    },
+    {
+      "id": "647151b2-9eca-47e9-8f00-61b5f3f6d5c0",
+      "domainId": "legal",
+      "label": "מסמכים נוטריוניים"
+    },
+    {
+      "id": "064c2d6a-d417-42f2-afae-88233a60eec7",
+      "domainId": "legal",
+      "label": "תרגום תעודות משפטי"
+    },
+    {
+      "id": "c542319d-c863-45cd-84c3-f28a70415e88",
+      "domainId": "legal",
+      "label": "הסכם ממון"
+    },
+    {
+      "id": "324bdea0-ef8b-4079-9e93-ba1cb571b46b",
+      "domainId": "legal",
+      "label": "צו ירושה וצו קיום צוואה"
+    },
+    {
+      "id": "dea554bb-286d-4f5a-8614-ebdee8278d59",
+      "domainId": "legal",
+      "label": "אפוטרופסות"
+    },
+    {
+      "id": "bddeddbf-88bf-4930-b78c-741652228462",
+      "domainId": "legal",
+      "label": "דיני עבודה — שעות נוספות"
+    },
+    {
+      "id": "1b7d7903-932e-4d96-8772-dfb74812ddab",
+      "domainId": "legal",
+      "label": "זכויות דיירים בבניין משותף"
+    },
+    {
+      "id": "29011d15-8625-4fec-be83-2013075eb95e",
+      "domainId": "legal",
+      "label": "תביעה כנגד רשות"
+    },
+    {
+      "id": "f551d4d5-d14f-4076-816d-4019d3341b55",
+      "domainId": "legal",
+      "label": "עורך דין — איך בוחרים"
+    },
+    {
+      "id": "0b3d452f-5332-43b5-85e7-8736950a6c2b",
+      "domainId": "legal",
+      "label": "עלויות משפטיות צפויות"
+    },
+    {
+      "id": "31036c7a-58c7-424d-91bf-11063ea2e16c",
+      "domainId": "legal",
+      "label": "מועדי התיישנות"
+    },
+    {
+      "id": "443bd12e-99df-452f-b93e-683ca123778d",
+      "domainId": "legal",
+      "label": "גישה לחומר משפטי בחינם"
+    },
+    {
+      "id": "a75a1255-5e2d-4cf8-8bff-806984253dbe",
+      "domainId": "insurance",
+      "label": "דת ומדינה"
+    },
+    {
+      "id": "04f74b2d-4e61-4c39-b3a5-4a396998d951",
+      "domainId": "insurance",
+      "label": "שוויון בנטל והגיוס לצה״ל"
+    },
+    {
+      "id": "2dc5921a-d39a-4845-8f2f-1835d5bd412f",
+      "domainId": "insurance",
+      "label": "עצמאות בית המשפט מול הכנסת"
+    },
+    {
+      "id": "7dd8199a-d0b4-4e75-887b-40b34f8398e6",
+      "domainId": "insurance",
+      "label": "חוק הלאום וזהות המדינה"
+    },
+    {
+      "id": "b7fb7098-731d-4f91-915c-4114639c80aa",
+      "domainId": "insurance",
+      "label": "זכויות מיעוטים לאומיים"
+    },
+    {
+      "id": "de924b43-767a-46f2-a3dc-b72b86fa417d",
+      "domainId": "insurance",
+      "label": "התנחלויות ומעמד השטחים"
+    },
+    {
+      "id": "1411b0c2-368b-404d-9e5e-c411e94db5b0",
+      "domainId": "insurance",
+      "label": "פתרון שתי המדינות"
+    },
+    {
+      "id": "d95a3871-670d-4824-ba3b-4fb4bd6f1e5f",
+      "domainId": "insurance",
+      "label": "פערים חברתיים ומדיניות מיסוי"
+    },
+    {
+      "id": "da7ade69-0df5-4251-b68b-22a6fc55ecd7",
+      "domainId": "insurance",
+      "label": "פריפריה מול מרכז"
+    },
+    {
+      "id": "89f3086a-5f62-4caf-a373-3c5862dd4c97",
+      "domainId": "insurance",
+      "label": "חינוך ממלכתי מול חינוך מוכר"
+    },
+    {
+      "id": "09e5e20e-d9ab-4a25-aa43-b423c7d407d5",
+      "domainId": "insurance",
+      "label": "שבת ומעמד ציבורי"
+    },
+    {
+      "id": "09b8aef9-d318-435e-931b-8c51ac4391d0",
+      "domainId": "insurance",
+      "label": "מעמד בתי הדין הדתיים"
+    },
+    {
+      "id": "7304d427-f72e-4d2c-8e92-61072389776f",
+      "domainId": "insurance",
+      "label": "שוויון מגדרי וייצוג פוליטי"
+    },
+    {
+      "id": "f75b8bba-cc8e-4fb5-8312-e52f8cd1b4bd",
+      "domainId": "insurance",
+      "label": "זכויות קהילת הלהט״ב"
+    },
+    {
+      "id": "75baa7e5-bb84-43fa-9d41-09e29aca101d",
+      "domainId": "insurance",
+      "label": "מבקשי מקלט ומדיניות הגירה"
+    },
+    {
+      "id": "aa883230-8416-4ac2-bdfd-46cb0143fba5",
+      "domainId": "insurance",
+      "label": "חופש עיתונות ורגולציה"
+    },
+    {
+      "id": "d225bfd4-edd6-44a9-886f-9c3df5706434",
+      "domainId": "insurance",
+      "label": "כסף בפוליטיקה ומימון מפלגות"
+    },
+    {
+      "id": "d7542932-535f-447e-8bb1-3ab4f2fa17df",
+      "domainId": "insurance",
+      "label": "אחוז החסימה ומערכת הבחירות"
+    },
+    {
+      "id": "2e5861b8-04a7-43a0-a8ef-c25b47ec48cb",
+      "domainId": "insurance",
+      "label": "שלטון מקומי מול הממשלה"
+    },
+    {
+      "id": "18e5b1e3-2e5c-401b-ba16-6172c348d6c8",
+      "domainId": "insurance",
+      "label": "פרטיות ומעקב דיגיטלי"
+    },
+    {
+      "id": "8234102e-98fe-45ec-a0e1-b6b942c7be12",
+      "domainId": "insurance",
+      "label": "משאבי מים לאומיים"
+    },
+    {
+      "id": "1c950834-01e3-4c69-9a85-86dbda87e9bd",
+      "domainId": "insurance",
+      "label": "סביבה מול פיתוח תעשייתי"
+    },
+    {
+      "id": "5cfacf07-0e99-4212-a6cf-3cb649aa8d2f",
+      "domainId": "insurance",
+      "label": "זכויות עובדים והתארגנות מקצועית"
+    },
+    {
+      "id": "e5b96018-6fcd-4ac6-972f-f000df2edc8b",
+      "domainId": "insurance",
+      "label": "פנסיה, גיל פרישה ורווחה"
+    },
+    {
+      "id": "7b79ef95-9aee-47b2-9532-750bd531bf2e",
+      "domainId": "insurance",
+      "label": "מערכת בריאות ציבורית"
+    },
+    {
+      "id": "12d82032-def3-4a96-8083-e749b430d0f0",
+      "domainId": "insurance",
+      "label": "משבר הדיור ומחירי הנדל״ן"
+    },
+    {
+      "id": "71a16d7f-b62c-4b8a-a500-4001bb730e35",
+      "domainId": "insurance",
+      "label": "חקלאות וחלוקת מים"
+    },
+    {
+      "id": "e24cc0ec-4109-4b2a-905e-7d4ae4234025",
+      "domainId": "insurance",
+      "label": "קליטת עלייה ושוויון הזדמנויות"
+    },
+    {
+      "id": "4258d2bb-85cb-41e9-9efa-b397c4356f99",
+      "domainId": "insurance",
+      "label": "יחסי מדינה–אזרחים ערבים"
+    },
+    {
+      "id": "36ed2dc0-d937-4a36-bf0a-64c0b2b5988d",
+      "domainId": "insurance",
+      "label": "סמלים, חגים ושפה בחוק"
+    },
+    {
+      "id": "3f5ab442-7ca8-4f54-b85d-cf7ae6701c31",
+      "domainId": "insurance",
+      "label": "חופש ביטוי וגבולות ההסתה"
+    },
+    {
+      "id": "701fedc7-f16d-4140-a721-55a245e0d50e",
+      "domainId": "insurance",
+      "label": "פיקוח פרלמנטרי ושקיפות"
+    },
+    {
+      "id": "1ec49716-3b85-4ed2-b71a-613570d63e8b",
+      "domainId": "insurance",
+      "label": "ביטחון לאומי מול פרטיות אזרחית"
+    },
+    {
+      "id": "08670950-eb4d-43b3-9148-3b63802d7fa2",
+      "domainId": "insurance",
+      "label": "מדיניות חוץ ובריתות אסטרטגיות"
+    },
+    {
+      "id": "ee6a92df-71de-488c-8327-0c19a92f1664",
+      "domainId": "insurance",
+      "label": "סמכויות נשיא המדינה"
+    },
+    {
+      "id": "311f01a1-c502-4919-a703-3d7e1c902698",
+      "domainId": "insurance",
+      "label": "רשויות אכיפה ופרקליטות"
+    },
+    {
+      "id": "b2f6acc8-a4f8-4948-9bc4-8332df4a6257",
+      "domainId": "insurance",
+      "label": "זכות הצבעה וייצוג הוגן"
+    },
+    {
+      "id": "a0babc9e-ec61-445e-b752-92cfda8a1b29",
+      "domainId": "insurance",
+      "label": "תקציב הביטחון מול רווחה חברתית"
+    },
+    {
+      "id": "5b5913d5-931f-4410-ba4c-df584534fc3e",
+      "domainId": "insurance",
+      "label": "ביטוח לאומי ורפורמות"
+    },
+    {
+      "id": "69264b94-f1b3-496d-a313-d83228562057",
+      "domainId": "insurance",
+      "label": "מעמד הרשות הפלסטינית ורצועת עזה"
+    },
+    {
+      "id": "5d6f2417-d98b-4d87-bb13-ff1ab403f2d4",
+      "domainId": "insurance",
+      "label": "מעמד ירושלים"
+    },
+    {
+      "id": "e5675542-1e54-45e8-9947-69e9940dcc29",
+      "domainId": "insurance",
+      "label": "חוק השבות וזכות עלייה"
+    },
+    {
+      "id": "485cbbfb-5fc8-48ee-8f9f-a2b086ab7dca",
+      "domainId": "insurance",
+      "label": "נפגעי טרור ופיצויים ציבוריים"
+    },
+    {
+      "id": "20c2559a-6c02-462a-8907-964fc4b018b6",
+      "domainId": "insurance",
+      "label": "מערכת החינוך הערבית"
+    },
+    {
+      "id": "96a749d5-4b3c-4b4d-a31f-349647cd292b",
+      "domainId": "insurance",
+      "label": "התיישבות בנגב ובגליל"
+    },
+    {
+      "id": "10c89217-2306-4f32-8958-7801473195f5",
+      "domainId": "insurance",
+      "label": "אנרגיה מתחדשת מול דלקים פוסיליים"
+    },
+    {
+      "id": "fa309bcb-bbf2-4b02-81c6-678ccd6b2532",
+      "domainId": "insurance",
+      "label": "שקיפות תרומות ומימון בחירות"
+    },
+    {
+      "id": "3faafd65-fe01-400a-a00a-3818a5f7232b",
+      "domainId": "insurance",
+      "label": "ניגוד עניינים בכנסת ובממשלה"
+    },
+    {
+      "id": "2d95dbda-f534-47d0-8f82-2413f5cf925a",
+      "domainId": "insurance",
+      "label": "זכויות נכים ונגישות חוקית"
+    },
+    {
+      "id": "6f787f74-bcc7-4ecc-bff0-22533be864b9",
+      "domainId": "insurance",
+      "label": "מעורבות צבא–מדינה בדיון הציבורי"
+    },
+    {
+      "id": "eded5645-fdfe-4e43-936f-8e8d95a2389d",
+      "domainId": "culinary",
+      "label": "אוכל רחוב בישראל"
+    },
+    {
+      "id": "ff26b560-99e9-454e-9561-0950b188b1b2",
+      "domainId": "culinary",
+      "label": "פסטיבלי אוכל ופוד טראקים"
+    },
+    {
+      "id": "eb2fa17f-5cc5-4120-8eca-722c013e4631",
+      "domainId": "culinary",
+      "label": "מטבח חוץ, גריל ועישון ביתי"
+    },
+    {
+      "id": "e443a623-0ac0-4410-842b-047830da186b",
+      "domainId": "culinary",
+      "label": "קפה ספשלטי ומיקרו־רוסטריות"
+    },
+    {
+      "id": "a7f9f437-9884-42a6-a444-6e9df11ba3c6",
+      "domainId": "culinary",
+      "label": "מאפים ומחמצת טבעית"
+    },
+    {
+      "id": "66bb6855-581e-4377-a895-c02b4ce50e8b",
+      "domainId": "culinary",
+      "label": "פלנט בייסד וצמחונות מתקדמת"
+    },
+    {
+      "id": "77120025-c4e2-4305-b486-27b1c300d810",
+      "domainId": "culinary",
+      "label": "בשר מעובד וחלופות לבשר אדום"
+    },
+    {
+      "id": "1181ceba-c2fc-4b40-8add-fe7cc3fe80fc",
+      "domainId": "culinary",
+      "label": "מזון מעובד מול בישול מלא מזון"
+    },
+    {
+      "id": "d4c04d09-0b8d-4fe1-aba0-1b89fc56bf8c",
+      "domainId": "culinary",
+      "label": "שפים ברשתות — טיקטוק ואינסטגרם"
+    },
+    {
+      "id": "292eb374-a8a6-4c38-9522-17cb7decd29b",
+      "domainId": "culinary",
+      "label": "סדנאות בישול אונליין ולייב"
+    },
+    {
+      "id": "2bd097f2-6d69-4688-bf4d-525141964fd9",
+      "domainId": "culinary",
+      "label": "יין ישראלי וצימוד אוכל–יין"
+    },
+    {
+      "id": "adcbfeb9-3f02-42bd-ae2f-6c78f09dc10b",
+      "domainId": "culinary",
+      "label": "מטבח מזרח־תיכוני עכשווי"
+    },
+    {
+      "id": "04c1ef98-2f97-44a1-95a6-dd9b2fd39817",
+      "domainId": "culinary",
+      "label": "מאכלי עדות ומורשת קולינרית"
+    },
+    {
+      "id": "fabb086e-9963-47a2-9617-cb6ee00e4334",
+      "domainId": "culinary",
+      "label": "קינוחי שף שחיקים לבית"
+    },
+    {
+      "id": "7b0e774b-96ef-4ff9-9e14-897e3a74a677",
+      "domainId": "culinary",
+      "label": "סושי ומטבח יפני בישראל"
+    },
+    {
+      "id": "9824e2d7-2b96-4f88-9f30-4d41eebc09b6",
+      "domainId": "culinary",
+      "label": "טאפאס, שיתוף מנות וברנץ' עירוני"
+    },
+    {
+      "id": "bca566ac-f38d-4a21-b66e-aaf0a9b1a565",
+      "domainId": "culinary",
+      "label": "משלוחים, אפליקציות ומודל קלאוד קיטשן"
+    },
+    {
+      "id": "f9b024ab-5893-4d60-b6ad-d8de359441eb",
+      "domainId": "culinary",
+      "label": "אריזות, פלסטיק חד־פעמי וקיימות"
+    },
+    {
+      "id": "101b643d-bdf6-42ce-a5eb-40bfc804bf1a",
+      "domainId": "culinary",
+      "label": "שוק איכרים וחומרי גלם עונתיים"
+    },
+    {
+      "id": "f4259346-52ee-4620-bf7d-ddd3bb18674c",
+      "domainId": "culinary",
+      "label": "תבלינים, כרכום ומסעות טעם"
+    },
+    {
+      "id": "86885886-1e1b-4c6b-bd56-b67178def7ad",
+      "domainId": "culinary",
+      "label": "אפיית לחם ולחמניות ביתיות"
+    },
+    {
+      "id": "1fcebc5a-10a6-433d-adc0-eb3f9a436ed1",
+      "domainId": "culinary",
+      "label": "קוקטיילים ומיקסולוגיה ביתית"
+    },
+    {
+      "id": "cd38ecb3-acf0-4b16-bfe4-b39ffa2d843a",
+      "domainId": "culinary",
+      "label": "אוכל בריא, מאקרו נוטריאנטים ודיוק תזונתי"
+    },
+    {
+      "id": "3cb824d0-5058-41f1-9aab-092ea277dcbf",
+      "domainId": "culinary",
+      "label": "כשרות, תעשייה וחידושים בשוק"
+    },
+    {
+      "id": "3f15c074-e7c3-4e44-934f-41cdf02d78c5",
+      "domainId": "culinary",
+      "label": "מטבחים נטולי אלרגנים וללא גלוטן"
+    },
+    {
+      "id": "aace5efc-9303-4d89-8217-894d6d0d4c37",
+      "domainId": "culinary",
+      "label": "פופ־אפים, סעודות שף ואירועים קטנים"
+    },
+    {
+      "id": "627f75a0-4f8c-413f-a719-eb98d709abe2",
+      "domainId": "culinary",
+      "label": "מסעדות שף וכוכבי מישלן מקומיים"
+    },
+    {
+      "id": "93f61d6a-d715-4a19-9a9c-c04831e3cb65",
+      "domainId": "culinary",
+      "label": "שף פרטי וקייטרינג בוטיק"
+    },
+    {
+      "id": "09f31c4e-63af-453d-8703-473df3a5f229",
+      "domainId": "culinary",
+      "label": "בישול לשבת, חג ומנהגי בית"
+    },
+    {
+      "id": "035fbe17-8b19-4f05-b020-4745ad3fa9d1",
+      "domainId": "culinary",
+      "label": "מתכונים דוריים ומורשת משפחתית"
+    },
+    {
+      "id": "70941af3-92b9-446e-9ed1-a5568497d945",
+      "domainId": "culinary",
+      "label": "אוכל נוחות וקפואים איכותיים"
+    },
+    {
+      "id": "9c0ef082-2636-4790-930e-6f3c488735ed",
+      "domainId": "culinary",
+      "label": "טעמים גלובליים במטבח הישראלי"
+    },
+    {
+      "id": "81a2addd-7783-4284-b4fd-d93392c12f57",
+      "domainId": "culinary",
+      "label": "חלבונים מהצומח ומוצרי חלב חלופיים"
+    },
+    {
+      "id": "dc8706bc-c671-4d92-ad28-7cb4bd60319f",
+      "domainId": "culinary",
+      "label": "BBQ, עישון איטי ותבניות"
+    },
+    {
+      "id": "db8a5efd-f478-4536-baeb-7c81139d0b09",
+      "domainId": "culinary",
+      "label": "קונדיטוריה, עוגות מעוצבות ומקרונים"
+    },
+    {
+      "id": "0fb32b87-3321-4875-9151-324afe2d2cd4",
+      "domainId": "culinary",
+      "label": "קורסים, בתי ספר לבישול ומרכזי קולינריה"
+    },
+    {
+      "id": "d4ae9a82-de88-4b15-81f8-fa5c4c175360",
+      "domainId": "culinary",
+      "label": "ביקורת מזון אתית ושקיפות מסעדות"
+    },
+    {
+      "id": "de1cb4a5-651b-45bb-a318-7d274cde365d",
+      "domainId": "culinary",
+      "label": "אוכל, קהילה ובריאות נפשית"
+    },
+    {
+      "id": "9b1d5636-81f0-4277-9d26-b6f8944f631e",
+      "domainId": "culinary",
+      "label": "זוג קפה–מאפה וחוויית בוקר"
+    },
+    {
+      "id": "85bdde3a-6789-4032-a8f2-36311528d080",
+      "domainId": "culinary",
+      "label": "מטבחים שיתופיים וגנים אורבניים"
+    },
+    {
+      "id": "0dd6fdb1-1674-41a2-b91e-0d5de8bc3724",
+      "domainId": "culinary",
+      "label": "גידול ירקות בית ובמרפסת"
+    },
+    {
+      "id": "f706444f-8817-4613-b37e-6c3b894922e6",
+      "domainId": "culinary",
+      "label": "שמן זית ישראלי ומסיק עכשווי"
+    },
+    {
+      "id": "f5e16851-2396-4870-b48c-ae644efcec8b",
+      "domainId": "culinary",
+      "label": "דגים, קיימות ימית ואכילה אחראית"
+    },
+    {
+      "id": "3a8f8a33-9539-4a57-b8ca-3b1439a4d133",
+      "domainId": "culinary",
+      "label": "תוכן קצר — רילס, שורטס ומתכוני וידאו"
+    },
+    {
+      "id": "4e0f64d2-dc2d-4962-bcf2-5d3c194a0e07",
+      "domainId": "culinary",
+      "label": "כלי עזר חכמים ורובוטי מטבח"
+    },
+    {
+      "id": "044915b9-d3a9-4e5d-97ba-2531c237eef7",
+      "domainId": "culinary",
+      "label": "תכנון ארוחות עם בינה מלאכותית"
+    },
+    {
+      "id": "8aa2356e-58fd-44b2-929d-34557a4a0c9f",
+      "domainId": "culinary",
+      "label": "קומפוסט, שימוש בשאריות ופחות בזבוז מזון"
+    },
+    {
+      "id": "a481263c-5011-45d0-b844-51a0d21a9ea6",
+      "domainId": "culinary",
+      "label": "אירוח אפס פסולת ואירועים ירוקים"
+    },
+    {
+      "id": "c900f966-4fd0-4cd9-acfa-e626046cfeec",
+      "domainId": "culinary",
+      "label": "מטבח נייד וקראוון קולינרי"
+    },
+    {
+      "id": "0e79fffe-53bb-45bf-a303-10f3eb5058f6",
+      "domainId": "tech",
+      "label": "בינה מלאכותית והחלפת מקומות עבודה"
+    },
+    {
+      "id": "c76d86d2-3df5-438f-928c-46737083b674",
+      "domainId": "tech",
+      "label": "פרטיות מול נוחות דיגיטלית"
+    },
+    {
+      "id": "af30e904-3118-43e7-8e4d-6ad2c8e08b2f",
+      "domainId": "tech",
+      "label": "רגולציה על ביג־טק ומונופולים"
+    },
+    {
+      "id": "a82d57ab-4a06-4a3c-b60b-b2b681afd02b",
+      "domainId": "tech",
+      "label": "זכויות יוצרים מול אימון מודלי AI"
+    },
+    {
+      "id": "ccdc4d54-214b-4f9d-b94c-10af695c1dcd",
+      "domainId": "tech",
+      "label": "מעקב ממשלתי ומצלמות פנים בציבור"
+    },
+    {
+      "id": "3a33077c-6628-4219-a186-087bb3470890",
+      "domainId": "tech",
+      "label": "מטבעות קריפטו — פיקוח מול חופש פיננסי"
+    },
+    {
+      "id": "849c0bdf-a67f-4902-be72-3cb1a98ca2d9",
+      "domainId": "tech",
+      "label": "אלגוריתמים וקידום מוטה (bias)"
+    },
+    {
+      "id": "be28ee85-05f0-47d6-be6c-ba4077a85b4d",
+      "domainId": "tech",
+      "label": "פייק ניוז ודיפ־פייק באמון התקשורת"
+    },
+    {
+      "id": "c172c232-3084-4d7f-b9c0-0e3fa6788f83",
+      "domainId": "tech",
+      "label": "ניטרליות רשת (Net neutrality)"
+    },
+    {
+      "id": "ebab6790-a21c-4365-9203-48518e973661",
+      "domainId": "tech",
+      "label": "זכות לתיקון מכשירים (Right to repair)"
+    },
+    {
+      "id": "8432d38c-7b23-445b-8e0b-1f4dfbd3a026",
+      "domainId": "tech",
+      "label": "פסול אלקטרוני ואחריות יצרנים"
+    },
+    {
+      "id": "21318b22-2c58-4644-9e2b-625ca8ddc72c",
+      "domainId": "tech",
+      "label": "כריית קריפטו וצריכת אנרגיה"
+    },
+    {
+      "id": "59b9e400-630e-4396-adf0-544506c90c79",
+      "domainId": "tech",
+      "label": "חסימת תוכן וחופש ביטוי ברשתות"
+    },
+    {
+      "id": "dca52e6c-e2d2-40e9-855e-cb23c1bb488b",
+      "domainId": "tech",
+      "label": "פרסומות ממוקדות ופרופיל משתמש"
+    },
+    {
+      "id": "0b7b21d3-6ed2-4e00-9adf-c1df559c631a",
+      "domainId": "tech",
+      "label": "ענן מול שרת מקומי וריבונות מידע"
+    },
+    {
+      "id": "1f4efddb-255f-4197-93c6-1e948bd95dbd",
+      "domainId": "tech",
+      "label": "DRM והגבלות שימוש בתוכן דיגיטלי"
+    },
+    {
+      "id": "6bbf9796-37b5-45a4-a034-5cd0f74fa6ca",
+      "domainId": "tech",
+      "label": "מודל פרסומות מול מנוי בפלטפורמות"
+    },
+    {
+      "id": "b964a748-c94b-4fe4-98b1-80258c0e5865",
+      "domainId": "tech",
+      "label": "תלות בספקי ענן בינלאומיים"
+    },
+    {
+      "id": "8882a00c-5897-4dbe-a7d2-4498cbb10381",
+      "domainId": "tech",
+      "label": "מלחמות סחר וצ'יפים"
+    },
+    {
+      "id": "8df8d899-67ac-4d59-9039-dbd2b2d75557",
+      "domainId": "tech",
+      "label": "רכב אוטונומי ואחריות משפטית"
+    },
+    {
+      "id": "3b8079fc-c58c-488f-8e13-ba281d4eb2b7",
+      "domainId": "tech",
+      "label": "רובוטיקה בעבודה ושכר מול אוטומציה"
+    },
+    {
+      "id": "8570db97-e6b8-409d-9af3-a76f10f4ff1d",
+      "domainId": "tech",
+      "label": "מערכות נשק אוטונומיות"
+    },
+    {
+      "id": "88b273a2-5628-48ad-94f5-bce65bd51682",
+      "domainId": "tech",
+      "label": "עריכת גנים (CRISPR) ואתיקה"
+    },
+    {
+      "id": "737ec888-740e-4df4-9156-d9371e312a32",
+      "domainId": "tech",
+      "label": "מסכים וילדים והתמכרות דיגיטלית"
+    },
+    {
+      "id": "3dc5f2b5-dd55-4643-8f96-fc042a2f7276",
+      "domainId": "tech",
+      "label": "אלגוריתם פיד ורדיקליזציה מקוונת"
+    },
+    {
+      "id": "04714e25-f3a9-429e-aaf7-f6b783f20056",
+      "domainId": "tech",
+      "label": "Passkeys מול סיסמאות — נוחות מול נעילה"
+    },
+    {
+      "id": "31a26089-7c2f-473b-8291-2dde88366378",
+      "domainId": "tech",
+      "label": "בלוקצ'יין — שקיפות מול אנונימיות"
+    },
+    {
+      "id": "9f8d47b9-5e7d-42cb-a3f0-b9c950233fdc",
+      "domainId": "tech",
+      "label": "NFT וערך דיגיטלי מול ספקולציה"
+    },
+    {
+      "id": "0f496d85-dbad-4c87-8a43-32f3c0a5e037",
+      "domainId": "tech",
+      "label": "מטאברס וזהות וירטואלית"
+    },
+    {
+      "id": "d37700a9-e646-4720-b046-16722bdd9848",
+      "domainId": "tech",
+      "label": "תרגום אוטומטי ודומיננטיות שפה"
+    },
+    {
+      "id": "42e21283-27ee-42b4-beaa-32154e448fa4",
+      "domainId": "tech",
+      "label": "נגישות דיגיטלית חובה מול עלות לעסקים"
+    },
+    {
+      "id": "21d44354-3ab4-4ce4-9af8-71dae7b42546",
+      "domainId": "tech",
+      "label": "גיימינג — קופסאות שלל והימורים"
+    },
+    {
+      "id": "70dbe190-de04-4b95-bc81-05df93b9fd1c",
+      "domainId": "tech",
+      "label": "טכנולוגיה בכיתה מול דף ועיפרון"
+    },
+    {
+      "id": "4c3809ff-5804-4162-ab12-a540d1c0ba87",
+      "domainId": "tech",
+      "label": "זיהוי קול ופרטיות בבית החכם"
+    },
+    {
+      "id": "7ef32c9a-b812-4d8e-beba-b5435cddf05c",
+      "domainId": "tech",
+      "label": "מצלמות רשת במחשב ופרטיות"
+    },
+    {
+      "id": "113b8f5c-ad07-4ed3-a838-a69fb4e22e17",
+      "domainId": "tech",
+      "label": "הצפנה מקצה לקצה מול גישה לממשלות"
+    },
+    {
+      "id": "abe81025-f695-4548-9c12-f52d6715ab4c",
+      "domainId": "tech",
+      "label": "5G ובריאות — מה אומר המדע"
+    },
+    {
+      "id": "a9e5ff44-a89e-42d5-9d6e-b307de8988e2",
+      "domainId": "tech",
+      "label": "סייבר כנשק ומתקפות על תשתיות"
+    },
+    {
+      "id": "5103502f-1b15-4349-b69f-189ec721a16e",
+      "domainId": "tech",
+      "label": "קוד פתוח מול קוד סגור בביטחון לאומי"
+    },
+    {
+      "id": "90a1335a-8253-48d4-895a-a9d26853f14d",
+      "domainId": "tech",
+      "label": "הארכת חיים דיגיטלית ומורשת דיגיטלית"
+    },
+    {
+      "id": "93b86abe-90c0-4e9a-9531-96453b1706bc",
+      "domainId": "tech",
+      "label": "חשבונות ותוכן אחרי מוות"
+    },
+    {
+      "id": "872ef3ca-866f-4e0d-a7bc-8a8c5cdd2fd9",
+      "domainId": "tech",
+      "label": "מיקרו־תשלומים ומודלים צרכניים באפליקציות"
+    },
+    {
+      "id": "932a46fe-43e9-44a3-8a3b-204d9dd39ebb",
+      "domainId": "tech",
+      "label": "בינה מלאכותית בכלי נשק וביטחון"
+    },
+    {
+      "id": "16398938-62c1-45b1-ad8b-7296438cd7a6",
+      "domainId": "tech",
+      "label": "זיהוי פנים לפתיחת מכשיר"
+    },
+    {
+      "id": "287dac43-fabe-4f45-a61d-86099af9447c",
+      "domainId": "tech",
+      "label": "שקיפות אלגוריתמים בבנקאות ובאשראי"
+    },
+    {
+      "id": "6d7b857d-cd63-4eb2-8287-cc171ced8866",
+      "domainId": "tech",
+      "label": "מעקב אחר עובדים בעבודה מרחוק"
+    },
+    {
+      "id": "8b42b184-ed18-4ea6-acaa-e62316dbb27c",
+      "domainId": "tech",
+      "label": "דיפ־פייק בבחירות ובאמון דמוקרטי"
+    },
+    {
+      "id": "5be556d5-6e1b-4002-b3f8-3bf464ddbb81",
+      "domainId": "tech",
+      "label": "קיימות מול שדרוג מהיר של מכשירים"
+    },
+    {
+      "id": "e80e245c-a7d3-42cf-b96d-e65a13181ad8",
+      "domainId": "tech",
+      "label": "פער דיגיטלי בין דורות ובין מרכז לפריפריה"
+    },
+    {
+      "id": "d53ea85f-9be7-4494-a615-063c58fa4cc8",
+      "domainId": "tech",
+      "label": "מודלים שפתיים גדולים וצריכת משאבי סביבה"
+    }
+  ]
+}
