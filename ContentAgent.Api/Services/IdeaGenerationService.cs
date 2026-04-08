@@ -12,7 +12,7 @@ public sealed class IdeaGenerationService : IIdeaGenerationService
     private const string GeminiApiKeyConfig = "GeminiApiKey";
     private const int IdeaCount = 10;
     private const int MaxOutputTokens = 2048;
-    private const int MaxQuotaRetries = 2;
+    private const int MaxQuotaRetries = 0;
 
     private static readonly JsonSerializerOptions JsonReadOptions = new()
     {

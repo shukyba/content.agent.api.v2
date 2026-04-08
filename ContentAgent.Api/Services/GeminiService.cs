@@ -24,7 +24,7 @@ public class GeminiService : IGeminiService
 
     /// <summary>Model id for v1beta (e.g. .../models/gemini-2.5-flash:generateContent).</summary>
     private const string ModelName = "gemini-2.5-flash";
-    private const int MaxQuotaRetries = 2;
+    private const int MaxQuotaRetries = 0;
     private readonly string _apiKey;
     private readonly ILogger<GeminiService>? _logger;
 
