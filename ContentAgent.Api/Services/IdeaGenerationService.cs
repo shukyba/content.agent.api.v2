@@ -64,10 +64,16 @@ public sealed class IdeaGenerationService : IIdeaGenerationService
                 text = ExtractModelText(response, _logger);
                 break;
             }
-            catch (Exception ex) when (IsQuotaOrRateLimit(ex) && attempt < MaxQuotaRetries)
+            catch (Exception ex) when (GeminiTransientErrors.IsRetriable(ex) && attempt < MaxQuotaRetries)
             {
                 var delay = TimeSpan.FromSeconds(60 * (attempt + 1));
-                _logger.LogWarning(ex, "Gemini quota/rate limit; retry after {Delay}s", delay.TotalSeconds);
+                var reason = ex.Message.Length <= 500 ? ex.Message : ex.Message[..500] + "…";
+                _logger.LogInformation(
+                    "Gemini ideas GenerateContent retriable failure (attempt {Attempt} of {MaxAttempts}), waiting {DelaySeconds}s: {Reason}",
+                    attempt + 1,
+                    MaxQuotaRetries + 1,
+                    (int)delay.TotalSeconds,
+                    reason);
                 await Task.Delay(delay, cancellationToken);
             }
             catch (Exception ex)
@@ -261,15 +267,6 @@ Each idea should be a single line suitable as a post angle or hook (not a full a
         }
 
         return sb.ToString().Trim();
-    }
-
-    private static bool IsQuotaOrRateLimit(Exception ex)
-    {
-        var msg = ex.ToString();
-        return msg.Contains("quota", StringComparison.OrdinalIgnoreCase)
-            || msg.Contains("rate limit", StringComparison.OrdinalIgnoreCase)
-            || msg.Contains("resource exhausted", StringComparison.OrdinalIgnoreCase)
-            || msg.Contains("429", StringComparison.OrdinalIgnoreCase);
     }
 
     private sealed class IdeasEnvelope

@@ -94,9 +94,15 @@ public class GeminiService : IGeminiService
 
                 break;
             }
-            catch (Exception ex) when (IsQuotaOrRateLimit(ex) && attempt < MaxQuotaRetries)
+            catch (Exception ex) when (GeminiTransientErrors.IsRetriable(ex) && attempt < MaxQuotaRetries)
             {
                 var delay = TimeSpan.FromSeconds(60 * (attempt + 1));
+                _logger?.LogInformation(
+                    "Gemini GenerateContent retriable failure (attempt {Attempt} of {MaxAttempts}), waiting {DelaySeconds}s: {Reason}",
+                    attempt + 1,
+                    MaxQuotaRetries + 1,
+                    (int)delay.TotalSeconds,
+                    TruncateForLog(ex.Message, 500));
                 await Task.Delay(delay, cancellationToken);
             }
             catch (Exception ex)
@@ -414,12 +420,4 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
         sb.Append(part.Text);
     }
 
-    private static bool IsQuotaOrRateLimit(Exception ex)
-    {
-        var msg = ex.ToString();
-        return msg.Contains("quota", StringComparison.OrdinalIgnoreCase)
-            || msg.Contains("rate limit", StringComparison.OrdinalIgnoreCase)
-            || msg.Contains("resource exhausted", StringComparison.OrdinalIgnoreCase)
-            || msg.Contains("429", StringComparison.OrdinalIgnoreCase);
-    }
 }
