@@ -27,8 +27,8 @@ public class GeminiService : IGeminiService
     private const string ModelName = "gemini-2.5-flash";
     private const int MaxQuotaRetries = 0;
 
-    /// <summary>When the main response is prose or malformed JSON, one follow-up call without search tools (JSON-only).</summary>
-    private const int JsonRepairPriorResponseMaxChars = 14000;
+    /// <summary>Phase-2 prompt: max chars of phase-1 assistant text (incl. thoughts) for context.</summary>
+    private const int Phase1ContextMaxChars = 16000;
     private readonly string _apiKey;
     private readonly ILogger<GeminiService>? _logger;
 
@@ -70,29 +70,30 @@ public class GeminiService : IGeminiService
         };
 
         string? text = null;
+        GenerateContentResponse? phase1Response = null;
         for (var attempt = 0; attempt <= MaxQuotaRetries; attempt++)
         {
             try
             {
-                var response = await client.Models.GenerateContentAsync(ModelName, prompt, config, cancellationToken);
-                text = ExtractModelText(response, _logger, out var textSegmentCount);
+                phase1Response = await client.Models.GenerateContentAsync(ModelName, prompt, config, cancellationToken);
+                text = ExtractModelText(phase1Response, _logger, out var textSegmentCount);
                 if (!string.IsNullOrEmpty(text))
                 {
                     var trimmed = text.Trim();
                     var leadCode = trimmed.Length > 0 ? (int)trimmed[0] : -1;
                     _logger?.LogInformation(
-                        "Gemini raw response: length={Length}, textSegments={Segments}, leadingCharCode={LeadCode}, hasJsonFence={HasFence}, firstBracketIndex={BracketIdx}",
+                        "Gemini phase 1 (non-thought text): length={Length}, textSegments={Segments}, leadingCharCode={LeadCode}, hasJsonFence={HasFence}, firstBracketIndex={BracketIdx}",
                         text.Length,
                         textSegmentCount,
                         leadCode,
                         trimmed.Contains("```", StringComparison.Ordinal),
                         trimmed.IndexOf('['));
                     _logger?.LogInformation(
-                        "Gemini raw response preview: {Preview}",
+                        "Gemini phase 1 preview: {Preview}",
                         TruncateForLog(trimmed, LogResponsePreviewChars));
                     if (trimmed.Length > 400)
                         _logger?.LogDebug(
-                            "Gemini raw response tail: {Tail}",
+                            "Gemini phase 1 tail: {Tail}",
                             TruncateForLog(trimmed[^Math.Min(600, trimmed.Length)..], 600));
                 }
 
@@ -120,32 +121,34 @@ public class GeminiService : IGeminiService
         }
 
         if (string.IsNullOrEmpty(text))
-        {
-            _logger?.LogWarning("Gemini returned no usable text (response.Text empty and no Part.Text found)");
-            return new List<FileEdit>();
-        }
+            _logger?.LogWarning(
+                "Gemini phase 1 returned no non-thought text (thought-only or empty); phase 2 will use full task + phase-1 context.");
 
-        if (!TryParseEditsFromJson(text, out var edits, _logger))
+        var phase1Context = BuildPhase1ContextForFollowUp(phase1Response);
+        if (!TryParseEditsFromJson(text ?? "", out var edits, _logger))
         {
             _logger?.LogInformation(
-                "Gemini response had no valid file-edits JSON array; attempting JSON-only repair pass (no search tools).");
+                "Gemini phase 1 had no valid file-edits JSON; running phase 2 (JSON-only, no search, full task + phase-1 context).");
             try
             {
-                var repairPrompt = BuildJsonRepairPrompt(text);
-                var repairConfig = new GenerateContentConfig
+                var phase2Prompt = BuildJsonPhase2Prompt(prompt, phase1Context);
+                var phase2Config = new GenerateContentConfig
                 {
                     MaxOutputTokens = 8192,
-                    ThinkingConfig = new ThinkingConfig { IncludeThoughts = false }
+                    // IncludeThoughts true: false often yields null Text/Parts on 2.5 Flash; skip thought parts in ExtractModelText.
+                    ThinkingConfig = new ThinkingConfig { IncludeThoughts = true }
                 };
-                var repairResponse = await client.Models.GenerateContentAsync(ModelName, repairPrompt, repairConfig, cancellationToken);
-                var repairText = ExtractModelText(repairResponse, _logger, out _);
-                if (!string.IsNullOrEmpty(repairText) && !TryParseEditsFromJson(repairText, out edits, _logger))
+                var phase2Response = await client.Models.GenerateContentAsync(ModelName, phase2Prompt, phase2Config, cancellationToken);
+                var phase2Text = ExtractModelText(phase2Response, _logger, out _);
+                if (!string.IsNullOrEmpty(phase2Text) && !TryParseEditsFromJson(phase2Text, out edits, _logger))
+                    edits = new List<FileEdit>();
+                else if (string.IsNullOrEmpty(phase2Text))
                     edits = new List<FileEdit>();
             }
             catch (Exception ex)
             {
                 _logger?.LogWarning(
-                    "Gemini JSON repair GenerateContent failed: {Detail}",
+                    "Gemini phase 2 GenerateContent failed: {Detail}",
                     TruncateForLog(ex.ToString(), LogFieldMaxChars));
                 edits = new List<FileEdit>();
             }
@@ -155,18 +158,58 @@ public class GeminiService : IGeminiService
         return edits;
     }
 
-    private static string BuildJsonRepairPrompt(string previousResponse)
+    /// <summary>Phase 2: repeat full website-updater instructions plus phase-1 research/thoughts so the model can emit JSON without search tools.</summary>
+    private static string BuildJsonPhase2Prompt(string fullTaskPrompt, string phase1AssistantContext)
     {
-        var excerpt = TruncateForLog(previousResponse.Trim(), JsonRepairPriorResponseMaxChars);
-        return $@"The previous model reply could not be parsed as a JSON array of website file edits (it contained Markdown, search narration, or invalid JSON).
+        var ctx = string.IsNullOrWhiteSpace(phase1AssistantContext)
+            ? "(No assistant text was returned in phase 1 — use the task and files below only.)"
+            : TruncateForLog(phase1AssistantContext.Trim(), Phase1ContextMaxChars);
 
-Previous reply (excerpt — output JSON only in your response, do not repeat this prose):
+        return $@"{fullTaskPrompt}
+
 ---
-{excerpt}
+PHASE 2 (second request — research step is done)
+The previous API call was for online search and internal reasoning. Below is what the assistant produced (may include chain-of-thought and search planning). Use any useful facts from it, but do NOT copy its Markdown style for your answer.
+
+PHASE 1 ASSISTANT OUTPUT (context only):
+---
+{ctx}
 ---
 
-OUTPUT CONTRACT: Respond with NOTHING except one JSON array of file-edit objects. The first non-whitespace character of your entire message MUST be ""["".
-Each element uses: ""path"", and optionally ""content"", ""editType"", ""key"", ""value"", ""items"" as in the original website-updater task. No Markdown, no code fences, no explanation. If there are no edits, output exactly: []";
+PHASE 2 OUTPUT CONTRACT (mandatory):
+- This is the final step. Respond with NOTHING except one JSON array of file edits, as specified in the task above (path, editType, key, value, items, etc.).
+- The first non-whitespace character of your entire message MUST be ""["" (U+005B).
+- No Markdown, no headings, no **bold**, no code fences, no narration, no ""Initiating search"". If there are genuinely no edits to apply, output exactly: []";
+    }
+
+    /// <summary>All part texts from phase 1 (including thought parts) for phase-2 context.</summary>
+    private static string BuildPhase1ContextForFollowUp(GenerateContentResponse? response)
+    {
+        if (response?.Candidates == null || response.Candidates.Count == 0)
+            return "";
+
+        var sb = new StringBuilder();
+        foreach (var cand in response.Candidates)
+        {
+            var parts = cand.Content?.Parts;
+            if (parts == null)
+                continue;
+            foreach (var part in parts)
+            {
+                if (string.IsNullOrEmpty(part.Text))
+                    continue;
+                if (sb.Length > 0)
+                    sb.AppendLine();
+                if (IsThoughtPart(part))
+                    sb.Append("[thought] ");
+                sb.Append(part.Text);
+            }
+        }
+
+        if (sb.Length == 0 && !string.IsNullOrEmpty(response.Text))
+            return response.Text.Trim();
+
+        return sb.ToString().Trim();
     }
 
     private static string BuildPrompt(
@@ -476,8 +519,8 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
     }
 
     /// <summary>
-    /// <see cref="GenerateContentResponse.Text"/> only concatenates text parts from the first candidate and returns null
-    /// when Google Search / thinking leaves only non-aggregated <see cref="Part.Text"/> on parts.
+    /// Concatenates <see cref="Part.Text"/> from non-thought parts only (Gemini 2.5 may emit thought-only completions).
+    /// Uses <see cref="GenerateContentResponse.Text"/> only when there are no structured parts (SDK quirk with hidden thoughts).
     /// </summary>
     private static string? ExtractModelText(GenerateContentResponse? response, ILogger<GeminiService>? logger, out int textSegmentCount)
     {
@@ -485,14 +528,7 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
         if (response == null)
             return null;
 
-        var shortcut = response.Text?.Trim();
-        if (!string.IsNullOrEmpty(shortcut))
-        {
-            textSegmentCount = 1;
-            logger?.LogDebug("Gemini ExtractModelText: used response.Text shortcut (length={Length})", shortcut.Length);
-            return shortcut;
-        }
-
+        var anyPartsEnumerated = false;
         var sb = new StringBuilder();
         if (response.Candidates != null)
         {
@@ -503,50 +539,73 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
                     continue;
                 foreach (var part in parts)
                 {
-                    if (string.IsNullOrEmpty(part.Text))
+                    anyPartsEnumerated = true;
+                    if (string.IsNullOrEmpty(part.Text) || IsThoughtPart(part))
                         continue;
                     textSegmentCount++;
-                    AppendPartText(sb, part);
+                    if (sb.Length > 0)
+                        sb.AppendLine();
+                    sb.Append(part.Text);
                 }
             }
         }
 
         if (sb.Length > 0)
-            logger?.LogDebug("Gemini ExtractModelText: merged {Count} non-empty text part(s)", textSegmentCount);
+        {
+            logger?.LogDebug("Gemini ExtractModelText: merged {Count} non-thought text part(s)", textSegmentCount);
+            return sb.ToString().Trim();
+        }
 
-        if (sb.Length == 0)
+        // Parts existed but were only thoughts (or empty): do not use response.Text — would re-introduce thought prose as "the answer".
+        if (anyPartsEnumerated)
         {
             if (response.PromptFeedback != null)
             {
                 logger?.LogWarning(
-                    "Gemini returned no text; prompt feedback blockReason={Reason}, message={Message}",
+                    "Gemini returned only thought parts or empty text; prompt feedback blockReason={Reason}, message={Message}",
                     response.PromptFeedback.BlockReason,
                     response.PromptFeedback.BlockReasonMessage);
             }
             else if (response.Candidates is { Count: > 0 })
             {
                 var c0 = response.Candidates[0];
-                logger?.LogWarning(
-                    "Gemini candidate has no text parts; finishReason={Finish}, contentNull={ContentNull}",
-                    c0.FinishReason,
-                    c0.Content == null);
+                logger?.LogDebug(
+                    "Gemini ExtractModelText: no non-thought text parts; finishReason={Finish}",
+                    c0.FinishReason);
             }
-            else
-                logger?.LogWarning("Gemini response had no candidates");
 
             return null;
         }
 
-        return sb.ToString().Trim();
+        var shortcut = response.Text?.Trim();
+        if (!string.IsNullOrEmpty(shortcut))
+        {
+            textSegmentCount = 1;
+            logger?.LogDebug("Gemini ExtractModelText: used response.Text fallback (length={Length})", shortcut.Length);
+            return shortcut;
+        }
+
+        if (response.PromptFeedback != null)
+        {
+            logger?.LogWarning(
+                "Gemini returned no text; prompt feedback blockReason={Reason}, message={Message}",
+                response.PromptFeedback.BlockReason,
+                response.PromptFeedback.BlockReasonMessage);
+        }
+        else if (response.Candidates is { Count: > 0 })
+        {
+            var c0 = response.Candidates[0];
+            logger?.LogWarning(
+                "Gemini candidate has no text parts; finishReason={Finish}, contentNull={ContentNull}",
+                c0.FinishReason,
+                c0.Content == null);
+        }
+        else
+            logger?.LogWarning("Gemini response had no candidates");
+
+        return null;
     }
 
-    private static void AppendPartText(StringBuilder sb, Part part)
-    {
-        if (string.IsNullOrEmpty(part.Text))
-            return;
-        if (sb.Length > 0)
-            sb.AppendLine();
-        sb.Append(part.Text);
-    }
+    private static bool IsThoughtPart(Part part) => part.Thought == true;
 
 }

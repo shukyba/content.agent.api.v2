@@ -45,7 +45,7 @@
 
   <!--
     Under agents/: *.json are Content; *.md etc. are None. Default CopyToPublishDirectory is Never, so Azure wwwroot had no agents/.
-    Update both so publish + GitHub Actions deploy include tracked files (todo.md, log.md). config.json is gitignored — add on server or CI secret.
+    Update both so publish + GitHub Actions deploy include tracked files (e.g. todo.md). config.json is gitignored — add on server or CI secret.
   -->
   <ItemGroup>
     <None Update="agents\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />

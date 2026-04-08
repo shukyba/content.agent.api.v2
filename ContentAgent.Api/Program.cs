@@ -22,7 +22,7 @@ if (string.IsNullOrEmpty(secretsPath))
 
 builder.Configuration.AddJsonFile(secretsPath, optional: true, reloadOnChange: true);
 
-// log4net: same Azure file path as dance.api (D:\home\site\log\); see log4net.config. Unrelated to agents/**/log.md.
+// log4net: same Azure file path as dance.api (D:\home\site\log\); see log4net.config.
 builder.Logging.ClearProviders();
 builder.Logging.SetMinimumLevel(LogLevel.Trace);
 builder.Logging.AddLog4Net(Path.Combine(AppContext.BaseDirectory, "log4net.config"));

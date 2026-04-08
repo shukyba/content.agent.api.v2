@@ -12,7 +12,6 @@ public interface IAgentPipelineService
 public class AgentPipelineService : IAgentPipelineService
 {
     private const string TodoFileName = "todo.md";
-    private const string LogFileName = "log.md";
     private const string ConfigFileName = "config.json";
     private const string DefaultAgentsPath = "agents";
 
@@ -261,8 +260,6 @@ public class AgentPipelineService : IAgentPipelineService
             var modifiedPaths = allAppliedEdits.Select(e => e.Path).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
             var (_, pushSucceeded) = _gitService.CreateBranchAndCommit(clonePath, spec.GithubToken, modifiedPaths);
-            var logSection = BuildAgentLogSection(allAppliedEdits, pushSucceeded, excludedAppendKeys);
-            await AppendLogAsync(agentFolder, logSection, cancellationToken);
             if (pushSucceeded)
             {
                 _logger.LogInformation("Committed and pushed staging for agent {AgentId} ({EditCount} edit(s) applied)", agentId, allAppliedEdits.Count);
@@ -292,14 +289,6 @@ public class AgentPipelineService : IAgentPipelineService
             return false;
         items = el;
         return true;
-    }
-
-    private static async Task AppendLogAsync(string agentFolder, string logSection, CancellationToken cancellationToken)
-    {
-        var logPath = Path.Combine(agentFolder, LogFileName);
-        var existing = File.Exists(logPath) ? await File.ReadAllTextAsync(logPath, cancellationToken) : "";
-        var newContent = existing + "\n\n" + logSection;
-        await File.WriteAllTextAsync(logPath, newContent.TrimStart(), cancellationToken);
     }
 
     private async Task<ApplyEditsOutcome> ApplyEditsAsync(
@@ -590,33 +579,6 @@ public class AgentPipelineService : IAgentPipelineService
             return ch != '{';
         }
         return false;
-    }
-
-    private static string BuildAgentLogSection(
-        List<AppliedEditResult> appliedEdits,
-        bool pushSucceeded,
-        IReadOnlyList<(string Path, string Key)>? excludedAppendKeysForRetries = null)
-    {
-        const string branchName = "staging";
-        var lines = appliedEdits.Select(e =>
-            e.Mode == "appendKey"
-                ? $"- Updated `{e.Path}` (appendKey{(string.IsNullOrWhiteSpace(e.Key) ? "" : $": `{e.Key}`")})"
-                : e.Mode == "appendCsvRow"
-                    ? $"- Updated `{e.Path}` (appendCsvRow{(string.IsNullOrWhiteSpace(e.Key) ? "" : $": `{e.Key}`")})"
-                    : e.Mode == "appendToArray"
-                        ? $"- Updated `{e.Path}` (appendToArray{(string.IsNullOrWhiteSpace(e.Key) ? "" : $": `{e.Key}`")})"
-                        : $"- Updated `{e.Path}` (full replace)");
-        var exclusionLines = excludedAppendKeysForRetries is { Count: > 0 }
-            ? "\n- Duplicate appendKey skips (excluded from retry prompt): " + string.Join(
-                "; ",
-                excludedAppendKeysForRetries.Select(p => $"`{p.Path}` / `{p.Key}`"))
-            : "";
-        var pushLine = pushSucceeded
-            ? "- Push status: succeeded"
-            : "- Push status: failed (commit created locally)";
-        return $@"## {DateTime.UtcNow:yyyy-MM-dd HH:mm} UTC — branch `{branchName}`
-{string.Join("\n", lines)}{exclusionLines}
-{pushLine}";
     }
 
     private static int GetDuplicateKeyRetryDelaySeconds(IConfiguration configuration)
