@@ -149,7 +149,14 @@ public class GeminiService : IGeminiService
               + string.Join("\n", excludedAppendKeys.Select(e =>
                   $"- path: {e.path.Trim().Replace('\\', '/')} key: {e.key.Trim()}"))
             : "";
-        return $@"You are a website updater. Below is the todo.md content describing what changes to make, plus full schema files and data files when configured. You have Google Search grounding enabled; when the todo asks for fresh or current information (e.g. finding new events), use search to get up-to-date results before producing edits.
+        return $@"You are a website updater. Below is the todo.md content describing what changes to make, plus full schema files and data files when configured. You have Google Search grounding enabled; when the todo asks for fresh or current information (e.g. finding new events), use search to get up-to-date results before producing edits. Do not narrate your search or planning in the final message—only emit the JSON array described below.
+
+OUTPUT CONTRACT (mandatory — the server parses your reply as JSON only):
+- Your entire response must consist of a single JSON array and nothing else: no text before or after it.
+- The first non-whitespace character of your entire response must be ""["" (U+005B). Do not start with Markdown (no **, no #, no bullet lines starting with * or -, no headings, no code fences like ```).
+- Do not write explanations, status updates, or phrases such as ""Initiating search"" or ""I will populate""; perform search internally, then output only the array of file edits (or []).
+- If you cannot produce edits or the todo is already satisfied, respond with exactly: []
+- If you have edits, the array must contain one object per edit using the formats listed below.
 
 TODO.MD:
 ---
@@ -179,7 +186,7 @@ Respond with a JSON array of file edits. Supported edit formats:
    - If **path** is listed under STRUCTURED APPEND-KEY PATHS above: include **""items""**: [ {{ ""fieldA"": ""plain text"", ""fieldB"": ""plain text"" }}, ... ] matching the file's object shape (omit ""value""). String fields may contain apostrophes and quotes as normal JSON.
    - Otherwise: use **""value""** only (snippet to insert before the top-level object closes).
 
-Only include files you are changing; use exact paths from the schema/data sections when relevant. Return valid JSON only, no markdown or explanation.
+Only include files you are changing; use exact paths from the schema/data sections when relevant. Again: the full response must be valid JSON starting with ""["" — no Markdown and no prose outside that array.
 
 Example (appendToArray): [{{""path"": ""src/data/items.ts"", ""editType"": ""appendToArray"", ""key"": ""item-1"", ""value"": ""{{ id: 'item-1', name: 'Example' }}""}}]
 Example (appendCsvRow): [{{""path"": ""src/data/rows.csv"", ""editType"": ""appendCsvRow"", ""key"": ""row-1"", ""value"": ""row-1,Label,2026-01-01""}}]
