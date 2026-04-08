@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using ContentAgent.Api.Models;
@@ -25,6 +26,9 @@ public class GeminiService : IGeminiService
     /// <summary>Model id for v1beta (e.g. .../models/gemini-2.5-flash:generateContent).</summary>
     private const string ModelName = "gemini-2.5-flash";
     private const int MaxQuotaRetries = 0;
+
+    /// <summary>When the main response is prose or malformed JSON, one follow-up call without search tools (JSON-only).</summary>
+    private const int JsonRepairPriorResponseMaxChars = 14000;
     private readonly string _apiKey;
     private readonly ILogger<GeminiService>? _logger;
 
@@ -121,9 +125,48 @@ public class GeminiService : IGeminiService
             return new List<FileEdit>();
         }
 
-        var edits = ParseEditsFromJson(text, _logger);
+        if (!TryParseEditsFromJson(text, out var edits, _logger))
+        {
+            _logger?.LogInformation(
+                "Gemini response had no valid file-edits JSON array; attempting JSON-only repair pass (no search tools).");
+            try
+            {
+                var repairPrompt = BuildJsonRepairPrompt(text);
+                var repairConfig = new GenerateContentConfig
+                {
+                    MaxOutputTokens = 8192,
+                    ThinkingConfig = new ThinkingConfig { IncludeThoughts = false }
+                };
+                var repairResponse = await client.Models.GenerateContentAsync(ModelName, repairPrompt, repairConfig, cancellationToken);
+                var repairText = ExtractModelText(repairResponse, _logger, out _);
+                if (!string.IsNullOrEmpty(repairText) && !TryParseEditsFromJson(repairText, out edits, _logger))
+                    edits = new List<FileEdit>();
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogWarning(
+                    "Gemini JSON repair GenerateContent failed: {Detail}",
+                    TruncateForLog(ex.ToString(), LogFieldMaxChars));
+                edits = new List<FileEdit>();
+            }
+        }
+
         _logger?.LogInformation("Parsed {Count} file edit(s) from Gemini response", edits.Count);
         return edits;
+    }
+
+    private static string BuildJsonRepairPrompt(string previousResponse)
+    {
+        var excerpt = TruncateForLog(previousResponse.Trim(), JsonRepairPriorResponseMaxChars);
+        return $@"The previous model reply could not be parsed as a JSON array of website file edits (it contained Markdown, search narration, or invalid JSON).
+
+Previous reply (excerpt — output JSON only in your response, do not repeat this prose):
+---
+{excerpt}
+---
+
+OUTPUT CONTRACT: Respond with NOTHING except one JSON array of file-edit objects. The first non-whitespace character of your entire message MUST be ""["".
+Each element uses: ""path"", and optionally ""content"", ""editType"", ""key"", ""value"", ""items"" as in the original website-updater task. No Markdown, no code fences, no explanation. If there are no edits, output exactly: []";
     }
 
     private static string BuildPrompt(
@@ -274,14 +317,99 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
         return t.Length > 0 && (t[0] == '[' || t[0] == '{');
     }
 
-    /// <summary>If the model wraps JSON in prose, take the outermost JSON array span.</summary>
-    private static string TryIsolateJsonArray(string text)
+    /// <summary>
+    /// Find the closing <c>]</c> for the array that starts at <paramref name="openBracketIndex"/>,
+    /// respecting JSON string literals so brackets inside strings do not break depth.
+    /// </summary>
+    private static int FindMatchingArrayEnd(string s, int openBracketIndex)
     {
-        var i = text.IndexOf('[');
-        var j = text.LastIndexOf(']');
-        if (i >= 0 && j > i)
-            return text[i..(j + 1)];
-        return text;
+        if (openBracketIndex < 0 || openBracketIndex >= s.Length || s[openBracketIndex] != '[')
+            return -1;
+
+        var depth = 0;
+        var inString = false;
+        var escape = false;
+        for (var i = openBracketIndex; i < s.Length; i++)
+        {
+            var c = s[i];
+            if (inString)
+            {
+                if (escape)
+                {
+                    escape = false;
+                    continue;
+                }
+
+                if (c == '\\')
+                {
+                    escape = true;
+                    continue;
+                }
+
+                if (c == '"')
+                    inString = false;
+                continue;
+            }
+
+            if (c == '"')
+            {
+                inString = true;
+                continue;
+            }
+
+            if (c == '[')
+                depth++;
+            else if (c == ']')
+            {
+                depth--;
+                if (depth == 0)
+                    return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /// <summary>
+    /// Extract JSON array spans that look like <c>[...]</c> with optional whitespace where the first element is
+    /// <c>{{</c> or the array is empty <c>[]</c>. Skips false positives like <c>[year]</c> (first token is not <c>{{</c> or <c>]</c>).
+    /// </summary>
+    private static IEnumerable<string> EnumerateJsonArrayCandidates(string text)
+    {
+        for (var i = 0; i < text.Length; i++)
+        {
+            if (text[i] != '[')
+                continue;
+            var j = i + 1;
+            while (j < text.Length && char.IsWhiteSpace(text[j]))
+                j++;
+            if (j >= text.Length)
+                continue;
+            var next = text[j];
+            if (next != '{' && next != ']')
+                continue;
+
+            var end = FindMatchingArrayEnd(text, i);
+            if (end > i)
+                yield return text[i..(end + 1)];
+        }
+    }
+
+    private static bool TryDeserializeEditsArray(string json, JsonSerializerOptions options, out List<FileEdit>? list)
+    {
+        list = null;
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<List<FileEdit>>(json, options);
+            if (deserialized == null)
+                return false;
+            list = deserialized;
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private static string TruncateForLog(string? s, int maxChars)
@@ -293,55 +421,49 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
         return s[..maxChars] + $"…(truncated, totalLen={s.Length})";
     }
 
-    private List<FileEdit> ParseEditsFromJson(string text, ILogger<GeminiService>? logger)
+    private bool TryParseEditsFromJson(string text, out List<FileEdit> edits, ILogger<GeminiService>? logger)
     {
+        edits = new List<FileEdit>();
         try
         {
             var trimmed = text.Trim();
-            // Model often returns "**thinking** ... ```json [ ... ] ```" — leading fence strip is a no-op then.
             var cleaned = StripMarkdownCodeFence(trimmed);
             if (!StartsWithJsonLike(cleaned))
                 cleaned = StripMarkdownCodeFenceAnywhere(trimmed);
             if (!StartsWithJsonLike(cleaned))
-                cleaned = TryIsolateJsonArray(cleaned);
+                cleaned = trimmed;
 
-            try
+            if (TryDeserializeEditsArray(cleaned, JsonReadOptions, out var direct) && direct != null)
             {
-                var list = JsonSerializer.Deserialize<List<FileEdit>>(cleaned, JsonReadOptions);
-                if (list is { Count: > 0 })
-                    return list;
-                if (list is { Count: 0 })
+                edits = direct;
+                if (edits.Count == 0)
                     logger?.LogInformation(
                         "Gemini JSON parse: deserialized empty array (cleanedLength={Len}, preview={Preview})",
                         cleaned.Length,
                         TruncateForLog(cleaned, 800));
-            }
-            catch (Exception ex)
-            {
-                logger?.LogDebug(
-                    "First JSON parse pass failed; trying array slice. Error={Error} cleanedPreview={Preview}",
-                    TruncateForLog(ex.ToString(), 1200),
-                    TruncateForLog(cleaned, 1200));
+                return true;
             }
 
-            var sliced = TryIsolateJsonArray(cleaned);
-            try
+            logger?.LogDebug(
+                "Direct JSON parse failed; trying embedded JSON array candidates. cleanedPreview={Preview}",
+                TruncateForLog(cleaned, 1200));
+
+            foreach (var candidate in EnumerateJsonArrayCandidates(trimmed).OrderByDescending(static c => c.Length))
             {
-                var list = JsonSerializer.Deserialize<List<FileEdit>>(sliced, JsonReadOptions);
-                return list ?? new List<FileEdit>();
+                if (!TryDeserializeEditsArray(candidate, JsonReadOptions, out var list) || list == null)
+                    continue;
+                edits = list;
+                if (edits.Count == 0)
+                    logger?.LogInformation(
+                        "Gemini JSON parse: deserialized empty array from embedded candidate (candidateLength={Len})",
+                        candidate.Length);
+                return true;
             }
-            catch (Exception ex)
-            {
-                var sliceLead = sliced.TrimStart();
-                var leadCode = sliceLead.Length > 0 ? (int)sliceLead[0] : -1;
-                logger?.LogWarning(
-                    "Failed to parse Gemini file-edits JSON after fence strip and array isolation. sliceLength={SliceLen} leadCharCode={LeadCode} error={Error} slicePreview={Preview}",
-                    sliced.Length,
-                    leadCode,
-                    TruncateForLog(ex.ToString(), 1500),
-                    TruncateForLog(sliced, 1800));
-                return new List<FileEdit>();
-            }
+
+            logger?.LogWarning(
+                "Failed to parse Gemini file-edits JSON (no valid [{{...}}] or [] array found). preview={Preview}",
+                TruncateForLog(trimmed, 1800));
+            return false;
         }
         catch (Exception ex)
         {
@@ -349,7 +471,7 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
                 "Failed to normalize Gemini response for JSON parsing. error={Error} inputPreview={Preview}",
                 TruncateForLog(ex.ToString(), 1500),
                 TruncateForLog(text.Trim(), 1800));
-            return new List<FileEdit>();
+            return false;
         }
     }
 
