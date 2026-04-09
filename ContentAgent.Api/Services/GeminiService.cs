@@ -23,9 +23,14 @@ public class GeminiService : IGeminiService
     /// <summary>Short preview lines so Message + prefix stay under 4000.</summary>
     private const int LogResponsePreviewChars = 1800;
 
-    /// <summary>Model id for v1beta (e.g. .../models/gemini-2.5-flash:generateContent).</summary>
-    private const string ModelName = "gemini-2.5-flash";
-    private const int MaxQuotaRetries = 0;
+    /// <summary>Primary model id for v1beta (search + structured edits).</summary>
+    private const string PrimaryModelName = "gemini-2.5-flash";
+
+    /// <summary>Used once after backoff when <see cref="PrimaryModelName"/> fails with a retriable API error.</summary>
+    private const string FallbackModelName = "gemini-2.5-flash-lite";
+
+    /// <summary>Delay before the single fallback call to <see cref="FallbackModelName"/>.</summary>
+    private static readonly TimeSpan FallbackModelBackoff = TimeSpan.FromSeconds(3);
 
     /// <summary>Phase-2 prompt: max chars of phase-1 assistant text (incl. thoughts) for context.</summary>
     private const int Phase1ContextMaxChars = 16000;
@@ -71,18 +76,20 @@ public class GeminiService : IGeminiService
 
         string? text = null;
         GenerateContentResponse? phase1Response = null;
-        for (var attempt = 0; attempt <= MaxQuotaRetries; attempt++)
+        var phase1Model = PrimaryModelName;
+        for (var attempt = 0; attempt < 2; attempt++)
         {
             try
             {
-                phase1Response = await client.Models.GenerateContentAsync(ModelName, prompt, config, cancellationToken);
+                phase1Response = await client.Models.GenerateContentAsync(phase1Model, prompt, config, cancellationToken);
                 text = ExtractModelText(phase1Response, _logger, out var textSegmentCount);
                 if (!string.IsNullOrEmpty(text))
                 {
                     var trimmed = text.Trim();
                     var leadCode = trimmed.Length > 0 ? (int)trimmed[0] : -1;
                     _logger?.LogInformation(
-                        "Gemini phase 1 (non-thought text): length={Length}, textSegments={Segments}, leadingCharCode={LeadCode}, hasJsonFence={HasFence}, firstBracketIndex={BracketIdx}",
+                        "Gemini phase 1 (model={Model}, non-thought text): length={Length}, textSegments={Segments}, leadingCharCode={LeadCode}, hasJsonFence={HasFence}, firstBracketIndex={BracketIdx}",
+                        phase1Model,
                         text.Length,
                         textSegmentCount,
                         leadCode,
@@ -99,22 +106,23 @@ public class GeminiService : IGeminiService
 
                 break;
             }
-            catch (Exception ex) when (GeminiTransientErrors.IsRetriable(ex) && attempt < MaxQuotaRetries)
+            catch (Exception ex) when (GeminiTransientErrors.IsRetriable(ex) && attempt == 0)
             {
-                var delay = TimeSpan.FromSeconds(60 * (attempt + 1));
                 _logger?.LogInformation(
-                    "Gemini GenerateContent retriable failure (attempt {Attempt} of {MaxAttempts}), waiting {DelaySeconds}s: {Reason}",
-                    attempt + 1,
-                    MaxQuotaRetries + 1,
-                    (int)delay.TotalSeconds,
+                    "Gemini phase 1 retriable failure on {Model}, waiting {DelaySeconds}s then retry with {FallbackModel}: {Reason}",
+                    phase1Model,
+                    (int)FallbackModelBackoff.TotalSeconds,
+                    FallbackModelName,
                     TruncateForLog(ex.Message, 500));
-                await Task.Delay(delay, cancellationToken);
+                await Task.Delay(FallbackModelBackoff, cancellationToken);
+                phase1Model = FallbackModelName;
             }
             catch (Exception ex)
             {
                 // Avoid oversized Exception column on ADONetAppender (varchar(4000)).
                 _logger?.LogError(
-                    "Gemini GenerateContent failed: {Detail}",
+                    "Gemini GenerateContent failed (model={Model}): {Detail}",
+                    phase1Model,
                     TruncateForLog(ex.ToString(), LogFieldMaxChars));
                 return new List<FileEdit>();
             }
@@ -138,7 +146,7 @@ public class GeminiService : IGeminiService
                     // IncludeThoughts true: false often yields null Text/Parts on 2.5 Flash; skip thought parts in ExtractModelText.
                     ThinkingConfig = new ThinkingConfig { IncludeThoughts = true }
                 };
-                var phase2Response = await client.Models.GenerateContentAsync(ModelName, phase2Prompt, phase2Config, cancellationToken);
+                var phase2Response = await client.Models.GenerateContentAsync(PrimaryModelName, phase2Prompt, phase2Config, cancellationToken);
                 var phase2Text = ExtractModelText(phase2Response, _logger, out _);
                 if (!string.IsNullOrEmpty(phase2Text) && !TryParseEditsFromJson(phase2Text, out edits, _logger))
                     edits = new List<FileEdit>();
