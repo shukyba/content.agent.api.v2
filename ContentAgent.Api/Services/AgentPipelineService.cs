@@ -204,11 +204,16 @@ public class AgentPipelineService : IAgentPipelineService
 
             var excludedAppendKeys = new List<(string Path, string Key)>();
             var allAppliedEdits = new List<AppliedEditResult>();
+            string? qualityFeedback = null;
 
             for (var attempt = 0; attempt < maxGeminiAttempts; attempt++)
             {
+                var promptTodo = string.IsNullOrWhiteSpace(qualityFeedback)
+                    ? agentTodoContent
+                    : $"{agentTodoContent}\n\n{qualityFeedback}";
+
                 var edits = await geminiService.GetWebsiteEditsAsync(
-                    agentTodoContent,
+                    promptTodo,
                     clonePath,
                     schemaPaths,
                     spec.Data,
@@ -222,6 +227,26 @@ public class AgentPipelineService : IAgentPipelineService
                     if (attempt == 0)
                         _logger.LogInformation("No edits from Gemini for agent {AgentId}", agentId);
                     break;
+                }
+
+                var qualityEvaluation = AgentQualityGateEvaluator.Evaluate(agentId, spec, edits);
+                if (!qualityEvaluation.Passed)
+                {
+                    qualityFeedback = qualityEvaluation.FeedbackForModel;
+                    _logger.LogWarning(
+                        "Quality gate failed for agent {AgentId} on attempt {Attempt} of {Max}. Issues: {Issues}",
+                        agentId,
+                        attempt + 1,
+                        maxGeminiAttempts,
+                        string.Join(" | ", qualityEvaluation.Issues));
+
+                    if (attempt < maxGeminiAttempts - 1)
+                        continue;
+
+                    _logger.LogWarning(
+                        "Quality gate still failing after max retries for agent {AgentId}. Skipping commit.",
+                        agentId);
+                    return false;
                 }
 
                 _logger.LogInformation(
@@ -239,6 +264,8 @@ public class AgentPipelineService : IAgentPipelineService
 
                 if (outcome.SkippedAppendKeyDuplicates.Count == 0)
                     break;
+
+                qualityFeedback = null;
 
                 if (attempt >= maxGeminiAttempts - 1)
                     break;

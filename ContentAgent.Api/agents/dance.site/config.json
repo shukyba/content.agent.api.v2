@@ -10,6 +10,89 @@
   "structuredAppendKeyPaths": [
     "src/data/festivalFAQs.ts"
   ],
+  "qualityGate": {
+    "enabled": true,
+    "rules": [
+      {
+        "name": "festival-array-edit-present",
+        "type": "text",
+        "path": "src/data/festivals2026.ts",
+        "editType": "appendToArray",
+        "requireMatch": true,
+        "textSource": "value"
+      },
+      {
+        "name": "festival-faq-edit-present",
+        "type": "items",
+        "path": "src/data/festivalFAQs.ts",
+        "editType": "appendKey",
+        "requireMatch": true,
+        "minItems": 10,
+        "maxItems": 14
+      },
+      {
+        "name": "festival-description-depth",
+        "type": "text",
+        "path": "src/data/festivals2026.ts",
+        "editType": "appendToArray",
+        "textSource": "value",
+        "extractRegex": "description\\s*:\\s*'(?<value>(?:\\\\'|[^'])*)'",
+        "minLength": 280,
+        "requiredTokens": [
+          "workshop",
+          "social",
+          "party",
+          "lineup",
+          "artist",
+          "hotel",
+          "airport",
+          "schedule",
+          "pass",
+          "ticket",
+          "beginner",
+          "advanced",
+          "venue"
+        ],
+        "minTokenMatches": 3,
+        "minRegexMatches": 1,
+        "regexPattern": "\\\\b\\\\d{1,4}\\\\b"
+      },
+      {
+        "name": "festival-faq-specificity-and-coverage",
+        "type": "items",
+        "path": "src/data/festivalFAQs.ts",
+        "editType": "appendKey",
+        "questionField": "question",
+        "answerField": "answer",
+        "minQuestionLength": 18,
+        "minAnswerLength": 120,
+        "minConcreteAnswers": 6,
+        "concreteRegexes": [
+          "\\\\b\\\\d{1,4}\\\\b",
+          "https?://",
+          "[$€£]\\\\s?\\\\d"
+        ],
+        "requiredTopicGroups": [
+          {
+            "name": "dates-location",
+            "tokens": ["date", "when", "where", "venue", "city"]
+          },
+          {
+            "name": "tickets-pricing",
+            "tokens": ["ticket", "pass", "price", "cost", "early bird", "refund"]
+          },
+          {
+            "name": "schedule",
+            "tokens": ["schedule", "workshop", "party", "lineup", "dj", "show"]
+          },
+          {
+            "name": "fit-logistics",
+            "tokens": ["beginner", "level", "airport", "transport", "hotel", "accommodation"]
+          }
+        ]
+      }
+    ]
+  },
   "sitemap": {
     "google": {
       "enabled": true,
