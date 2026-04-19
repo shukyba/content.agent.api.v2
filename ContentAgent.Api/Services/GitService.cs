@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using ContentAgent.Api.Models;
 using LibGit2Sharp;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace ContentAgent.Api.Services;
@@ -18,35 +19,52 @@ public interface IGitService
 public class GitService : IGitService
 {
     private static readonly Regex ExtractRepoName = new(@"(?:/|:)([^/]+?)(?:\.git)?$", RegexOptions.Compiled);
+    private readonly IConfiguration _configuration;
     private readonly ILogger<GitService> _logger;
 
-    public GitService(ILogger<GitService> logger)
+    public GitService(IConfiguration configuration, ILogger<GitService> logger)
     {
+        _configuration = configuration;
         _logger = logger;
+    }
+
+    /// <summary>
+    /// Shallow clone depth: <c>0</c> = full history (default LibGit2Sharp). <c>1</c> = single commit layer (smallest .git; may fail merges if merge-base is missing). Typical: 20–100.
+    /// </summary>
+    private int GetGitCloneDepth()
+    {
+        var v = _configuration["AgentPipeline:GitCloneDepth"];
+        if (!int.TryParse(v, out var depth) || depth < 0)
+            return 50;
+        return depth;
     }
 
     public string? Clone(string repoUrl, string? githubToken, string targetPath)
     {
-        FetchOptions? fetchOptions = null;
+        var cloneDepth = GetGitCloneDepth();
+        var fetchOptions = new FetchOptions();
         if (!string.IsNullOrEmpty(githubToken))
         {
-            fetchOptions = new FetchOptions
-            {
-                CredentialsProvider = (_, __, ___) =>
-                    new UsernamePasswordCredentials
-                    {
-                        Username = "git",
-                        Password = githubToken
-                    }
-            };
+            fetchOptions.CredentialsProvider = (_, __, ___) =>
+                new UsernamePasswordCredentials
+                {
+                    Username = "git",
+                    Password = githubToken
+                };
         }
 
-        var options = fetchOptions != null ? new CloneOptions(fetchOptions) : new CloneOptions();
+        if (cloneDepth > 0)
+            fetchOptions.Depth = cloneDepth;
+
+        var options = new CloneOptions(fetchOptions);
 
         try
         {
             Repository.Clone(repoUrl, targetPath, options);
-            _logger.LogInformation("Successfully cloned repository to {Path}", targetPath);
+            _logger.LogInformation(
+                "Successfully cloned repository to {Path} (GitCloneDepth={Depth})",
+                targetPath,
+                cloneDepth > 0 ? cloneDepth.ToString() : "full");
             return targetPath;
         }
         catch (LibGit2SharpException ex)
