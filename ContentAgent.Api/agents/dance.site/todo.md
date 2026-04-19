@@ -24,6 +24,21 @@
      - **Do not** mention or reference **Go&Dance** (or “Go and Dance”, “Go & Dance”, or similar) anywhere in the FAQ text—write for readers on **this site only**, without naming the platform or aggregator.
 - Preserve all existing content; only add the new festival and its FAQs.
 
+## Quality guardrails (mandatory)
+
+- Avoid thin/generic copy. Every new festival entry must include **specific details** from verified sources (names, numbers, dates, policy details).
+- In `festivals2026.ts`, write a **unique description** (max 800 chars) that includes at least:
+  - one concrete event characteristic (e.g. lineup style, format, party/workshop model),
+  - one logistics or planning detail (venue/hotel/transport/access),
+  - one attendee-relevant practical detail (price tier, pass type, beginner fit, schedule shape, etc.).
+- In `festivalFAQs.ts`, make the FAQ useful for decision-making, not just description. Cover:
+  - dates/location + venue context,
+  - tickets/pricing/pass options,
+  - schedule shape or lineup context,
+  - attendee fit/logistics (level, stay, travel, policy).
+- Answers must prioritize facts over filler. Include concrete specifics when available (numbers, ranges, named entities, links).
+- Do not recycle generic sentence templates across festivals. Keep wording and emphasis festival-specific.
+
 When creating the pageTitle, you MUST follow this exact format:
 [Festival Name] [City] [Year] – Dates, Tickets & Guide
 
