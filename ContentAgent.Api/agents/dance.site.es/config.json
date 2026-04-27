@@ -1,0 +1,12 @@
+{
+  "url": "https://github.com/shukyba/dance.site",
+  "schema": [
+    "src/data/festivals2026.es.schema",
+    "src/data/festivalFAQs.es.schema"
+  ],
+  "data": [
+    "src/data/festivals2026.es.ts",
+    "src/data/festivals2026.es.csv",
+    "src/data/festivalFAQs.es.ts"
+  ]
+}
