@@ -25,6 +25,13 @@ public class FileEdit
     public string? Value { get; set; }
 
     /// <summary>
+    /// For <c>appendToArray</c> on configured structured array paths: JSON object for one array item.
+    /// The pipeline emits a safe TypeScript object literal from this payload.
+    /// </summary>
+    [JsonPropertyName("item")]
+    public JsonElement? Item { get; set; }
+
+    /// <summary>
     /// For <c>appendKey</c> on paths listed in agent <c>structuredAppendKeyPaths</c>: JSON array of objects (plain string fields in JSON).
     /// The pipeline emits valid TS literals—preferred over hand-written <see cref="Value"/> for those paths.
     /// </summary>

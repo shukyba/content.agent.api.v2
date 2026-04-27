@@ -5,8 +5,11 @@
     "src/data/festivalFAQs.es.schema"
   ],
   "data": [
-    "src/data/festivals2026.es.ts",
+    "src/data/festivals2026.es.data.ts",
     "src/data/festivals2026.es.csv",
     "src/data/festivalFAQs.es.ts"
+  ],
+  "structuredAppendArrayPaths": [
+    "src/data/festivals2026.es.data.ts"
   ]
 }

@@ -136,6 +136,9 @@ public class AgentPipelineService : IAgentPipelineService
             var structuredFromJson = ConfigJsonHelpers.TryGetStringList(json, "structuredAppendKeyPaths");
             if (structuredFromJson is { Count: > 0 })
                 spec.StructuredAppendKeyPaths = structuredFromJson;
+            var structuredArrayFromJson = ConfigJsonHelpers.TryGetStringList(json, "structuredAppendArrayPaths");
+            if (structuredArrayFromJson is { Count: > 0 })
+                spec.StructuredAppendArrayPaths = structuredArrayFromJson;
 
             AgentGitHubConfigHelper.ApplyAgentGitHubTokenFromConfiguration(_configuration, agentId, spec);
         }
@@ -213,6 +216,7 @@ public class AgentPipelineService : IAgentPipelineService
                     schemaPaths,
                     spec.Data,
                     spec.StructuredAppendKeyPaths,
+                    spec.StructuredAppendArrayPaths,
                     agentFolder,
                     excludedAppendKeys.Count > 0 ? excludedAppendKeys : null,
                     cancellationToken);
@@ -231,7 +235,7 @@ public class AgentPipelineService : IAgentPipelineService
                     attempt + 1,
                     maxGeminiAttempts);
 
-                var outcome = await ApplyEditsAsync(clonePath, edits, spec.StructuredAppendKeyPaths, cancellationToken);
+                var outcome = await ApplyEditsAsync(clonePath, edits, spec.StructuredAppendKeyPaths, spec.StructuredAppendArrayPaths, cancellationToken);
                 allAppliedEdits.AddRange(outcome.Applied);
 
                 foreach (var skip in outcome.SkippedAppendKeyDuplicates)
@@ -291,10 +295,23 @@ public class AgentPipelineService : IAgentPipelineService
         return true;
     }
 
+    private static bool TryGetStructuredArrayItem(FileEdit edit, out JsonElement item)
+    {
+        item = default;
+        if (!edit.Item.HasValue)
+            return false;
+        var el = edit.Item.Value;
+        if (el.ValueKind != JsonValueKind.Object)
+            return false;
+        item = el;
+        return true;
+    }
+
     private async Task<ApplyEditsOutcome> ApplyEditsAsync(
         string clonePath,
         List<FileEdit> edits,
         IReadOnlyList<string>? structuredAppendKeyPaths,
+        IReadOnlyList<string>? structuredAppendArrayPaths,
         CancellationToken cancellationToken)
     {
         var modifiedPaths = new List<AppliedEditResult>();
@@ -326,7 +343,16 @@ public class AgentPipelineService : IAgentPipelineService
 
             var isAppendToArray = string.Equals(edit.EditType, "appendToArray", StringComparison.OrdinalIgnoreCase);
             var isAppendCsvRow = string.Equals(edit.EditType, "appendCsvRow", StringComparison.OrdinalIgnoreCase);
-            var isArrayOrCsvAppend = (isAppendToArray || isAppendCsvRow) && !string.IsNullOrWhiteSpace(edit.Value);
+            var structuredArrayPath = isAppendToArray && StructuredAppendKeyHelper.MatchesConfiguredPath(pathNorm, structuredAppendArrayPaths);
+            if (structuredArrayPath && !TryGetStructuredArrayItem(edit, out _))
+            {
+                _logger.LogWarning("Skipping appendToArray on structured path without valid item object: {Path}", pathNorm);
+                continue;
+            }
+            var hasArrayPayload = isAppendCsvRow
+                ? !string.IsNullOrWhiteSpace(edit.Value)
+                : isAppendToArray && (structuredArrayPath || !string.IsNullOrWhiteSpace(edit.Value) || TryGetStructuredArrayItem(edit, out _));
+            var isArrayOrCsvAppend = (isAppendToArray || isAppendCsvRow) && hasArrayPayload;
 
             if (string.Equals(edit.EditType, "appendKey", StringComparison.OrdinalIgnoreCase))
             {
@@ -486,7 +512,26 @@ public class AgentPipelineService : IAgentPipelineService
                 var before = existing[..lastIdx];
                 var after = existing[lastIdx..];
                 var addComma = NeedsLeadingComma(before);
-                var insertion = (addComma ? ",\n  " : "\n  ") + (edit.Value ?? string.Empty).Trim() + "\n";
+                string payload;
+                if (structuredArrayPath && TryGetStructuredArrayItem(edit, out var itemObject))
+                {
+                    payload = StructuredAppendKeyHelper.FormatArrayObjectItem(itemObject, 2);
+                }
+                else if (!string.IsNullOrWhiteSpace(edit.Value))
+                {
+                    payload = edit.Value.Trim();
+                }
+                else
+                {
+                    _logger.LogWarning(
+                        structuredArrayPath
+                            ? "Skipping appendToArray edit on structured path; expected non-empty item object or value: {Path}"
+                            : "Skipping appendToArray edit with empty value for path: {Path}",
+                        pathNorm);
+                    continue;
+                }
+
+                var insertion = (addComma ? ",\n  " : "\n  ") + payload + "\n";
                 var newContent = before + insertion + after;
                 var dir = Path.GetDirectoryName(fullPath);
                 if (!string.IsNullOrEmpty(dir))
@@ -576,7 +621,12 @@ public class AgentPipelineService : IAgentPipelineService
             var ch = textBeforeClosing[i];
             if (char.IsWhiteSpace(ch))
                 continue;
-            return ch != '{';
+            // Do not inject an extra comma when the existing collection/property already
+            // ends with one. This prevents empty array slots like:
+            //   { ... },
+            // ,
+            //   { ... }
+            return ch != '{' && ch != '[' && ch != ',';
         }
         return false;
     }
@@ -592,6 +642,7 @@ public class AgentPipelineService : IAgentPipelineService
         var v = configuration["AgentPipeline:MaxDuplicateKeyRetries"];
         return int.TryParse(v, out var m) && m >= 0 ? m : 2;
     }
+
 
     private static void TryAddExcludedAppendKey(List<(string Path, string Key)> list, string path, string key)
     {

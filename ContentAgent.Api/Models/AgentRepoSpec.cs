@@ -26,6 +26,13 @@ public class AgentRepoSpec
     [JsonPropertyName("structuredAppendKeyPaths")]
     public List<string>? StructuredAppendKeyPaths { get; set; }
 
+    /// <summary>
+    /// Optional. Repo-relative paths where <c>appendToArray</c> should use JSON <c>item</c> (object payload);
+    /// the pipeline emits TypeScript with safe string escaping.
+    /// </summary>
+    [JsonPropertyName("structuredAppendArrayPaths")]
+    public List<string>? StructuredAppendArrayPaths { get; set; }
+
     /// <summary>Optional. Submit sitemaps to Google (service account) and/or Bing.</summary>
     [JsonPropertyName("sitemap")]
     public AgentSitemapNode? Sitemap { get; set; }

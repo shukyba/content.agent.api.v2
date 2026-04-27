@@ -19,6 +19,9 @@ public static class StructuredAppendKeyHelper
 
     /// <summary>True if <paramref name="pathNorm"/> (forward slashes) matches an entry in <paramref name="configured"/> (exact match after normalization).</summary>
     public static bool MatchesStructuredAppendPath(string pathNorm, IReadOnlyList<string>? configured)
+        => MatchesConfiguredPath(pathNorm, configured);
+
+    public static bool MatchesConfiguredPath(string pathNorm, IReadOnlyList<string>? configured)
     {
         if (configured == null || configured.Count == 0)
             return false;
@@ -79,6 +82,33 @@ public static class StructuredAppendKeyHelper
         if (key.Contains('\'', StringComparison.Ordinal))
             return JsonSerializer.Serialize(key, TsLiteralOptions);
         return $"'{key}'";
+    }
+
+    /// <summary>Formats one object literal item for appendToArray structured payloads.</summary>
+    public static string FormatArrayObjectItem(JsonElement itemObject, int indentSpaces = 2)
+    {
+        if (itemObject.ValueKind != JsonValueKind.Object)
+            throw new ArgumentException("item must be a JSON object.", nameof(itemObject));
+
+        var indent = new string(' ', Math.Max(0, indentSpaces));
+        var nestedIndent = indent + "  ";
+        var sb = new StringBuilder();
+        sb.Append("{\n");
+        var properties = itemObject.EnumerateObject().ToList();
+        for (var i = 0; i < properties.Count; i++)
+        {
+            var prop = properties[i];
+            sb.Append(nestedIndent)
+              .Append(prop.Name)
+              .Append(": ")
+              .Append(FormatTsValue(prop.Value));
+            if (i < properties.Count - 1)
+                sb.Append(',');
+            sb.Append('\n');
+        }
+
+        sb.Append(indent).Append('}');
+        return sb.ToString();
     }
 
     private static string FormatTsValue(JsonElement v) =>

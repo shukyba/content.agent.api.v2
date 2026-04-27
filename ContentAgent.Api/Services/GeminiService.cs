@@ -11,8 +11,9 @@ namespace ContentAgent.Api.Services;
 public interface IGeminiService
 {
     /// <param name="structuredAppendKeyPaths">Repo-relative paths where appendKey must use JSON <c>items</c> (see agent config).</param>
+    /// <param name="structuredAppendArrayPaths">Repo-relative paths where appendToArray must use JSON <c>item</c> objects.</param>
     /// <param name="auxiliaryFileRoot">Optional agent folder: if a path is missing under <paramref name="repoPath"/>, try the same relative path here (e.g. bundled schema next to config).</param>
-    Task<List<FileEdit>> GetWebsiteEditsAsync(string agentTodoContent, string repoPath, IReadOnlyList<string>? schemaPaths = null, IReadOnlyList<string>? dataPaths = null, IReadOnlyList<string>? structuredAppendKeyPaths = null, string? auxiliaryFileRoot = null, IReadOnlyList<(string path, string key)>? excludedAppendKeys = null, CancellationToken cancellationToken = default);
+    Task<List<FileEdit>> GetWebsiteEditsAsync(string agentTodoContent, string repoPath, IReadOnlyList<string>? schemaPaths = null, IReadOnlyList<string>? dataPaths = null, IReadOnlyList<string>? structuredAppendKeyPaths = null, IReadOnlyList<string>? structuredAppendArrayPaths = null, string? auxiliaryFileRoot = null, IReadOnlyList<(string path, string key)>? excludedAppendKeys = null, CancellationToken cancellationToken = default);
 }
 
 public class GeminiService : IGeminiService
@@ -45,7 +46,7 @@ public class GeminiService : IGeminiService
         _logger = logger;
     }
 
-    public async Task<List<FileEdit>> GetWebsiteEditsAsync(string agentTodoContent, string repoPath, IReadOnlyList<string>? schemaPaths = null, IReadOnlyList<string>? dataPaths = null, IReadOnlyList<string>? structuredAppendKeyPaths = null, string? auxiliaryFileRoot = null, IReadOnlyList<(string path, string key)>? excludedAppendKeys = null, CancellationToken cancellationToken = default)
+    public async Task<List<FileEdit>> GetWebsiteEditsAsync(string agentTodoContent, string repoPath, IReadOnlyList<string>? schemaPaths = null, IReadOnlyList<string>? dataPaths = null, IReadOnlyList<string>? structuredAppendKeyPaths = null, IReadOnlyList<string>? structuredAppendArrayPaths = null, string? auxiliaryFileRoot = null, IReadOnlyList<(string path, string key)>? excludedAppendKeys = null, CancellationToken cancellationToken = default)
     {
         var hasExplicitSchema = schemaPaths != null && schemaPaths.Count > 0;
         var hasExplicitData = dataPaths != null && dataPaths.Count > 0;
@@ -57,7 +58,7 @@ public class GeminiService : IGeminiService
             ? GetFullTextFilesFromList(repoPath, dataPaths!, auxiliaryFileRoot)
             : Array.Empty<(string, string)>();
 
-        var prompt = BuildPrompt(agentTodoContent, schemaFiles, dataFiles, structuredAppendKeyPaths, excludedAppendKeys);
+        var prompt = BuildPrompt(agentTodoContent, schemaFiles, dataFiles, structuredAppendKeyPaths, structuredAppendArrayPaths, excludedAppendKeys);
 
         using var client = new Client(vertexAI: null, apiKey: _apiKey, credential: null, project: null, location: null, httpOptions: null);
         // Cannot use ResponseMimeType = "application/json" together with tools (Google Search) — API returns ClientError.
@@ -217,6 +218,7 @@ PHASE 2 OUTPUT CONTRACT (mandatory):
         IReadOnlyList<(string path, string fullContent)> schemaFiles,
         IReadOnlyList<(string path, string fullContent)> dataFiles,
         IReadOnlyList<string>? structuredAppendKeyPaths,
+        IReadOnlyList<string>? structuredAppendArrayPaths,
         IReadOnlyList<(string path, string key)>? excludedAppendKeys)
     {
         var schemaSection = string.Join("\n\n", schemaFiles.Select(f => $"--- {f.path} (full content) ---\n{f.fullContent}"));
@@ -230,6 +232,9 @@ PHASE 2 OUTPUT CONTRACT (mandatory):
         var structuredPathsLine = structuredAppendKeyPaths is { Count: > 0 }
             ? string.Join("; ", structuredAppendKeyPaths.Select(p => p.Trim().Replace('\\', '/')))
             : "(none - use raw value for all appendKey edits)";
+        var structuredArrayPathsLine = structuredAppendArrayPaths is { Count: > 0 }
+            ? string.Join("; ", structuredAppendArrayPaths.Select(p => p.Trim().Replace('\\', '/')))
+            : "(none - use raw value for appendToArray edits)";
         var exclusionBlock = excludedAppendKeys is { Count: > 0 }
             ? "\n\nEXCLUDED APPEND KEYS (already present in the repo clone — do NOT use appendKey with these exact path+key pairs; choose a different item from the todo or other edits. If the todo cannot be satisfied without these keys, return an empty JSON array [] or only non-conflicting edits.):\n"
               + string.Join("\n", excludedAppendKeys.Select(e =>
@@ -257,6 +262,12 @@ STRUCTURED APPEND-KEY PATHS (agent configuration - exact repo-relative paths):
 When these paths are listed, **appendKey** for those files must use a JSON **""items""** array: each element is an object whose property names and string values match the target TypeScript shape (plain text in JSON - no hand-written TS string quotes). The server emits safe TypeScript literals. Do not use raw ""value"" with embedded TS for those paths unless you cannot use ""items"".
 When the list is (none), **appendKey** always uses ""value"" (snippet inserted before the top-level object closes) as usual.
 
+STRUCTURED APPEND-ARRAY PATHS (agent configuration - exact repo-relative paths):
+{structuredArrayPathsLine}
+
+When these paths are listed, **appendToArray** for those files must use JSON **""item""** (a single object payload), not raw ""value"". The server emits safe TypeScript object literals and inserts before the closing ""];"".
+When the list is (none), appendToArray uses raw ""value"" (one TS array element) as usual.
+
 When adding new entries to list or data files (e.g. CSV, TS arrays, keyed records), preserve all existing content and append or insert the new item in the same format as existing ones.
 **CSV files (.csv):** For any CSV that **already exists** in the repo, **do not** use full replace (path + content)—the pipeline rejects it. Add data only by appending **one new line at a time** with ""editType"": ""appendCsvRow"" (preferred) or ""appendToArray"": ""value"" must be a **single** complete CSV line matching the file's columns. The server appends and **skips** if the first-column id already exists. (Only if the CSV path does not exist yet may you use one full replace to create the file—rare.)
 
@@ -264,7 +275,10 @@ Respond with a JSON array of file edits. Supported edit formats:
 
 1) **Full replace**: use ""path"" and ""content"". **Not allowed for .csv files that already exist.** Use for small non-CSV files (or initial creation of a missing CSV only).
 
-2) **Append to array** (TypeScript arrays): for large TS array files where you only add one new element, use ""path"", ""editType"": ""appendToArray"", ""key"" (optional, for logging), and ""value"": ""the exact text of one array element"". The pipeline inserts before the closing ""];"". Do not use ""content"" for this.
+2) **Append to array** (TypeScript arrays): for large TS array files where you only add one new element, use ""path"", ""editType"": ""appendToArray"", ""key"" (optional, for logging), and either:
+   - ""item"": {{ ... }} for files listed under STRUCTURED APPEND-ARRAY PATHS (required there), or
+   - ""value"": ""the exact text of one array element"" for all other files.
+   The pipeline inserts before the closing ""];"". Do not use ""content"" for this.
 
 3) **Append CSV row** (CSV only): use ""path"" (must end in .csv), ""editType"": ""appendCsvRow"", ""key"" (optional), and ""value"": ""one single CSV data line"". Prefer this over appendToArray for .csv clarity.
 
@@ -275,6 +289,7 @@ Respond with a JSON array of file edits. Supported edit formats:
 Only include files you are changing; use exact paths from the schema/data sections when relevant. Again: the full response must be valid JSON starting with ""["" — no Markdown and no prose outside that array.
 
 Example (appendToArray): [{{""path"": ""src/data/items.ts"", ""editType"": ""appendToArray"", ""key"": ""item-1"", ""value"": ""{{ id: 'item-1', name: 'Example' }}""}}]
+Example (appendToArray with item on structured array path): [{{""path"": ""src/data/festivals2026.es.data.ts"", ""editType"": ""appendToArray"", ""key"": ""festival-1"", ""item"": {{""id"": ""festival-1"", ""esSlug"": ""festival-ejemplo-2026"", ""startDate"": ""2026-06-01"", ""endDate"": ""2026-06-05"", ""country"": ""Spain""}}}}]
 Example (appendCsvRow): [{{""path"": ""src/data/rows.csv"", ""editType"": ""appendCsvRow"", ""key"": ""row-1"", ""value"": ""row-1,Label,2026-01-01""}}]
 Example (appendKey with items for a structured path): [{{""path"": ""src/data/keyedQna.ts"", ""editType"": ""appendKey"", ""key"": ""record-slug"", ""items"": [{{""question"": ""Hours?"", ""answer"": ""Doors open at 6pm; there isn't a fixed end time.""}}, {{""question"": ""Parking?"", ""answer"": ""Garage on site.""}}]}}]";
     }
