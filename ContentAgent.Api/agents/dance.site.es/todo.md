@@ -19,7 +19,7 @@
    - Edit only inside the `spanishFestivalSeeds` array (between `[` and `]`).
    - Do not modify imports, interfaces, comments, export names, or anything outside that array.
    - Add exactly one object in this file per run.
-3. **Spanish FAQ file** (`src/data/festivalFAQs.es.ts`)
+3. **Spanish FAQ file** (`src/data/festivalData.es.ts`)
    - Add or update a festival-specific FAQ entry only if the festival is represented in this file's data flow.
    - Do not break existing exports or TypeScript shape.
 

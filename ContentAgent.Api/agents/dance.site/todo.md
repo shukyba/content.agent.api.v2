@@ -2,10 +2,10 @@
 
 - Find a new Salsa/Latin dance festival that does **not** already appear in our data files. You **must** perform a fresh online search for real 2026 events; do not rely only on your training knowledge.
 - Add the new festival in three places:
-  - **Festival `id`** (field `id` in `festivals2026.ts` and the FAQ object key in `festivalFAQs.ts`): kebab-case slug from **[Festival Name] [City] [Year]** — lowercase, hyphens between segments, ASCII only. Example: `dance-casa-budapest-2026`. Omit edition numbers and marketing words from the slug; keep city and year so ids stay unique and consistent with the page title.
+  - **Festival `id`** (field `id` in `festivals2026.ts` and the FAQ object key in `festivalData.ts`): kebab-case slug from **[Festival Name] [City] [Year]** — lowercase, hyphens between segments, ASCII only. Example: `dance-casa-budapest-2026`. Omit edition numbers and marketing words from the slug; keep city and year so ids stay unique and consistent with the page title.
   1. **CSV** (src/data/festivals2026.csv) – append one row in the same columns as existing rows.
   2. **Festival list** (src/data/festivals2026.ts) – add one new object to the `festivals2026` array in the same format (id, name, pageTitle, location, country, startDate, endDate, danceStyles, description, website, coordinates, estimatedCost, venue, etc.). Keep **`description` to a maximum of 800 characters** so the `appendToArray` JSON payload stays parseable; summarize if needed.
-  3. **FAQ section** (src/data/festivalFAQs.ts) – add a new key (festival id in kebab-case) with an **in-depth** FAQ array for people deciding whether to attend. Requirements:
+  3. **FAQ section** (src/data/festivalData.ts) – add a new key (festival id in kebab-case) with an **in-depth** FAQ array for people deciding whether to attend. Requirements:
      - **Count:** **10–14 questions** (hard **maximum 14**). Do not add a 15th; if you have more topics, merge or drop the least important. Pull facts from the **official site**, ticket pages, and trustworthy event listings you find via search.
      - **Length limits (keep JSON output valid and under token limits):**
        - Each **question** string: **maximum 140 characters** (stay well under this when possible).
@@ -31,7 +31,7 @@
   - one concrete event characteristic (e.g. lineup style, format, party/workshop model),
   - one logistics or planning detail (venue/hotel/transport/access),
   - one attendee-relevant practical detail (price tier, pass type, beginner fit, schedule shape, etc.).
-- In `festivalFAQs.ts`, make the FAQ useful for decision-making, not just description. Cover:
+- In `festivalData.ts`, make the FAQ useful for decision-making, not just description. Cover:
   - dates/location + venue context,
   - tickets/pricing/pass options,
   - schedule shape or lineup context,
