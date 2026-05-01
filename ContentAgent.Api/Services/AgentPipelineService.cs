@@ -349,7 +349,14 @@ public class AgentPipelineService : IAgentPipelineService
         foreach (var edit in edits)
         {
             if (string.IsNullOrWhiteSpace(edit.Path))
+            {
+                _logger.LogWarning(
+                    "Skipping edit with empty or missing path (editType={EditType}, key={Key})",
+                    edit.EditType ?? "(null)",
+                    edit.Key ?? "(null)");
                 continue;
+            }
+
             var pathNorm = edit.Path.Replace('\\', '/');
             var fullPath = Path.GetFullPath(Path.Combine(clonePath, pathNorm));
             if (!fullPath.StartsWith(cloneRootPrefix, StringComparison.OrdinalIgnoreCase)

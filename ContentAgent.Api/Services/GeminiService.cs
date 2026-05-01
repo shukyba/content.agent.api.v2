@@ -502,23 +502,40 @@ Example (appendKey ES FAQs in festivalData.ts): [{{""path"": ""src/data/festival
 
             if (TryDeserializeEditsArray(cleaned, JsonReadOptions, out var direct) && direct != null)
             {
-                edits = direct;
-                if (edits.Count == 0)
-                    logger?.LogInformation(
-                        "Gemini JSON parse: deserialized empty array (cleanedLength={Len}, preview={Preview})",
-                        cleaned.Length,
-                        TruncateForLog(cleaned, 800));
-                return true;
+                if (FileEditBatchValidation.LooksLikeFileEditBatch(direct))
+                {
+                    edits = direct;
+                    if (edits.Count == 0)
+                        logger?.LogInformation(
+                            "Gemini JSON parse: deserialized empty array (cleanedLength={Len}, preview={Preview})",
+                            cleaned.Length,
+                            TruncateForLog(cleaned, 800));
+                    return true;
+                }
+
+                logger?.LogDebug(
+                    "Gemini JSON parse: direct JSON deserialized but ignored (not a file-edit batch; often nested items[]). count={Count}, preview={Preview}",
+                    direct.Count,
+                    TruncateForLog(cleaned, 600));
             }
 
             logger?.LogDebug(
-                "Direct JSON parse failed; trying embedded JSON array candidates. cleanedPreview={Preview}",
+                "Direct JSON parse failed or unusable; trying embedded JSON array candidates. cleanedPreview={Preview}",
                 TruncateForLog(cleaned, 1200));
 
             foreach (var candidate in EnumerateJsonArrayCandidates(trimmed).OrderByDescending(static c => c.Length))
             {
                 if (!TryDeserializeEditsArray(candidate, JsonReadOptions, out var list) || list == null)
                     continue;
+                if (!FileEditBatchValidation.LooksLikeFileEditBatch(list))
+                {
+                    logger?.LogDebug(
+                        "Gemini JSON parse: embedded candidate ignored (not a file-edit batch). candidateLength={Len}, count={Count}",
+                        candidate.Length,
+                        list.Count);
+                    continue;
+                }
+
                 edits = list;
                 if (edits.Count == 0)
                     logger?.LogInformation(

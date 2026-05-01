@@ -1,76 +1,77 @@
 # Todo
 
-**Orden obligatorio:** primero **inglés** (investigación y persistencia en archivos EN), después **español** (traducción / adaptación con la **misma** investigación). Un solo festival nuevo por ejecución salvo que el todo diga lo contrario.
+**Mandatory order:** **English first** (research and persist in EN files), then **Spanish** (translation / adaptation using the **same** research). One new festival per run unless this todo says otherwise.
 
-**Búsqueda:** realiza búsqueda online actualizada; no te bases solo en conocimiento estático. Fechas 2026 verificables y fuentes fiables.
+**Research:** do up-to-date online search; do not rely on static knowledge alone. Verifiable 2026 dates and reliable sources.
 
-### JSON válido (crítico — si falla, no se aplica ninguna edición)
+### Valid JSON (critical — if this fails, no edits are applied)
 
-La respuesta final debe ser **un único array JSON** parseable por el servidor. **Un solo carácter ilegal en un string invalida todo el array** (0 ediciones aplicadas).
+The final response must be a **single JSON array** the server can parse. **One illegal character in a string invalidates the entire array** (0 edits applied).
 
-- **Comillas:** en cada campo JSON usa **solo comillas dobles ASCII `"`** para delimitar strings. **No** uses comillas tipográficas (“ ” ‘ ’).
-- **Apóstrofo / `'` en textos en inglés** (p. ej. *it's*, *Vienna's*, *don't*): **evítalos** en cuerpos que vayan dentro de un string JSON que a su vez contiene **TypeScript con comillas simples** (`description: '...'`). Reformula: *“the city of Vienna”*, *“the festival is”*, *“do not”* — o escribe el bloque TS usando **solo strings con comillas dobles** en JS/TS (`description: "..."`) y escapa `\"` dentro.
-- **Barra invertida:** no inventes secuencias `\'` o `\\'` dentro del JSON; el estándar JSON **no** usa `\'` para apóstrofos dentro de strings delimitados por `"`.
-- **Saltos de línea:** en `value` / `item` / strings del array de ediciones, **una sola línea** por string salvo que escapes cada salto como `\n`. **No** pegues bloques multilínea crudos dentro de `"value": "..."`.
-- **Salida:** **sin** fence markdown (no ```json); solo el array `[...]` o `[]`.
-
----
-
-## Fase A — Inglés (hacer primero)
-
-- Añade un festival nuevo de salsa/bachata/latin **que no exista ya** en los datos (revisa CSV + listas TS + claves en festivalData).
-
-### Archivos (fase A)
-
-1. **CSV** (`src/data/festivals2026.csv`) — una fila nueva, mismas columnas que el resto.
-
-2. **Lista EN** (`src/data/festivals2026.ts`) — un objeto nuevo en el array `festivals2026`. En la respuesta del modelo usa **`appendToArray` con JSON `"item": { ... }`** (objeto plano con las propiedades del festival; **no** uses `"value"` con TypeScript incrustado). Campos alineados con el schema `festivals2026.schema` (id, name, pageTitle, location, country, startDate, endDate, danceStyles, description, website, coordinates, estimatedCost, venue, ticketUrl?, discountLabel?). **`description` máximo 800 caracteres**.
-
-3. **Plan de estancia (recomendación de zonas / hoteles)** (`src/data/festivalData.ts`, objeto **`festivalStayDecisionsById`**) — añade una entrada nueva con la misma clave **`id`** que el festival. Incluye `tripIntro`, `bookingTiming`, `dancerLogistics`, **`mapSubtitle`** y **`stayOptions`** (idealmente **3** filas con `hotelTier` **`premium`**, **`mid`**, **`budget`** cada una). Cada opción: `title` con **nombre concreto de zona o barrio** (no genérico), `forAudience` / `rationale` / `ctaLabel` en **{ en, es }** con beneficios específicos y señales de confianza; el sitio usa esto en las tarjetas “mejor opción / calidad-precio / económico”. Si no puedes cumplir el contrato, omite esta entrada (las tarjetas usarán texto genérico).
-
-4. **FAQs en inglés** (`src/data/festivalData.ts`, mapa `festivalFAQs`) — nueva clave = **`id`** en kebab-case (mismo `id` que en `festivals2026.ts` y que usarás en ES). `appendKey` con JSON **`items`**: 10–14 pares pregunta/respuesta (máximo 14). Reglas:
-   - Cada **question** máximo **140** caracteres.
-   - Cada **answer** máximo **900** caracteres; escapa `"` como `\"` en JSON; sin saltos de línea crudos dentro del string.
-   - Temas útiles: fechas/sede, entradas/precios, alojamiento, nivel/público, horarios, viaje, prácticos (políticas solo si la fuente lo dice).
-   - Preguntas como las buscaría un visitante primerizo; respuestas concretas (nombres, números, enlaces cuando existan).
-   - **No** menciones **Go&Dance** (ni variantes) en el texto.
-   - Incluye **`appendKeyCutMarker`** exactamente: **`"// @content-agent-append-key-en-faqs"`** en cada edición `appendKey` a este archivo para las FAQs en inglés. (Las FAQs son el punto **4** en esta fase; el plan de estancia es el **3**.)
-
-**`id`:** kebab-case desde **[Nombre festival] [Ciudad] [Año]** — ASCII, minúsculas, guiones. Sin números de edición ni marketing en el slug. Ejemplo: `dance-casa-budapest-2026`.
-
-**pageTitle (EN):** formato exacto: `[Festival Name] [City] [Year] – Dates, Tickets & Guide` (guión largo **–** antes de “Dates…”). Ciudad salvo que ya vaya en el nombre del festival. Sin listas de días ni “10th edition”.
-
-**Calidad (fase A):** descripción única con al menos una característica del evento, un detalle logístico y un detalle práctico para asistentes. FAQs orientadas a decisión (no relleno genérico).
+- **Quotes:** in every JSON field use **only ASCII double quotes `"`** to delimit strings. **Do not** use typographic quotes (“ ” ‘ ’).
+- **Apostrophe / `'` in English copy** (e.g. *it's*, *Vienna's*, *don't*): **avoid** inside bodies that sit in a JSON string that also wraps **TypeScript with single-quoted strings** (`description: '...'`). Rephrase: *“the city of Vienna”*, *“the festival is”*, *“do not”* — or write the TS block using **only double-quoted strings** in JS/TS (`description: "..."`) and escape `\"` inside.
+- **Backslashes:** do not invent `\'` or `\\'` inside JSON; the JSON standard **does not** use `\'` for apostrophes inside strings delimited by `"`.
+- **Line breaks:** in `value` / `item` / strings in the edit array, **one line** per string unless you escape each newline as `\n`. **Do not** paste raw multiline blocks inside `"value": "..."`.
+- **Output:** **no** Markdown fences (no ```json); only the array `[...]` or `[]`.
 
 ---
 
-## Fase B — Español (después de la fase A, misma investigación)
+## Phase A — English (do this first)
 
-Traduce y adapta al español natural (no traducción literal palabra a palabra si suena raro). Mantén **el mismo `id`** que en fase A.
+- Add one new salsa/bachata/latin festival **that does not already exist** in the data (check CSV + TS lists + keys in festivalData).
+- **Focus:** Prefer **top** festivals **held in the USA or in Europe** where the event is **especially relevant for Spanish-speaking people** (strong Spanish-speaking audience or community in that city/region — e.g. major US Latin hubs, Spain, or European cities with a clear Spanish-language dance scene). **Do not** pick festivals whose primary location is outside the USA and outside Europe for this agent. When several options are viable, bias toward stronger reputation / attendance signals — without inventing facts.
 
-### Archivos (fase B)
+### Files (phase A)
 
-1. **CSV ES** (`src/data/festivals2026.es.csv`) — una fila: columnas exactas `id,esSlug,startDate,endDate,country`. `esSlug` en español kebab-case ASCII. Mismo `id` que fase A.
+1. **CSV** (`src/data/festivals2026.csv`) — one new row, same columns as the rest.
 
-2. **Seeds ES** (`src/data/festivals2026.es.data.ts`) — `appendToArray` en `spanishFestivalSeeds` con JSON **`item`** (no raw TS): `id`, `esSlug`, `startDate`, `endDate`, `country`, `descriptionEs` (máx. 800 caracteres, español natural y específico: una característica del evento, un detalle logístico, uno práctico). Solo dentro del array; un objeto por run. Contrato structured append como en el agente anterior ES.
+2. **EN list** (`src/data/festivals2026.ts`) — one new object in the `festivals2026` array. In the model response use **`appendToArray` with JSON `"item": { ... }`** (flat object with festival properties; **do not** use `"value"` with embedded TypeScript). Fields aligned with `festivals2026.schema` (id, name, pageTitle, location, country, startDate, endDate, danceStyles, description, website, coordinates, estimatedCost, venue, ticketUrl?, discountLabel?). **`description` max 800 characters**.
 
-3. **FAQs en español curadas** (`src/data/festivalData.ts`, mapa **`festivalFaqsEs`**) — misma estructura que EN: `appendKey` + **`items`** (preguntas/respuestas en español), misma clave **`id`**. Incluye **`appendKeyCutMarker`**: **`"// @content-agent-append-key-es-faqs"`**. Cuenta y límites alineados con las FAQs EN (10–14, mismos límites de caracteres en JSON).
+3. **Stay plan (zone / hotel guidance)** (`src/data/festivalData.ts`, object **`festivalStayDecisionsById`**) — add one new entry with the same **`id`** key as the festival. Include `tripIntro`, `bookingTiming`, `dancerLogistics`, **`mapSubtitle`**, and **`stayOptions`** (ideally **3** rows with `hotelTier` **`premium`**, **`mid`**, and **`budget`** each). Each option: `title` with a **concrete zone or neighbourhood name** (not generic), `forAudience` / `rationale` / `ctaLabel` as **`{ en, es }`** with specific benefits and trust signals; the site uses this for the “best pick / value / budget” cards. If you cannot meet the contract, skip this entry (cards will fall back to generic copy).
 
-4. **Plantilla global ES** (`src/data/festivalFAQs.localized.ts`) — solo si necesitas cambiar el texto **plantilla** para **todos** los festivales (no para un solo id). Si no aplica, no toques este archivo.
+4. **English FAQs** (`src/data/festivalData.ts`, map `festivalFAQs`) — new key = **`id`** in kebab-case (same `id` as in `festivals2026.ts` and you will use in ES). `appendKey` with JSON **`items`**: 10–14 question/answer pairs (max 14). Rules:
+   - Each **question** max **140** characters.
+   - Each **answer** max **900** characters; escape `"` as `\"` in JSON; no raw line breaks inside the string.
+   - Useful topics: dates/venue, tickets/prices, accommodation, level/audience, schedule, travel, practicals (policies only if the source says so).
+   - Questions a first-time visitor would search; concrete answers (names, numbers, links when they exist).
+   - **Do not** mention **Go&Dance** (or variants) in copy.
+   - Include **`appendKeyCutMarker`** exactly: **`"// @content-agent-append-key-en-faqs"`** on every `appendKey` edit to this file for English FAQs. (FAQs are step **4** in this phase; the stay plan is **3**.)
 
-### Reglas de calidad (fase B)
+**`id`:** kebab-case from **[Festival name] [City] [Year]** — ASCII, lowercase, hyphens. No edition numbers or marketing in the slug. Example: `dance-casa-budapest-2026`.
 
-- “Top festival”: señal real (formato multi-día, historial, lineup/organizador, tracción pública) — al menos dos cuando aplique.
-- Investiga el set canónico de campos (id, name, pageTitle, location, country, startDate, endDate, danceStyles, description, website, coordinates, estimatedCost, venue, ticketUrl, discountLabel); persiste en ES lo requerido por CSV/seed y usa el resto para enriquecer `descriptionEs` y FAQs sin inventar.
+**pageTitle (EN):** exact format: `[Festival Name] [City] [Year] – Dates, Tickets & Guide` (en dash **–** before “Dates…”). Include city unless it is already in the festival name. No day-by-day lists or “10th edition”.
 
-## Consistencia
+**Quality (phase A):** unique description with at least one event trait, one logistics detail, and one practical detail for attendees. FAQs should support decisions (not generic filler).
 
-- Mismo `id`, `esSlug`, fechas y país en todos los archivos tocados.
-- No borres ni reescribas entradas ajenas.
-- Preserva el contenido existente; añade solo el festival nuevo y sus textos.
+---
 
-## Contrato sintaxis `festivals2026.es.data.ts` (appendToArray)
+## Phase B — Spanish (after phase A, same research)
 
-- TypeScript válido; objeto con `id`, `esSlug`, `startDate`, `endDate`, `country`, opcional `descriptionEs`.
-- Sin líneas solo con `,`; sin `}, , {`; sin fences markdown en ediciones.
-- Si no puedes cumplir reglas, devuelve `[]`.
+Translate and adapt into natural Spanish (not word-for-word if it sounds odd). Keep the **same `id`** as in phase A.
+
+### Files (phase B)
+
+1. **ES CSV** (`src/data/festivals2026.es.csv`) — one row: exact columns `id,esSlug,startDate,endDate,country`. `esSlug` in Spanish kebab-case ASCII. Same `id` as phase A.
+
+2. **ES seeds** (`src/data/festivals2026.es.data.ts`) — `appendToArray` on `spanishFestivalSeeds` with JSON **`item`** (not raw TS): `id`, `esSlug`, `startDate`, `endDate`, `country`, `descriptionEs` (max 800 characters, natural specific Spanish: one event trait, one logistics detail, one practical). Only inside the array; one object per run. Same structured-append contract as the previous ES agent.
+
+3. **Curated Spanish FAQs** (`src/data/festivalData.ts`, map **`festivalFaqsEs`**) — same shape as EN: `appendKey` + **`items`** (questions/answers in Spanish), same **`id`** key. Include **`appendKeyCutMarker`**: **`"// @content-agent-append-key-es-faqs"`**. Count and limits aligned with EN FAQs (10–14, same character limits in JSON).
+
+4. **Global ES template** (`src/data/festivalFAQs.localized.ts`) — only if you need to change **template** copy for **all** festivals (not for a single id). If not applicable, do not touch this file.
+
+### Quality rules (phase B)
+
+- “Top festival”: real signals (multi-day format, history, lineup/organizer, public traction) — at least two when applicable.
+- Research the canonical field set (id, name, pageTitle, location, country, startDate, endDate, danceStyles, description, website, coordinates, estimatedCost, venue, ticketUrl, discountLabel); persist in ES what CSV/seed require and use the rest to enrich `descriptionEs` and FAQs without inventing.
+
+## Consistency
+
+- Same `id`, `esSlug`, dates, and country across all touched files.
+- Do not delete or rewrite other people’s entries.
+- Preserve existing content; add only the new festival and its copy.
+
+## Syntax contract `festivals2026.es.data.ts` (appendToArray)
+
+- Valid TypeScript; object with `id`, `esSlug`, `startDate`, `endDate`, `country`, optional `descriptionEs`.
+- No lines with only `,`; no `}, , {`; no Markdown fences in edits.
+- If you cannot meet the rules, return `[]`.
