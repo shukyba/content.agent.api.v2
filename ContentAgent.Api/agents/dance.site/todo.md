@@ -1,52 +1,76 @@
 # Todo
 
-- Find a new Salsa/Latin dance festival that does **not** already appear in our data files. You **must** perform a fresh online search for real 2026 events; do not rely only on your training knowledge.
-- Add the new festival in three places:
-  - **Festival `id`** (field `id` in `festivals2026.ts` and the FAQ object key in `festivalData.ts`): kebab-case slug from **[Festival Name] [City] [Year]** — lowercase, hyphens between segments, ASCII only. Example: `dance-casa-budapest-2026`. Omit edition numbers and marketing words from the slug; keep city and year so ids stay unique and consistent with the page title.
-  1. **CSV** (src/data/festivals2026.csv) – append one row in the same columns as existing rows.
-  2. **Festival list** (src/data/festivals2026.ts) – add one new object to the `festivals2026` array in the same format (id, name, pageTitle, location, country, startDate, endDate, danceStyles, description, website, coordinates, estimatedCost, venue, etc.). Keep **`description` to a maximum of 800 characters** so the `appendToArray` JSON payload stays parseable; summarize if needed.
-  3. **FAQ section** (src/data/festivalData.ts) – add a new key (festival id in kebab-case) with an **in-depth** FAQ array for people deciding whether to attend. Requirements:
-     - **Count:** **10–14 questions** (hard **maximum 14**). Do not add a 15th; if you have more topics, merge or drop the least important. Pull facts from the **official site**, ticket pages, and trustworthy event listings you find via search.
-     - **Length limits (keep JSON output valid and under token limits):**
-       - Each **question** string: **maximum 140 characters** (stay well under this when possible).
-       - Each **answer** string: **maximum 900 characters** (~2–5 tight sentences). Prioritize facts and one URL when relevant; cut filler rather than exceeding the cap.
-       - In the emitted JSON, **escape** every `"` inside strings as `\"` and **do not** put raw line breaks inside a string value—use `\n` if you need a line break.
-     - Cover **real attendee concerns**, for example (use what actually applies to this festival; skip unknowns rather than inventing):
-       - Dates, venue, city/region, and timezone if relevant
-       - **Tickets & money**: pass types (full pass, party-only, etc.), typical price ranges or tiers, where to buy, early-bird or discount mentions if stated
-       - **Stay**: official hotel / room block, booking links or “stay tuned” if only hinted
-       - **Who it’s for**: complete beginners vs advanced, kids/family, competition vs social focus
-       - **Schedule shape**: when workshops vs parties typically run (if described), highlights (shows, live bands, competitions named on the site)
-       - **Getting there**: parking, airport/transit, venue access if mentioned
-       - **Practical**: what to bring, dress code, age limits, refund/cancellation policy **only if** the source says so
-     - Each **answer** should be **2–5 sentences** when the source supports it—concrete names, numbers, and links where you have them—**without going over the 900-character cap above**. No vague filler (“check the website” alone); prefer “On [site] they list …” with specifics.
-     - Questions should sound like what a **first-time visitor** would Google, not marketing slogans.
-     - **Do not** mention or reference **Go&Dance** (or “Go and Dance”, “Go & Dance”, or similar) anywhere in the FAQ text—write for readers on **this site only**, without naming the platform or aggregator.
-- Preserve all existing content; only add the new festival and its FAQs.
+**Orden obligatorio:** primero **inglés** (investigación y persistencia en archivos EN), después **español** (traducción / adaptación con la **misma** investigación). Un solo festival nuevo por ejecución salvo que el todo diga lo contrario.
 
-## Quality guardrails (mandatory)
+**Búsqueda:** realiza búsqueda online actualizada; no te bases solo en conocimiento estático. Fechas 2026 verificables y fuentes fiables.
 
-- Avoid thin/generic copy. Every new festival entry must include **specific details** from verified sources (names, numbers, dates, policy details).
-- In `festivals2026.ts`, write a **unique description** (max 800 chars) that includes at least:
-  - one concrete event characteristic (e.g. lineup style, format, party/workshop model),
-  - one logistics or planning detail (venue/hotel/transport/access),
-  - one attendee-relevant practical detail (price tier, pass type, beginner fit, schedule shape, etc.).
-- In `festivalData.ts`, make the FAQ useful for decision-making, not just description. Cover:
-  - dates/location + venue context,
-  - tickets/pricing/pass options,
-  - schedule shape or lineup context,
-  - attendee fit/logistics (level, stay, travel, policy).
-- Answers must prioritize facts over filler. Include concrete specifics when available (numbers, ranges, named entities, links).
-- Do not recycle generic sentence templates across festivals. Keep wording and emphasis festival-specific.
+### JSON válido (crítico — si falla, no se aplica ninguna edición)
 
-When creating the pageTitle, you MUST follow this exact format:
-[Festival Name] [City] [Year] – Dates, Tickets & Guide
+La respuesta final debe ser **un único array JSON** parseable por el servidor. **Un solo carácter ilegal en un string invalida todo el array** (0 ediciones aplicadas).
 
-Rules:
--Include the city name unless it is already clearly part of the festival name (e.g. “Berlin Salsa Congress”).
--Use EN DASH (–) before “Dates, Tickets & Guide” (not hyphen -).
--Remove unnecessary noise such as:
--edition numbers (e.g. “10th edition”, “21st edition”)
--exact day listings (e.g. “3-4-5-6 July”)
--marketing phrases (e.g. “Official”, “The Best”, “International Cuban Dance Festival in…”)
--Keep the title clean, scannable, and consistent.
+- **Comillas:** en cada campo JSON usa **solo comillas dobles ASCII `"`** para delimitar strings. **No** uses comillas tipográficas (“ ” ‘ ’).
+- **Apóstrofo / `'` en textos en inglés** (p. ej. *it's*, *Vienna's*, *don't*): **evítalos** en cuerpos que vayan dentro de un string JSON que a su vez contiene **TypeScript con comillas simples** (`description: '...'`). Reformula: *“the city of Vienna”*, *“the festival is”*, *“do not”* — o escribe el bloque TS usando **solo strings con comillas dobles** en JS/TS (`description: "..."`) y escapa `\"` dentro.
+- **Barra invertida:** no inventes secuencias `\'` o `\\'` dentro del JSON; el estándar JSON **no** usa `\'` para apóstrofos dentro de strings delimitados por `"`.
+- **Saltos de línea:** en `value` / `item` / strings del array de ediciones, **una sola línea** por string salvo que escapes cada salto como `\n`. **No** pegues bloques multilínea crudos dentro de `"value": "..."`.
+- **Salida:** **sin** fence markdown (no ```json); solo el array `[...]` o `[]`.
+
+---
+
+## Fase A — Inglés (hacer primero)
+
+- Añade un festival nuevo de salsa/bachata/latin **que no exista ya** en los datos (revisa CSV + listas TS + claves en festivalData).
+
+### Archivos (fase A)
+
+1. **CSV** (`src/data/festivals2026.csv`) — una fila nueva, mismas columnas que el resto.
+
+2. **Lista EN** (`src/data/festivals2026.ts`) — un objeto nuevo en el array `festivals2026`. En la respuesta del modelo usa **`appendToArray` con JSON `"item": { ... }`** (objeto plano con las propiedades del festival; **no** uses `"value"` con TypeScript incrustado). Campos alineados con el schema `festivals2026.schema` (id, name, pageTitle, location, country, startDate, endDate, danceStyles, description, website, coordinates, estimatedCost, venue, ticketUrl?, discountLabel?). **`description` máximo 800 caracteres**.
+
+3. **Plan de estancia (recomendación de zonas / hoteles)** (`src/data/festivalData.ts`, objeto **`festivalStayDecisionsById`**) — añade una entrada nueva con la misma clave **`id`** que el festival. Incluye `tripIntro`, `bookingTiming`, `dancerLogistics`, **`mapSubtitle`** y **`stayOptions`** (idealmente **3** filas con `hotelTier` **`premium`**, **`mid`**, **`budget`** cada una). Cada opción: `title` con **nombre concreto de zona o barrio** (no genérico), `forAudience` / `rationale` / `ctaLabel` en **{ en, es }** con beneficios específicos y señales de confianza; el sitio usa esto en las tarjetas “mejor opción / calidad-precio / económico”. Si no puedes cumplir el contrato, omite esta entrada (las tarjetas usarán texto genérico).
+
+4. **FAQs en inglés** (`src/data/festivalData.ts`, mapa `festivalFAQs`) — nueva clave = **`id`** en kebab-case (mismo `id` que en `festivals2026.ts` y que usarás en ES). `appendKey` con JSON **`items`**: 10–14 pares pregunta/respuesta (máximo 14). Reglas:
+   - Cada **question** máximo **140** caracteres.
+   - Cada **answer** máximo **900** caracteres; escapa `"` como `\"` en JSON; sin saltos de línea crudos dentro del string.
+   - Temas útiles: fechas/sede, entradas/precios, alojamiento, nivel/público, horarios, viaje, prácticos (políticas solo si la fuente lo dice).
+   - Preguntas como las buscaría un visitante primerizo; respuestas concretas (nombres, números, enlaces cuando existan).
+   - **No** menciones **Go&Dance** (ni variantes) en el texto.
+   - Incluye **`appendKeyCutMarker`** exactamente: **`"// @content-agent-append-key-en-faqs"`** en cada edición `appendKey` a este archivo para las FAQs en inglés. (Las FAQs son el punto **4** en esta fase; el plan de estancia es el **3**.)
+
+**`id`:** kebab-case desde **[Nombre festival] [Ciudad] [Año]** — ASCII, minúsculas, guiones. Sin números de edición ni marketing en el slug. Ejemplo: `dance-casa-budapest-2026`.
+
+**pageTitle (EN):** formato exacto: `[Festival Name] [City] [Year] – Dates, Tickets & Guide` (guión largo **–** antes de “Dates…”). Ciudad salvo que ya vaya en el nombre del festival. Sin listas de días ni “10th edition”.
+
+**Calidad (fase A):** descripción única con al menos una característica del evento, un detalle logístico y un detalle práctico para asistentes. FAQs orientadas a decisión (no relleno genérico).
+
+---
+
+## Fase B — Español (después de la fase A, misma investigación)
+
+Traduce y adapta al español natural (no traducción literal palabra a palabra si suena raro). Mantén **el mismo `id`** que en fase A.
+
+### Archivos (fase B)
+
+1. **CSV ES** (`src/data/festivals2026.es.csv`) — una fila: columnas exactas `id,esSlug,startDate,endDate,country`. `esSlug` en español kebab-case ASCII. Mismo `id` que fase A.
+
+2. **Seeds ES** (`src/data/festivals2026.es.data.ts`) — `appendToArray` en `spanishFestivalSeeds` con JSON **`item`** (no raw TS): `id`, `esSlug`, `startDate`, `endDate`, `country`, `descriptionEs` (máx. 800 caracteres, español natural y específico: una característica del evento, un detalle logístico, uno práctico). Solo dentro del array; un objeto por run. Contrato structured append como en el agente anterior ES.
+
+3. **FAQs en español curadas** (`src/data/festivalData.ts`, mapa **`festivalFaqsEs`**) — misma estructura que EN: `appendKey` + **`items`** (preguntas/respuestas en español), misma clave **`id`**. Incluye **`appendKeyCutMarker`**: **`"// @content-agent-append-key-es-faqs"`**. Cuenta y límites alineados con las FAQs EN (10–14, mismos límites de caracteres en JSON).
+
+4. **Plantilla global ES** (`src/data/festivalFAQs.localized.ts`) — solo si necesitas cambiar el texto **plantilla** para **todos** los festivales (no para un solo id). Si no aplica, no toques este archivo.
+
+### Reglas de calidad (fase B)
+
+- “Top festival”: señal real (formato multi-día, historial, lineup/organizador, tracción pública) — al menos dos cuando aplique.
+- Investiga el set canónico de campos (id, name, pageTitle, location, country, startDate, endDate, danceStyles, description, website, coordinates, estimatedCost, venue, ticketUrl, discountLabel); persiste en ES lo requerido por CSV/seed y usa el resto para enriquecer `descriptionEs` y FAQs sin inventar.
+
+## Consistencia
+
+- Mismo `id`, `esSlug`, fechas y país en todos los archivos tocados.
+- No borres ni reescribas entradas ajenas.
+- Preserva el contenido existente; añade solo el festival nuevo y sus textos.
+
+## Contrato sintaxis `festivals2026.es.data.ts` (appendToArray)
+
+- TypeScript válido; objeto con `id`, `esSlug`, `startDate`, `endDate`, `country`, opcional `descriptionEs`.
+- Sin líneas solo con `,`; sin `}, , {`; sin fences markdown en ediciones.
+- Si no puedes cumplir reglas, devuelve `[]`.

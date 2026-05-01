@@ -180,7 +180,8 @@ PHASE 1 ASSISTANT OUTPUT (context only):
 PHASE 2 OUTPUT CONTRACT (mandatory):
 - This is the final step. Respond with NOTHING except one JSON array of file edits, as specified in the task above (path, editType, key, value, items, etc.).
 - The first non-whitespace character of your entire message MUST be ""["" (U+005B).
-- No Markdown, no headings, no **bold**, no code fences, no narration, no ""Initiating search"". If there are genuinely no edits to apply, output exactly: []";
+- No Markdown, no headings, no **bold**, no code fences, no narration, no ""Initiating search"". If there are genuinely no edits to apply, output exactly: [].
+- Valid JSON only: after a backslash inside strings, only a double-quote, a second backslash, slash, b, f, n, r, t, or u (Unicode hex) are allowed. Never put a backslash before a single-quote inside a JSON string (invalid). Use a plain apostrophe in words or rephrase (e.g. cannot, do not).";
     }
 
     /// <summary>All part texts from phase 1 (including thought parts) for phase-2 context.</summary>
@@ -284,14 +285,20 @@ Respond with a JSON array of file edits. Supported edit formats:
 
 4) **Append to keyed structure**: use ""path"", ""editType"": ""appendKey"", and ""key"": ""the-new-record-key"".
    - If **path** is listed under STRUCTURED APPEND-KEY PATHS above: include **""items""**: [ {{ ""fieldA"": ""plain text"", ""fieldB"": ""plain text"" }}, ... ] matching the file's object shape (omit ""value""). String fields may contain apostrophes and quotes as normal JSON.
+   - For **src/data/festivalData.ts** (two FAQ maps in one file): include **""appendKeyCutMarker""** exactly as follows so the server inserts into the correct map:
+     - English curated FAQs (`festivalFAQs`): **""appendKeyCutMarker"": ""// @content-agent-append-key-en-faqs""**
+     - Spanish curated FAQs (`festivalFaqsEs`): **""appendKeyCutMarker"": ""// @content-agent-append-key-es-faqs""**
    - Otherwise: use **""value""** only (snippet to insert before the top-level object closes).
 
-Only include files you are changing; use exact paths from the schema/data sections when relevant. Again: the full response must be valid JSON starting with ""["" — no Markdown and no prose outside that array.
+Only include files you are changing; use exact paths from the schema/data sections when relevant. Again: the full response must be valid JSON starting with ""["" — no Markdown and no prose outside that array. After a backslash inside any JSON string, only standard JSON escapes are allowed (never backslash + single-quote).
 
 Example (appendToArray): [{{""path"": ""src/data/items.ts"", ""editType"": ""appendToArray"", ""key"": ""item-1"", ""value"": ""{{ id: 'item-1', name: 'Example' }}""}}]
 Example (appendToArray with item on structured array path): [{{""path"": ""src/data/festivals2026.es.data.ts"", ""editType"": ""appendToArray"", ""key"": ""festival-1"", ""item"": {{""id"": ""festival-1"", ""esSlug"": ""festival-ejemplo-2026"", ""startDate"": ""2026-06-01"", ""endDate"": ""2026-06-05"", ""country"": ""Spain""}}}}]
+Example (appendToArray EN list with item — same shape as schema Festival): [{{""path"": ""src/data/festivals2026.ts"", ""editType"": ""appendToArray"", ""key"": ""my-fest-2026"", ""item"": {{""id"": ""my-fest-2026"", ""name"": ""Example Fest"", ""pageTitle"": ""Example Fest City 2026 – Dates, Tickets & Guide"", ""location"": ""City"", ""country"": ""Country"", ""startDate"": ""2026-06-01"", ""endDate"": ""2026-06-03"", ""danceStyles"": [""Salsa"", ""Bachata""], ""description"": ""One paragraph under 800 chars; avoid contractions that need apostrophes or write cannot instead of cant."", ""website"": ""https://example.com"", ""coordinates"": {{""lat"": 0.0, ""lng"": 0.0}}, ""estimatedCost"": {{""passPrice"": 100, ""accommodation"": 50, ""food"": 30}}, ""venue"": ""Main hall""}}}}]
 Example (appendCsvRow): [{{""path"": ""src/data/rows.csv"", ""editType"": ""appendCsvRow"", ""key"": ""row-1"", ""value"": ""row-1,Label,2026-01-01""}}]
-Example (appendKey with items for a structured path): [{{""path"": ""src/data/keyedQna.ts"", ""editType"": ""appendKey"", ""key"": ""record-slug"", ""items"": [{{""question"": ""Hours?"", ""answer"": ""Doors open at 6pm; there isn't a fixed end time.""}}, {{""question"": ""Parking?"", ""answer"": ""Garage on site.""}}]}}]";
+Example (appendKey with items for a structured path): [{{""path"": ""src/data/keyedQna.ts"", ""editType"": ""appendKey"", ""key"": ""record-slug"", ""items"": [{{""question"": ""Hours?"", ""answer"": ""Doors open at 6pm; there isn't a fixed end time.""}}, {{""question"": ""Parking?"", ""answer"": ""Garage on site.""}}]}}]
+Example (appendKey EN FAQs in festivalData.ts): [{{""path"": ""src/data/festivalData.ts"", ""editType"": ""appendKey"", ""appendKeyCutMarker"": ""// @content-agent-append-key-en-faqs"", ""key"": ""my-festival-id-2026"", ""items"": [{{""question"": ""When?"", ""answer"": ""See official site.""}}]}}]
+Example (appendKey ES FAQs in festivalData.ts): [{{""path"": ""src/data/festivalData.ts"", ""editType"": ""appendKey"", ""appendKeyCutMarker"": ""// @content-agent-append-key-es-faqs"", ""key"": ""my-festival-id-2026"", ""items"": [{{""question"": ""¿Cuándo?"", ""answer"": ""Consulta la web oficial.""}}]}}]";
     }
 
     private static List<(string path, string fullContent)> GetFullTextFilesFromList(string repoPath, IReadOnlyList<string> relativePaths, string? auxiliaryFileRoot = null)
@@ -338,7 +345,8 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
             return t;
 
         var body = t[(firstNewline + 1)..];
-        var close = body.LastIndexOf("```", StringComparison.Ordinal);
+        // First closing fence only: LastIndexOf breaks when the model emits extra ``` blocks or trailing fences.
+        var close = body.IndexOf("```", StringComparison.Ordinal);
         if (close >= 0)
             body = body[..close];
 
@@ -364,7 +372,7 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
         if (firstNl >= 0)
             afterOpen = afterOpen[(firstNl + 1)..];
 
-        var close = afterOpen.LastIndexOf("```", StringComparison.Ordinal);
+        var close = afterOpen.IndexOf("```", StringComparison.Ordinal);
         var body = close >= 0 ? afterOpen[..close] : afterOpen;
         return body.Trim();
     }
@@ -456,6 +464,7 @@ Example (appendKey with items for a structured path): [{{""path"": ""src/data/ke
     private static bool TryDeserializeEditsArray(string json, JsonSerializerOptions options, out List<FileEdit>? list)
     {
         list = null;
+        json = GeminiJsonRepair.RepairInvalidEscapeApostrophes(json);
         try
         {
             var deserialized = JsonSerializer.Deserialize<List<FileEdit>>(json, options);

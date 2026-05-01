@@ -37,4 +37,11 @@ public class FileEdit
     /// </summary>
     [JsonPropertyName("items")]
     public JsonElement? Items { get; set; }
+
+    /// <summary>
+    /// Optional. For <c>appendKey</c> on <c>src/data/festivalData.ts</c>: exact line comment marking where to insert
+    /// before the closing <c>};</c> of the target map (English vs Spanish FAQ records). See agent todo / Gemini prompt.
+    /// </summary>
+    [JsonPropertyName("appendKeyCutMarker")]
+    public string? AppendKeyCutMarker { get; set; }
 }

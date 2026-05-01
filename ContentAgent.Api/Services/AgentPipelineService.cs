@@ -59,10 +59,35 @@ public class AgentPipelineService : IAgentPipelineService
             return;
         }
 
-        var agentFolders = Directory.GetDirectories(agentsRoot);
-        if (agentFolders.Length == 0)
+        var allAgentFolders = Directory.GetDirectories(agentsRoot);
+        if (allAgentFolders.Length == 0)
         {
             _logger.LogInformation("No agent subfolders under {Path}", agentsRoot);
+            return;
+        }
+
+        var agentFolders = allAgentFolders
+            .Where(dir => File.Exists(Path.Combine(dir, ConfigFileName)))
+            .ToArray();
+
+        var skippedNoConfig = allAgentFolders
+            .Where(dir => !File.Exists(Path.Combine(dir, ConfigFileName)))
+            .Select(dir => new DirectoryInfo(dir).Name)
+            .ToArray();
+
+        if (skippedNoConfig.Length > 0)
+        {
+            _logger.LogInformation(
+                "Ignoring {Count} subfolder(s) under {Path} without {File}: {Names}",
+                skippedNoConfig.Length,
+                agentsRoot,
+                ConfigFileName,
+                string.Join(", ", skippedNoConfig));
+        }
+
+        if (agentFolders.Length == 0)
+        {
+            _logger.LogWarning("No agent folders with {File} under {Path}", ConfigFileName, agentsRoot);
             return;
         }
 
@@ -363,7 +388,7 @@ public class AgentPipelineService : IAgentPipelineService
                 }
 
                 var existing = await File.ReadAllTextAsync(fullPath, cancellationToken);
-                var lastIdx = FindObjectClosingIndexAtFileEnd(existing);
+                var lastIdx = FindAppendKeyInsertionIndex(existing, edit.AppendKeyCutMarker);
                 if (lastIdx < 0)
                 {
                     _logger.LogWarning("Skipping appendKey edit; couldn't find top-level object closing in file: {Path}", pathNorm);
@@ -419,8 +444,9 @@ public class AgentPipelineService : IAgentPipelineService
 
                 var before = existing[..lastIdx];
                 var trimmedKey = edit.Key?.Trim();
+                var duplicateSearchText = GetAppendKeyDuplicateSearchWindow(existing, lastIdx, edit.AppendKeyCutMarker);
                 if (!string.IsNullOrEmpty(trimmedKey)
-                    && AppendKeyDuplicateDetector.PropertyKeyLikelyExists(before, trimmedKey))
+                    && AppendKeyDuplicateDetector.PropertyKeyLikelyExists(duplicateSearchText, trimmedKey))
                 {
                     _logger.LogWarning(
                         "Skipping appendKey; property key likely already exists: {Key} in {Path}",
@@ -578,6 +604,53 @@ public class AgentPipelineService : IAgentPipelineService
 
         var comma = line.IndexOf(',');
         return comma >= 0 ? line[..comma].Trim() : line.Trim();
+    }
+
+    /// <summary>
+    /// Finds the <c>}</c> index of the <c>};</c> pair where <c>appendKey</c> should insert (immediately before that <c>}</c>).
+    /// When <paramref name="appendKeyCutMarker"/> is set (e.g. in <c>festivalData.ts</c> for EN vs ES FAQ maps), finds the first <c>};</c> after that marker.
+    /// Otherwise uses the closing <c>};</c> at end of file (legacy).
+    /// </summary>
+    private static int FindAppendKeyInsertionIndex(string content, string? appendKeyCutMarker)
+    {
+        if (!string.IsNullOrWhiteSpace(appendKeyCutMarker))
+        {
+            var markerIdx = content.IndexOf(appendKeyCutMarker.Trim(), StringComparison.Ordinal);
+            if (markerIdx < 0)
+                return -1;
+            var closeIdx = content.IndexOf("};", markerIdx, StringComparison.Ordinal);
+            if (closeIdx < 0)
+                return -1;
+            return closeIdx;
+        }
+
+        return FindObjectClosingIndexAtFileEnd(content);
+    }
+
+    /// <summary>Limits duplicate-key scan to the FAQ map being appended to (same <c>id</c> may exist in both EN and ES maps).</summary>
+    private static string GetAppendKeyDuplicateSearchWindow(string existing, int lastIdx, string? appendKeyCutMarker)
+    {
+        if (lastIdx <= 0 || lastIdx > existing.Length)
+            return string.Empty;
+        var slice = existing[..lastIdx];
+        if (string.IsNullOrWhiteSpace(appendKeyCutMarker))
+            return slice;
+
+        var m = appendKeyCutMarker.Trim();
+        if (m.Contains("es-faqs", StringComparison.OrdinalIgnoreCase))
+        {
+            var start = existing.IndexOf("export const festivalFaqsEs", StringComparison.Ordinal);
+            if (start >= 0 && start < lastIdx)
+                return existing[start..lastIdx];
+        }
+        else if (m.Contains("en-faqs", StringComparison.OrdinalIgnoreCase))
+        {
+            var start = existing.IndexOf("export const festivalFAQs", StringComparison.Ordinal);
+            if (start >= 0 && start < lastIdx)
+                return existing[start..lastIdx];
+        }
+
+        return slice;
     }
 
     /// <summary>
